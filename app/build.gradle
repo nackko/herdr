@@ -5,8 +5,6 @@ repositories {
     google()
     jcenter()
     mavenCentral()
-
-    maven { url = uri("https://dl.bintray.com/icerockdev/moko") }
 }
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android-extensions'
@@ -52,8 +50,16 @@ kotlin {
         commonMain {
             dependencies {
                 implementation kotlin('stdlib-common')
+
+                // COROUTINES
+                implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$coroutineVersion"
+
                 // MOKO - MVVM
                implementation "dev.icerock.moko:mvvm:$mokoMvvmVersion"
+
+                // KODEIN
+                implementation "org.kodein.di:kodein-di-core:$kodeinVersion"
+                implementation "org.kodein.di:kodein-di-erased:$kodeinVersion"
             }
         }
         commonTest {
@@ -65,6 +71,12 @@ kotlin {
         androidMain {
             dependencies {
                 implementation kotlin('stdlib')
+
+                // COROUTINES
+                implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion"
+
+                // MOKO - MVVM
+                implementation "androidx.lifecycle:lifecycle-extensions:$androidxLifecycleVersion"
             }
         }
         androidTest {

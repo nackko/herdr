@@ -29,3 +29,7 @@ repositories {
     google()
     jcenter()
 }
+
+ext {
+    mokoMvvmVersion = "0.6.0"
+}

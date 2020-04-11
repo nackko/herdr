@@ -1,4 +1,4 @@
-package com.ludoscity.common.utils
+package com.ludoscity.herdr.common.utils
 
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext

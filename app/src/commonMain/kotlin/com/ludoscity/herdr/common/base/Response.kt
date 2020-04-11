@@ -16,25 +16,22 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.common.di
+package com.ludoscity.herdr.common.base
 
-import com.ludoscity.common.ApplicationDispatcher
-import com.ludoscity.common.data.repository.LoginRepository
-import com.ludoscity.common.domain.usecase.login.RegisterAuthClientUseCase
-import org.kodein.di.Kodein
-import org.kodein.di.erased.bind
-import org.kodein.di.erased.instance
-import org.kodein.di.erased.provider
-import org.kodein.di.erased.singleton
-import kotlin.coroutines.CoroutineContext
-import kotlin.native.concurrent.ThreadLocal
-
-@ThreadLocal
-val KodeinInjector = Kodein {
-
-    bind<CoroutineContext>() with provider { ApplicationDispatcher }
-
-    bind<RegisterAuthClientUseCase>() with singleton { RegisterAuthClientUseCase(instance()) }
-
-    bind<LoginRepository>() with provider { LoginRepository() }
+sealed class Response<out T> {
+    class Success<out T>(val data: T) : Response<T>()
+    data class Error(
+        val exception: Throwable,
+        val code: Int? = null,
+        val error: Boolean? = null,
+        val errorCollection: List<ErrorElement>? = null,
+        val message: String? = null,
+        val method: String? = null,
+        val path: String? = null
+    ) : Response<Nothing>()
 }
+
+data class ErrorElement(
+    val message: String,
+    val path: String
+)

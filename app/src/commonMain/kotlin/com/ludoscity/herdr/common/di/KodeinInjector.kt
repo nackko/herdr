@@ -16,9 +16,29 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.common
+package com.ludoscity.herdr.common.di
 
+import com.ludoscity.herdr.common.ApplicationDispatcher
+import com.ludoscity.herdr.common.data.repository.LoginRepository
+import com.ludoscity.herdr.common.domain.usecase.login.RegisterAuthClientUseCase
+import org.kodein.di.Kodein
+import org.kodein.di.erased.bind
+import org.kodein.di.erased.instance
+import org.kodein.di.erased.provider
+import org.kodein.di.erased.singleton
 import kotlin.coroutines.CoroutineContext
+import kotlin.native.concurrent.ThreadLocal
 
-internal actual val ApplicationDispatcher: CoroutineContext
-    get() = TODO("Not yet implemented")
+@ThreadLocal
+val KodeinInjector = Kodein {
+
+    bind<CoroutineContext>() with provider { ApplicationDispatcher }
+
+    bind<RegisterAuthClientUseCase>() with singleton {
+        RegisterAuthClientUseCase(
+            instance()
+        )
+    }
+
+    bind<LoginRepository>() with provider { LoginRepository() }
+}

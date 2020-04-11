@@ -16,8 +16,9 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-rootProject.name = 'herdr'
+package com.ludoscity.common
 
-include ':app'
+import kotlinx.coroutines.Dispatchers
+import kotlin.coroutines.CoroutineContext
 
-enableFeaturePreview("GRADLE_METADATA")
+internal actual val ApplicationDispatcher: CoroutineContext = Dispatchers.Default

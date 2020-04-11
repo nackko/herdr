@@ -16,8 +16,22 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-rootProject.name = 'herdr'
+package com.ludoscity.common.base
 
-include ':app'
+sealed class Response<out T> {
+    class Success<out T>(val data: T) : Response<T>()
+    data class Error(
+        val exception: Throwable,
+        val code: Int? = null,
+        val error: Boolean? = null,
+        val errorCollection: List<ErrorElement>? = null,
+        val message: String? = null,
+        val method: String? = null,
+        val path: String? = null
+    ) : Response<Nothing>()
+}
 
-enableFeaturePreview("GRADLE_METADATA")
+data class ErrorElement(
+    val message: String,
+    val path: String
+)

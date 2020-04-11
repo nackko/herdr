@@ -16,8 +16,23 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-rootProject.name = 'herdr'
+package com.ludoscity.common.data.repository
 
-include ':app'
+import com.ludoscity.common.base.Response
+import com.ludoscity.common.domain.entity.AuthClientRegistration
+import com.ludoscity.common.domain.usecase.login.RegisterAuthClientUseCaseInput
 
-enableFeaturePreview("GRADLE_METADATA")
+class LoginRepository {
+
+    suspend fun getAuthClientRegistration(input: RegisterAuthClientUseCaseInput): Response<AuthClientRegistration> {
+        //Shall either come from the disk or the networkDataSource
+        return Response.Success(
+            AuthClientRegistration(
+                input.baseUrl,
+                "dummyClientRegistrationToken",
+                "dummyClientId",
+                "dummyClientSecret"
+            )
+        )
+    }
+}

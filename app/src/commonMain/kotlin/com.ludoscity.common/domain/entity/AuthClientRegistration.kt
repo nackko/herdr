@@ -16,8 +16,11 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-rootProject.name = 'herdr'
+package com.ludoscity.common.domain.entity
 
-include ':app'
-
-enableFeaturePreview("GRADLE_METADATA")
+data class AuthClientRegistration(
+    val stackBaseUrl: String,
+    val clientRegistrationToken: String,
+    val clientId: String,
+    val clientSecret: String
+)

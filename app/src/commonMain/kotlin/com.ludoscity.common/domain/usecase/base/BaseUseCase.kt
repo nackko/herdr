@@ -16,8 +16,21 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-rootProject.name = 'herdr'
+package com.ludoscity.common.domain.usecase.base
 
-include ':app'
+import com.ludoscity.common.base.Response
 
-enableFeaturePreview("GRADLE_METADATA")
+abstract class BaseUseCase<R : BaseUseCaseInput, T> {
+
+    protected var input: R? = null
+
+    suspend fun execute(input: R? = null): Response<T> {
+        this.input = input
+
+        val validated = input?.validate() ?: true
+        if (validated) return run()
+        return Response.Error(IllegalArgumentException())
+    }
+
+    abstract suspend fun run(): Response<T>
+}

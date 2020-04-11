@@ -36,12 +36,19 @@
 
 package com.ludoscity.common.ui.login
 
+import com.ludoscity.common.base.Response
 import com.ludoscity.common.di.KodeinInjector
+import com.ludoscity.common.domain.entity.AuthClientRegistration
 import com.ludoscity.common.domain.usecase.login.RegisterAuthClientUseCase
+import com.ludoscity.common.domain.usecase.login.RegisterAuthClientUseCaseInput
+import com.ludoscity.common.utils.launchSilent
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Job
 import org.kodein.di.erased.instance
+import kotlin.coroutines.CoroutineContext
 
 class LoginViewModel : ViewModel() {
 
@@ -51,4 +58,30 @@ class LoginViewModel : ViewModel() {
         get() = _authClientRegistrationResult
 
     private val registerAuthClientUseCase by KodeinInjector.instance<RegisterAuthClientUseCase>()
+
+    // ASYNC - COROUTINES
+    private val coroutineContext by KodeinInjector.instance<CoroutineContext>()
+    private var job: Job = Job()
+    private val exceptionHandler = CoroutineExceptionHandler { _, _ -> }
+
+    fun registerAuthClient(stackBaseUrl: String) = launchSilent(
+        coroutineContext,
+        exceptionHandler, job
+    ) {
+        _authClientRegistrationResult.postValue(InProgressAuthClientRegistration())
+
+        val useCaseInput = RegisterAuthClientUseCaseInput(stackBaseUrl)
+        val response = registerAuthClientUseCase.execute(useCaseInput)
+
+        processRegistrationResponse(response)
+    }
+
+    private fun processRegistrationResponse(response: Response<AuthClientRegistration>) {
+        when (response) {
+            is Response.Success ->
+                _authClientRegistrationResult.postValue(SuccessAuthClientRegistration(response))
+            is Response.Error ->
+                _authClientRegistrationResult.postValue(ErrorAuthClientRegistration(response))
+        }
+    }
 }

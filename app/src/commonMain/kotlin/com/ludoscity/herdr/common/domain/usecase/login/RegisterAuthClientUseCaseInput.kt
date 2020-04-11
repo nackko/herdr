@@ -16,22 +16,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.common.base
+package com.ludoscity.herdr.common.domain.usecase.login
 
-sealed class Response<out T> {
-    class Success<out T>(val data: T) : Response<T>()
-    data class Error(
-        val exception: Throwable,
-        val code: Int? = null,
-        val error: Boolean? = null,
-        val errorCollection: List<ErrorElement>? = null,
-        val message: String? = null,
-        val method: String? = null,
-        val path: String? = null
-    ) : Response<Nothing>()
+import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseInput
+
+class RegisterAuthClientUseCaseInput(val baseUrl: String) :
+    BaseUseCaseInput {
+    override fun validate(): Boolean {
+        //TODO: validate URL
+        return true
+    }
 }
-
-data class ErrorElement(
-    val message: String,
-    val path: String
-)

@@ -16,23 +16,9 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.common.data.repository
+package com.ludoscity.herdr.common
 
-import com.ludoscity.common.base.Response
-import com.ludoscity.common.domain.entity.AuthClientRegistration
-import com.ludoscity.common.domain.usecase.login.RegisterAuthClientUseCaseInput
+import kotlinx.coroutines.Dispatchers
+import kotlin.coroutines.CoroutineContext
 
-class LoginRepository {
-
-    suspend fun getAuthClientRegistration(input: RegisterAuthClientUseCaseInput): Response<AuthClientRegistration> {
-        //Shall either come from the disk or the networkDataSource
-        return Response.Success(
-            AuthClientRegistration(
-                input.baseUrl,
-                "dummyClientRegistrationToken",
-                "dummyClientId",
-                "dummyClientSecret"
-            )
-        )
-    }
-}
+internal actual val ApplicationDispatcher: CoroutineContext = Dispatchers.Default

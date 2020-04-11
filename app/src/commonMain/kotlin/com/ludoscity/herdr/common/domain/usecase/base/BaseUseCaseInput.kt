@@ -34,7 +34,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.common.domain.usecase.base
+package com.ludoscity.herdr.common.domain.usecase.base
 
 interface BaseUseCaseInput {
     fun validate(): Boolean

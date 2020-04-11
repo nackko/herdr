@@ -16,11 +16,21 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.common.domain.entity
+package com.ludoscity.herdr.common.domain.usecase.base
 
-data class AuthClientRegistration(
-    val stackBaseUrl: String,
-    val clientRegistrationToken: String,
-    val clientId: String,
-    val clientSecret: String
-)
+import com.ludoscity.herdr.common.base.Response
+
+abstract class BaseUseCase<R : BaseUseCaseInput, T> {
+
+    protected var input: R? = null
+
+    suspend fun execute(input: R? = null): Response<T> {
+        this.input = input
+
+        val validated = input?.validate() ?: true
+        if (validated) return run()
+        return Response.Error(IllegalArgumentException())
+    }
+
+    abstract suspend fun run(): Response<T>
+}

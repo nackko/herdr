@@ -22,9 +22,9 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
-import com.ludoscity.common.base.Response
-import com.ludoscity.common.domain.entity.AuthClientRegistration
-import com.ludoscity.common.ui.login.*
+import com.ludoscity.herdr.common.base.Response
+import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
+import com.ludoscity.herdr.common.ui.login.*
 import kotlinx.android.synthetic.main.activity_herdr.*
 import sample.R
 import sample.hello

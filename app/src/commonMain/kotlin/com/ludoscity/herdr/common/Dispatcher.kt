@@ -34,13 +34,9 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.common.domain.usecase.login
+package com.ludoscity.herdr.common
 
-import com.ludoscity.common.domain.usecase.base.BaseUseCaseInput
+import kotlin.coroutines.CoroutineContext
 
-class RegisterAuthClientUseCaseInput(val baseUrl: String) : BaseUseCaseInput {
-    override fun validate(): Boolean {
-        //TODO: validate URL
-        return true
-    }
-}
+
+internal expect val ApplicationDispatcher: CoroutineContext

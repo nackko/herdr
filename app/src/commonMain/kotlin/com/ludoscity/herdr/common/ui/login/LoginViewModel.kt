@@ -16,32 +16,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*
- *     Copyright (c) 2020. f8full https://github.com/f8full
- *     Herdr is a privacy conscious multiplatform mobile data collector
- *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Lesser General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
- *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Lesser General Public License for more details.
- *
- *     You should have received a copy of the GNU Lesser General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+package com.ludoscity.herdr.common.ui.login
 
-package com.ludoscity.common.ui.login
-
-import com.ludoscity.common.base.Response
-import com.ludoscity.common.di.KodeinInjector
-import com.ludoscity.common.domain.entity.AuthClientRegistration
-import com.ludoscity.common.domain.usecase.login.RegisterAuthClientUseCase
-import com.ludoscity.common.domain.usecase.login.RegisterAuthClientUseCaseInput
-import com.ludoscity.common.utils.launchSilent
+import com.ludoscity.herdr.common.base.Response
+import com.ludoscity.herdr.common.di.KodeinInjector
+import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
+import com.ludoscity.herdr.common.domain.usecase.login.RegisterAuthClientUseCase
+import com.ludoscity.herdr.common.domain.usecase.login.RegisterAuthClientUseCaseInput
+import com.ludoscity.herdr.common.utils.launchSilent
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
@@ -53,7 +35,9 @@ import kotlin.coroutines.CoroutineContext
 class LoginViewModel : ViewModel() {
 
     private val _authClientRegistrationResult =
-        MutableLiveData<AuthClientRegistrationState>(InProgressAuthClientRegistration())
+        MutableLiveData<AuthClientRegistrationState>(
+            InProgressAuthClientRegistration()
+        )
     val authClientRegistrationResult: LiveData<AuthClientRegistrationState>
         get() = _authClientRegistrationResult
 
@@ -70,7 +54,10 @@ class LoginViewModel : ViewModel() {
     ) {
         _authClientRegistrationResult.postValue(InProgressAuthClientRegistration())
 
-        val useCaseInput = RegisterAuthClientUseCaseInput(stackBaseUrl)
+        val useCaseInput =
+            RegisterAuthClientUseCaseInput(
+                stackBaseUrl
+            )
         val response = registerAuthClientUseCase.execute(useCaseInput)
 
         processRegistrationResponse(response)
@@ -79,9 +66,17 @@ class LoginViewModel : ViewModel() {
     private fun processRegistrationResponse(response: Response<AuthClientRegistration>) {
         when (response) {
             is Response.Success ->
-                _authClientRegistrationResult.postValue(SuccessAuthClientRegistration(response))
+                _authClientRegistrationResult.postValue(
+                    SuccessAuthClientRegistration(
+                        response
+                    )
+                )
             is Response.Error ->
-                _authClientRegistrationResult.postValue(ErrorAuthClientRegistration(response))
+                _authClientRegistrationResult.postValue(
+                    ErrorAuthClientRegistration(
+                        response
+                    )
+                )
         }
     }
 }

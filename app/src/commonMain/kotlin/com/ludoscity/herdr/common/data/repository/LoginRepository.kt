@@ -16,21 +16,23 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.common.domain.usecase.base
+package com.ludoscity.herdr.common.data.repository
 
-import com.ludoscity.common.base.Response
+import com.ludoscity.herdr.common.base.Response
+import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
+import com.ludoscity.herdr.common.domain.usecase.login.RegisterAuthClientUseCaseInput
 
-abstract class BaseUseCase<R : BaseUseCaseInput, T> {
+class LoginRepository {
 
-    protected var input: R? = null
-
-    suspend fun execute(input: R? = null): Response<T> {
-        this.input = input
-
-        val validated = input?.validate() ?: true
-        if (validated) return run()
-        return Response.Error(IllegalArgumentException())
+    suspend fun getAuthClientRegistration(input: RegisterAuthClientUseCaseInput): Response<AuthClientRegistration> {
+        //Shall either come from the disk or the networkDataSource
+        return Response.Success(
+            AuthClientRegistration(
+                input.baseUrl,
+                "dummyClientRegistrationToken",
+                "dummyClientId",
+                "dummyClientSecret"
+            )
+        )
     }
-
-    abstract suspend fun run(): Response<T>
 }

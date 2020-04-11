@@ -16,9 +16,11 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.common
+package com.ludoscity.herdr.common.domain.entity
 
-import kotlinx.coroutines.Dispatchers
-import kotlin.coroutines.CoroutineContext
-
-internal actual val ApplicationDispatcher: CoroutineContext = Dispatchers.Default
+data class AuthClientRegistration(
+    val stackBaseUrl: String,
+    val clientRegistrationToken: String,
+    val clientId: String,
+    val clientSecret: String
+)

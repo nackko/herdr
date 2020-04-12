@@ -19,7 +19,6 @@
 package com.ludoscity.herdr
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.ludoscity.herdr.common.base.Response
@@ -42,7 +41,8 @@ class HerdrActivity : AppCompatActivity() {
         activity_herdr_tv.text = hello()
 
         activity_herdr_button.setOnClickListener {
-            loginViewModel.registerAuthClient(hello())
+            //loginViewModel.registerAuthClient(hello())
+            loginViewModel.registerAuthClient("https://f8full.mycozy.cloud")
         }
 
         //init viewmodel
@@ -76,6 +76,7 @@ class HerdrActivity : AppCompatActivity() {
     }
 
     private fun showError(message: String?) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        activity_herdr_tv.text = message
+        //Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

@@ -18,9 +18,12 @@
 
 package com.ludoscity.herdr.common.ui.login
 
+import com.ludoscity.herdr.common.domain.entity.UserCredentials
 import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.di.KodeinInjector
 import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
+import com.ludoscity.herdr.common.domain.usecase.login.ExchangeCodeForAccessAndRefreshTokenUseCase
+import com.ludoscity.herdr.common.domain.usecase.login.ExchangeCodeForAccessAndRefreshTokenUseCaseInput
 import com.ludoscity.herdr.common.domain.usecase.login.RegisterAuthClientUseCase
 import com.ludoscity.herdr.common.domain.usecase.login.RegisterAuthClientUseCaseInput
 import com.ludoscity.herdr.common.utils.launchSilent
@@ -42,6 +45,16 @@ class LoginViewModel : ViewModel() {
         get() = _authClientRegistrationResult
 
     private val registerAuthClientUseCase by KodeinInjector.instance<RegisterAuthClientUseCase>()
+
+    private val _userCredentials =
+            MutableLiveData<UserCredentialsState>(
+                    InProgressUserCredentials()
+            )
+    val userCredentialsResult: LiveData<UserCredentialsState>
+        get() = _userCredentials
+
+    private val exchangeCodeForAccessAndRefreshTokenUseCase
+            by KodeinInjector.instance<ExchangeCodeForAccessAndRefreshTokenUseCase>()
 
     // ASYNC - COROUTINES
     private val coroutineContext by KodeinInjector.instance<CoroutineContext>()
@@ -78,5 +91,30 @@ class LoginViewModel : ViewModel() {
                     )
                 )
         }
+    }
+
+    fun exchangeCodeForAccessAndRefreshToken(authCode: String) = launchSilent(
+        coroutineContext,
+        exceptionHandler, job
+    ) {
+        _userCredentials.postValue(InProgressUserCredentials())
+
+        val useCaseInput = ExchangeCodeForAccessAndRefreshTokenUseCaseInput(authCode)
+        val response = exchangeCodeForAccessAndRefreshTokenUseCase.execute(useCaseInput)
+
+        processCodeExchangeResponse(response)
+    }
+
+    private fun processCodeExchangeResponse(response: Response<UserCredentials>) {
+        when (response) {
+            is Response.Success ->
+                _userCredentials.postValue(SuccessUserCredentials(response))
+            is Response.Error ->
+                _userCredentials.postValue(ErrorUserCredentials(response))
+        }
+    }
+
+    fun setErrorUserCredentials(e: Throwable) {
+        _userCredentials.postValue(ErrorUserCredentials(Response.Error(e)))
     }
 }

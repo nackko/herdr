@@ -16,41 +16,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-buildscript {
-    repositories {
-        google()
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
-    }
-}
-repositories {
-    google()
-    jcenter()
-}
+package com.ludoscity.herdr.common.domain.usecase.login
 
-allprojects {
-    repositories {
-        maven { url = "https://dl.bintray.com/icerockdev/moko" }
-        maven { url = "https://dl.bintray.com/kodein-framework/Kodein-DI" }
+import com.ludoscity.herdr.common.domain.entity.UserCredentials
+import com.ludoscity.herdr.common.base.Response
+import com.ludoscity.herdr.common.data.repository.LoginRepository
+import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCase
+
+class ExchangeCodeForAccessAndRefreshTokenUseCase(val repo: LoginRepository) :
+    BaseUseCase<ExchangeCodeForAccessAndRefreshTokenUseCaseInput,
+            UserCredentials>() {
+    override suspend fun run(): Response<UserCredentials> {
+        return repo.getUserCredentials(this.input!!)
     }
-}
-
-ext {
-    androidxLifecycleVersion = "2.0.0"
-    appCompatVersion = "1.1.0"
-    constraintLayoutVersion = "1.1.3"
-    coroutineVersion = "1.3.5"
-    kodeinVersion = "6.5.3"
-    ktorVersion = "1.3.2"
-    mokoMvvmVersion = "0.6.0"
-    serializerVersion = "0.20.0"
-    nimbusOauthSdkVersion = "6.13"
-    androidXBrowserVersion = "1.2.0"
-    materialDesignVersion = "1.1.0"
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
 }

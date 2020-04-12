@@ -18,21 +18,49 @@
 
 package com.ludoscity.herdr.common.data.repository
 
+import com.ludoscity.herdr.common.domain.entity.UserCredentials
 import com.ludoscity.herdr.common.base.Response
+import com.ludoscity.herdr.common.data.network.INetworkDataPipe
 import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
+import com.ludoscity.herdr.common.domain.usecase.login.ExchangeCodeForAccessAndRefreshTokenUseCaseInput
 import com.ludoscity.herdr.common.domain.usecase.login.RegisterAuthClientUseCaseInput
 
-class LoginRepository {
+class LoginRepository(private val networkDataPipe: INetworkDataPipe) {
+
+    //memory cache
+    private var authClientRegistration: AuthClientRegistration? = null
+    private var userCredentials: UserCredentials? = null
 
     suspend fun getAuthClientRegistration(input: RegisterAuthClientUseCaseInput): Response<AuthClientRegistration> {
-        //Shall either come from the disk or the networkDataSource
-        return Response.Success(
-            AuthClientRegistration(
-                input.baseUrl,
-                "dummyClientRegistrationToken",
-                "dummyClientId",
-                "dummyClientSecret"
-            )
-        )
+        //Shall either come from memory, disk or networkDataPipe
+
+        return if (authClientRegistration == null) {
+            val networkReply = networkDataPipe.registerAuthClient(input.baseUrl)
+
+            if (networkReply is Response.Success) {
+                authClientRegistration = networkReply.data
+            }
+
+            networkReply
+        } else {
+            Response.Success(authClientRegistration!!)
+        }
+
+    }
+
+    suspend fun getUserCredentials(input: ExchangeCodeForAccessAndRefreshTokenUseCaseInput)
+            : Response<UserCredentials> {
+
+        return if (userCredentials == null) {
+            val networkReply = networkDataPipe.exchangeCodeForAccessAndRefreshToken(input.authCode, authClientRegistration!!)
+
+            if (networkReply is Response.Success) {
+                userCredentials = networkReply.data
+            }
+
+            networkReply
+        } else {
+            Response.Success(userCredentials!!)
+        }
     }
 }

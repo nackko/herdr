@@ -19,20 +19,15 @@
 package com.ludoscity.herdr.common.data.repository
 
 import com.ludoscity.herdr.common.base.Response
+import com.ludoscity.herdr.common.data.network.INetworkDataPipe
 import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
 import com.ludoscity.herdr.common.domain.usecase.login.RegisterAuthClientUseCaseInput
 
-class LoginRepository {
+class LoginRepository(private val networkDataPipe: INetworkDataPipe) {
+
 
     suspend fun getAuthClientRegistration(input: RegisterAuthClientUseCaseInput): Response<AuthClientRegistration> {
-        //Shall either come from the disk or the networkDataSource
-        return Response.Success(
-            AuthClientRegistration(
-                input.baseUrl,
-                "dummyClientRegistrationToken",
-                "dummyClientId",
-                "dummyClientSecret"
-            )
-        )
+        //Shall either come from memory, disk or networkDataPipe
+        return networkDataPipe.registerAuthClient(input.baseUrl)
     }
 }

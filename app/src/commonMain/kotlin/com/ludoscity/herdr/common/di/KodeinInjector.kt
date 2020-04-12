@@ -19,6 +19,9 @@
 package com.ludoscity.herdr.common.di
 
 import com.ludoscity.herdr.common.ApplicationDispatcher
+import com.ludoscity.herdr.common.data.network.INetworkDataPipe
+import com.ludoscity.herdr.common.data.network.cozy.CozyCloupApi
+import com.ludoscity.herdr.common.data.network.cozy.CozyDataPipe
 import com.ludoscity.herdr.common.data.repository.LoginRepository
 import com.ludoscity.herdr.common.domain.usecase.login.RegisterAuthClientUseCase
 import org.kodein.di.Kodein
@@ -32,13 +35,22 @@ import kotlin.native.concurrent.ThreadLocal
 @ThreadLocal
 val KodeinInjector = Kodein {
 
+    //coroutine
     bind<CoroutineContext>() with provider { ApplicationDispatcher }
 
+    //use case
     bind<RegisterAuthClientUseCase>() with singleton {
         RegisterAuthClientUseCase(
             instance()
         )
     }
 
-    bind<LoginRepository>() with provider { LoginRepository() }
+    //repo
+    bind<LoginRepository>() with provider { LoginRepository(instance()) }
+
+    //data pipe
+    bind<INetworkDataPipe>() with provider { CozyDataPipe(instance()) }
+
+    //api
+    bind<CozyCloupApi>() with provider { CozyCloupApi() }
 }

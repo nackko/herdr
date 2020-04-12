@@ -25,7 +25,6 @@ import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
 import com.ludoscity.herdr.common.ui.login.*
 import kotlinx.android.synthetic.main.activity_herdr.*
-import sample.R
 import sample.hello
 
 class HerdrActivity : AppCompatActivity() {

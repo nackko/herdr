@@ -21,6 +21,7 @@ package sample
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import com.ludoscity.herdr.R
 
 actual class Sample {
     actual fun checkMe() = 44

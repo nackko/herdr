@@ -18,21 +18,17 @@
 
 package com.ludoscity.herdr.common.data.network.cozy
 
-import com.ludoscity.herdr.common.domain.entity.UserCredentials
-import com.ludoscity.herdr.common.base.Response
-import com.ludoscity.herdr.common.data.network.INetworkDataPipe
-import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-class CozyDataPipe(private val cozyCloupApi: CozyCloupApi) : INetworkDataPipe() {
-
-    override suspend fun registerAuthClient(stackBase: String): Response<AuthClientRegistration> {
-        return cozyCloupApi.getOauthClientRegistration(stackBase)
-    }
-
-    override suspend fun exchangeCodeForAccessAndRefreshToken(
-        authCode: String,
-        authRegistrationInfo: AuthClientRegistration
-    ): Response<UserCredentials> {
-        return cozyCloupApi.exchangeCodeForAccessAndRefreshToken(authCode, authRegistrationInfo)
-    }
-}
+@Serializable
+data class TokenExchangeSuccessReply(
+    @SerialName("access_token")
+    val accessToken: String,
+    @SerialName("token_type")
+    val tokenType: String,
+    @SerialName("refresh_token")
+    val refreshToken: String,
+    @SerialName("scope")
+    val scope: String
+)

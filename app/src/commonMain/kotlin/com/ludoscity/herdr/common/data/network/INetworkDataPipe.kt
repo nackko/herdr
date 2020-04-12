@@ -18,9 +18,14 @@
 
 package com.ludoscity.herdr.common.data.network
 
+import com.ludoscity.herdr.common.domain.entity.UserCredentials
 import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
 
 abstract class INetworkDataPipe {
     abstract suspend fun registerAuthClient(stackBase: String): Response<AuthClientRegistration>
+    abstract suspend fun exchangeCodeForAccessAndRefreshToken(
+        authCode: String,
+        authRegistrationInfo: AuthClientRegistration
+    ): Response<UserCredentials>
 }

@@ -23,6 +23,7 @@ import com.ludoscity.herdr.common.data.network.INetworkDataPipe
 import com.ludoscity.herdr.common.data.network.cozy.CozyCloupApi
 import com.ludoscity.herdr.common.data.network.cozy.CozyDataPipe
 import com.ludoscity.herdr.common.data.repository.LoginRepository
+import com.ludoscity.herdr.common.domain.usecase.login.ExchangeCodeForAccessAndRefreshTokenUseCase
 import com.ludoscity.herdr.common.domain.usecase.login.RegisterAuthClientUseCase
 import org.kodein.di.Kodein
 import org.kodein.di.erased.bind
@@ -44,9 +45,14 @@ val KodeinInjector = Kodein {
             instance()
         )
     }
+    bind<ExchangeCodeForAccessAndRefreshTokenUseCase>() with singleton {
+        ExchangeCodeForAccessAndRefreshTokenUseCase(
+            instance()
+        )
+    }
 
     //repo
-    bind<LoginRepository>() with provider { LoginRepository(instance()) }
+    bind<LoginRepository>() with singleton { LoginRepository(instance()) }
 
     //data pipe
     bind<INetworkDataPipe>() with provider { CozyDataPipe(instance()) }

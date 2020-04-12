@@ -105,6 +105,15 @@ kotlin {
                 implementation fileTree(dir: 'libs', include: ['*.jar'])
                 implementation "androidx.appcompat:appcompat:$appCompatVersion"
                 implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
+
+                // https://mvnrepository.com/artifact/com.nimbusds/oauth2-oidc-sdk
+                implementation "com.nimbusds:oauth2-oidc-sdk:$nimbusOauthSdkVersion"
+                // CustomTab
+                implementation "androidx.browser:browser:$androidXBrowserVersion"
+                // SnackBar
+                implementation "com.google.android.material:material:$materialDesignVersion"
+
+
                 // COROUTINES
                 implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion"
 

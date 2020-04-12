@@ -16,23 +16,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.herdr.common.data.network.cozy
+package com.ludoscity.herdr.common.domain.usecase.login
 
 import com.ludoscity.herdr.common.domain.entity.UserCredentials
 import com.ludoscity.herdr.common.base.Response
-import com.ludoscity.herdr.common.data.network.INetworkDataPipe
-import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
+import com.ludoscity.herdr.common.data.repository.LoginRepository
+import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCase
 
-class CozyDataPipe(private val cozyCloupApi: CozyCloupApi) : INetworkDataPipe() {
-
-    override suspend fun registerAuthClient(stackBase: String): Response<AuthClientRegistration> {
-        return cozyCloupApi.getOauthClientRegistration(stackBase)
-    }
-
-    override suspend fun exchangeCodeForAccessAndRefreshToken(
-        authCode: String,
-        authRegistrationInfo: AuthClientRegistration
-    ): Response<UserCredentials> {
-        return cozyCloupApi.exchangeCodeForAccessAndRefreshToken(authCode, authRegistrationInfo)
+class ExchangeCodeForAccessAndRefreshTokenUseCase(val repo: LoginRepository) :
+    BaseUseCase<ExchangeCodeForAccessAndRefreshTokenUseCaseInput,
+            UserCredentials>() {
+    override suspend fun run(): Response<UserCredentials> {
+        return repo.getUserCredentials(this.input!!)
     }
 }

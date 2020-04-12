@@ -20,6 +20,7 @@ package com.ludoscity.herdr.common.domain.entity
 
 data class AuthClientRegistration(
     val stackBaseUrl: String,
+    val redirectUriCollection: List<String>,
     val clientRegistrationToken: String,
     val clientId: String,
     val clientSecret: String

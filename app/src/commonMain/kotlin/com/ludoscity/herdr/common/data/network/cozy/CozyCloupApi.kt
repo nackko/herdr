@@ -18,10 +18,12 @@
 
 package com.ludoscity.herdr.common.data.network.cozy
 
+import com.ludoscity.herdr.common.domain.entity.UserCredentials
 import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
 import io.ktor.client.HttpClient
 import io.ktor.client.request.header
+import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
@@ -60,11 +62,45 @@ class CozyCloupApi {
             return Response.Success(
                 AuthClientRegistration(
                     stackBase,
+                    parsedReply.redirectUris,
                     parsedReply.registrationAccessToken,
                     parsedReply.clientId,
                     parsedReply.clientSecret
                 )
             )
+        } catch (e: Exception) {
+            return Response.Error(exception = e, message = e.message)
+        }
+    }
+
+    suspend fun exchangeCodeForAccessAndRefreshToken(
+        authCode: String,
+        authRegistrationInfo: AuthClientRegistration
+    ): Response<UserCredentials> {
+
+        try {
+            //https://docs.cozy.io/en/cozy-stack/auth/#post-authaccess_token
+            val jsonServerReply =
+                httpClient.post<String>("${authRegistrationInfo.stackBaseUrl}/auth/access_token") {
+
+                    header("Accept", "application/json")
+                    //header("Content-Type", "application/x-www-form-urlencoded")
+
+                    parameter("grant_type", "authorization_code")
+                    parameter("code", authCode)
+                    parameter("client_id", authRegistrationInfo.clientId)
+                    parameter("client_secret", authRegistrationInfo.clientSecret)
+
+            }
+
+            val parsedReply = Json(JsonConfiguration.Stable.copy(ignoreUnknownKeys = true))
+                .parse(TokenExchangeSuccessReply.serializer(), jsonServerReply)
+
+            return Response.Success(UserCredentials(
+                parsedReply.accessToken,
+                parsedReply.refreshToken
+            ))
+
         } catch (e: Exception) {
             return Response.Error(exception = e, message = e.message)
         }

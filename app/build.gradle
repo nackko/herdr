@@ -89,7 +89,6 @@ kotlin {
 
                 // KTOR
                 implementation "io.ktor:ktor-client-core:$ktorVersion"
-                implementation("io.ktor:ktor-client-auth:$ktorVersion")
             }
         }
         commonTest {

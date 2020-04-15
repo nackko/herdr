@@ -19,13 +19,44 @@ import UIKit
 import app
 
 class ViewController: UIViewController {
+    @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var label: UILabel!
+    
+    private var loginViewModel: LoginViewModel!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        label.text = Proxy().proxyHello()
+        //label.text = Proxy().proxyHello()
+        configView()
+        initViewModel()
+    }
+    
+    func configView() {
+        loginButton.addTarget(self, action: #selector(didButtonClick), for: .touchUpInside)
+    }
+    
+    func initViewModel() {
+        loginViewModel = LoginViewModel()
+        observeLoginViewModel()
+    }
+    
+    // OBSERVER
+    func observeLoginViewModel() {
+        loginViewModel.authClientRegistrationResult.addObserver{ registrationState in
+            if(registrationState is SuccessAuthClientRegistration) {
+                let successState = registrationState as! SuccessAuthClientRegistration
+                let response = (successState.response as! Response.Success)
+                self.label.text = (response.data as! AuthClientRegistration).clientRegistrationToken
+            }
+        }
+    }
+    
+    @objc func didButtonClick(_ sender: UIButton) {
+        loginViewModel.registerAuthClient(stackBaseUrl: "https://f8full.mycozy.cloud")
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+    deinit {
+        loginViewModel.onCleared()
     }
-    @IBOutlet weak var label: UILabel!
 }

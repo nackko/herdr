@@ -17,6 +17,125 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		1E110A5F2446C117007D7E4A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E110A4C2446C116007D7E4A /* AppAuth.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 340E737C1C5D819B0076B1F6;
+			remoteInfo = "AppAuth-iOS";
+		};
+		1E110A612446C117007D7E4A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E110A4C2446C116007D7E4A /* AppAuth.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 341741F01C5D8283000EF209;
+			remoteInfo = "AppAuth-iOSTests";
+		};
+		1E110A632446C117007D7E4A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E110A4C2446C116007D7E4A /* AppAuth.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 340DAE4E1D58216A00EC285B;
+			remoteInfo = "AppAuth-macOS";
+		};
+		1E110A652446C117007D7E4A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E110A4C2446C116007D7E4A /* AppAuth.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 341AA4CE1E7F392C00FCA5C6;
+			remoteInfo = "AppAuth-macOSTests";
+		};
+		1E110A672446C117007D7E4A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E110A4C2446C116007D7E4A /* AppAuth.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 341E707E1DE18744004353C1;
+			remoteInfo = "AppAuth-tvOS";
+		};
+		1E110A692446C117007D7E4A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E110A4C2446C116007D7E4A /* AppAuth.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 341AA4ED1E7F39F100FCA5C6;
+			remoteInfo = "AppAuth-tvOSTests";
+		};
+		1E110A6B2446C117007D7E4A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E110A4C2446C116007D7E4A /* AppAuth.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 347423F61E7F4B5600D3E6D6;
+			remoteInfo = "AppAuth-watchOS";
+		};
+		1E110A6D2446C117007D7E4A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E110A4C2446C116007D7E4A /* AppAuth.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 343AAA541E83463400F9D36E;
+			remoteInfo = AppAuth_iOS;
+		};
+		1E110A6F2446C117007D7E4A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E110A4C2446C116007D7E4A /* AppAuth.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 343AAA5C1E83463400F9D36E;
+			remoteInfo = AppAuth_iOSTests;
+		};
+		1E110A712446C117007D7E4A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E110A4C2446C116007D7E4A /* AppAuth.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 343AAA991E83487200F9D36E;
+			remoteInfo = AppAuth_watchOS;
+		};
+		1E110A732446C117007D7E4A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E110A4C2446C116007D7E4A /* AppAuth.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 343AAAA61E83489A00F9D36E;
+			remoteInfo = AppAuth_tvOS;
+		};
+		1E110A752446C117007D7E4A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E110A4C2446C116007D7E4A /* AppAuth.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 343AAAAE1E83489A00F9D36E;
+			remoteInfo = AppAuth_tvOSTests;
+		};
+		1E110A772446C117007D7E4A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E110A4C2446C116007D7E4A /* AppAuth.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 343AAAC21E8348A900F9D36E;
+			remoteInfo = AppAuth_macOS;
+		};
+		1E110A792446C117007D7E4A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E110A4C2446C116007D7E4A /* AppAuth.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 343AAACA1E8348AA00F9D36E;
+			remoteInfo = AppAuth_macOSTests;
+		};
+		1E110A7B2446C117007D7E4A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E110A4C2446C116007D7E4A /* AppAuth.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 342F42C32177B1FC00574F24;
+			remoteInfo = AppAuthCore;
+		};
+		1E110A7D2446C117007D7E4A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E110A4C2446C116007D7E4A /* AppAuth.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 348970972177B3B000ABEED4;
+			remoteInfo = AppAuthCoreTests;
+		};
+		1E110A822446C954007D7E4A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E110A4C2446C116007D7E4A /* AppAuth.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 343AAA531E83463400F9D36E;
+			remoteInfo = AppAuth_iOS;
+		};
 		F861D7F2207FA4100085E80D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F861D7D5207FA40F0085E80D /* Project object */;
@@ -48,6 +167,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1E110A4C2446C116007D7E4A /* AppAuth.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AppAuth.xcodeproj; path = "../../../AppAuth-iOS/AppAuth.xcodeproj"; sourceTree = "<group>"; };
 		F861D7DD207FA40F0085E80D /* iosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F861D7E0207FA40F0085E80D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F861D7E2207FA40F0085E80D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -80,6 +200,36 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1E110A4D2446C116007D7E4A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1E110A602446C117007D7E4A /* libAppAuth-iOS.a */,
+				1E110A622446C117007D7E4A /* AppAuth-iOSTests.xctest */,
+				1E110A642446C117007D7E4A /* libAppAuth-macOS.a */,
+				1E110A662446C117007D7E4A /* AppAuth-macOSTests.xctest */,
+				1E110A682446C117007D7E4A /* libAppAuth-tvOS.a */,
+				1E110A6A2446C117007D7E4A /* AppAuth-tvOSTests.xctest */,
+				1E110A6C2446C117007D7E4A /* libAppAuth-watchOS.a */,
+				1E110A6E2446C117007D7E4A /* AppAuth.framework */,
+				1E110A702446C117007D7E4A /* AppAuth_iOSTests.xctest */,
+				1E110A722446C117007D7E4A /* AppAuth.framework */,
+				1E110A742446C117007D7E4A /* AppAuth.framework */,
+				1E110A762446C117007D7E4A /* AppAuth_tvOSTests.xctest */,
+				1E110A782446C117007D7E4A /* AppAuth.framework */,
+				1E110A7A2446C117007D7E4A /* AppAuth_macOSTests.xctest */,
+				1E110A7C2446C117007D7E4A /* AppAuthCore.framework */,
+				1E110A7E2446C117007D7E4A /* AppAuthCoreTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1E110A7F2446C1E9007D7E4A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		F861D7D4207FA40F0085E80D = {
 			isa = PBXGroup;
 			children = (
@@ -87,6 +237,7 @@
 				F861D7DF207FA40F0085E80D /* iosApp */,
 				F861D7F4207FA4100085E80D /* iosAppTests */,
 				F861D7DE207FA40F0085E80D /* Products */,
+				1E110A7F2446C1E9007D7E4A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -105,6 +256,7 @@
 			children = (
 				F861D7E0207FA40F0085E80D /* AppDelegate.swift */,
 				F861D7E2207FA40F0085E80D /* ViewController.swift */,
+				1E110A4C2446C116007D7E4A /* AppAuth.xcodeproj */,
 				F861D7E4207FA40F0085E80D /* Main.storyboard */,
 				F861D7E9207FA4100085E80D /* LaunchScreen.storyboard */,
 				F861D7EC207FA4100085E80D /* Info.plist */,
@@ -136,6 +288,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				1E110A832446C954007D7E4A /* PBXTargetDependency */,
 				F861D80B207FA4200085E80D /* PBXTargetDependency */,
 			);
 			name = iosApp;
@@ -208,6 +361,12 @@
 			mainGroup = F861D7D4207FA40F0085E80D;
 			productRefGroup = F861D7DE207FA40F0085E80D /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 1E110A4D2446C116007D7E4A /* Products */;
+					ProjectRef = 1E110A4C2446C116007D7E4A /* AppAuth.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				F861D7DC207FA40F0085E80D /* iosApp */,
@@ -216,6 +375,121 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		1E110A602446C117007D7E4A /* libAppAuth-iOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libAppAuth-iOS.a";
+			remoteRef = 1E110A5F2446C117007D7E4A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E110A622446C117007D7E4A /* AppAuth-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "AppAuth-iOSTests.xctest";
+			remoteRef = 1E110A612446C117007D7E4A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E110A642446C117007D7E4A /* libAppAuth-macOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libAppAuth-macOS.a";
+			remoteRef = 1E110A632446C117007D7E4A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E110A662446C117007D7E4A /* AppAuth-macOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "AppAuth-macOSTests.xctest";
+			remoteRef = 1E110A652446C117007D7E4A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E110A682446C117007D7E4A /* libAppAuth-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libAppAuth-tvOS.a";
+			remoteRef = 1E110A672446C117007D7E4A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E110A6A2446C117007D7E4A /* AppAuth-tvOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "AppAuth-tvOSTests.xctest";
+			remoteRef = 1E110A692446C117007D7E4A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E110A6C2446C117007D7E4A /* libAppAuth-watchOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libAppAuth-watchOS.a";
+			remoteRef = 1E110A6B2446C117007D7E4A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E110A6E2446C117007D7E4A /* AppAuth.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AppAuth.framework;
+			remoteRef = 1E110A6D2446C117007D7E4A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E110A702446C117007D7E4A /* AppAuth_iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = AppAuth_iOSTests.xctest;
+			remoteRef = 1E110A6F2446C117007D7E4A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E110A722446C117007D7E4A /* AppAuth.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AppAuth.framework;
+			remoteRef = 1E110A712446C117007D7E4A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E110A742446C117007D7E4A /* AppAuth.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AppAuth.framework;
+			remoteRef = 1E110A732446C117007D7E4A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E110A762446C117007D7E4A /* AppAuth_tvOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = AppAuth_tvOSTests.xctest;
+			remoteRef = 1E110A752446C117007D7E4A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E110A782446C117007D7E4A /* AppAuth.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AppAuth.framework;
+			remoteRef = 1E110A772446C117007D7E4A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E110A7A2446C117007D7E4A /* AppAuth_macOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = AppAuth_macOSTests.xctest;
+			remoteRef = 1E110A792446C117007D7E4A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E110A7C2446C117007D7E4A /* AppAuthCore.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AppAuthCore.framework;
+			remoteRef = 1E110A7B2446C117007D7E4A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E110A7E2446C117007D7E4A /* AppAuthCoreTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = AppAuthCoreTests.xctest;
+			remoteRef = 1E110A7D2446C117007D7E4A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		F861D7DB207FA40F0085E80D /* Resources */ = {
@@ -273,6 +547,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		1E110A832446C954007D7E4A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = AppAuth_iOS;
+			targetProxy = 1E110A822446C954007D7E4A /* PBXContainerItemProxy */;
+		};
 		F861D7F3207FA4100085E80D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = F861D7DC207FA40F0085E80D /* iosApp */;
@@ -429,6 +708,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				ENABLE_BITCODE = NO;
+				"HEADER_SEARCH_PATHS[arch=*]" = "AppAuth-iOS/Source";
 				INFOPLIST_FILE = iosApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -449,6 +729,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				ENABLE_BITCODE = NO;
+				"HEADER_SEARCH_PATHS[arch=*]" = "AppAuth-iOS/Source";
 				INFOPLIST_FILE = iosApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

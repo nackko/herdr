@@ -20,6 +20,9 @@ android {
         versionCode 1
         versionName '1.0'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        manifestPlaceholders = [
+                'appAuthRedirectScheme': 'com.ludoscity.herdr'
+        ]
     }
     buildTypes {
         release {
@@ -105,13 +108,8 @@ kotlin {
                 implementation "androidx.appcompat:appcompat:$appCompatVersion"
                 implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
 
-                // https://mvnrepository.com/artifact/com.nimbusds/oauth2-oidc-sdk
-                implementation "com.nimbusds:oauth2-oidc-sdk:$nimbusOauthSdkVersion"
-                // CustomTab
-                implementation "androidx.browser:browser:$androidXBrowserVersion"
-                // SnackBar
-                implementation "com.google.android.material:material:$materialDesignVersion"
-
+                //https://github.com/openid/AppAuth-Android
+                implementation "net.openid:appauth:$appAuthVersion"
 
                 // COROUTINES
                 implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion"
@@ -143,8 +141,6 @@ kotlin {
 
             //KTOR
             implementation("io.ktor:ktor-client-ios:$ktorVersion")
-
-
         }
         iosTest {
         }

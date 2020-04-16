@@ -24,7 +24,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class RegistrationRequestBody(
     @SerialName("redirect_uris")
-    val redirectUris: List<String> = listOf("herdr://com.ludoscity.herdr.oauth2redirect"),
+    val redirectUris: List<String> = listOf("com.ludoscity.herdr:/oauth2redirect"),
     @SerialName("client_name")
     val clientName: String = "herdr",
     @SerialName("software_id")

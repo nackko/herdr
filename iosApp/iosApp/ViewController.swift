@@ -16,16 +16,96 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import UIKit
+import AppAuth
 import app
 
 class ViewController: UIViewController {
+    @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var label: UILabel!
+    
+    private var loginViewModel: LoginViewModel!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        label.text = Proxy().proxyHello()
+        //label.text = Proxy().proxyHello()
+        configView()
+        initViewModel()
+    }
+    
+    func configView() {
+        loginButton.addTarget(self, action: #selector(didButtonClick), for: .touchUpInside)
+    }
+    
+    func initViewModel() {
+        loginViewModel = LoginViewModel()
+        observeLoginViewModel()
+    }
+    
+    // OBSERVER
+    func observeLoginViewModel() {
+        loginViewModel.authClientRegistrationResult.addObserver{ registrationState in
+            if(registrationState is SuccessAuthClientRegistration) {
+                let successState = registrationState as! SuccessAuthClientRegistration
+                let response = (successState.response as! Response.Success)
+                self.onClientRegistrationSuccess(authClientRegistration: response.data as! AuthClientRegistration)
+            }
+        }
+        
+        loginViewModel.userCredentialsResult.addObserver{ userCredentialsState in
+            if(userCredentialsState is SuccessUserCredentials) {
+                let successState = userCredentialsState as! SuccessUserCredentials
+                let response = (successState.response as! Response.Success)
+                self.onUserCredentialsSuccess(userCredentials: response.data as! UserCredentials)
+            }
+        }
+    }
+    
+    func onUserCredentialsSuccess(userCredentials: UserCredentials) {
+        self.label.text = userCredentials.accessToken
+    }
+    
+    func onClientRegistrationSuccess(authClientRegistration: AuthClientRegistration) {
+        
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            //self.logMessage("Error accessing AppDelegate")
+            return
+        }
+        
+        self.label.text = authClientRegistration.clientRegistrationToken
+        
+        let configuration = OIDServiceConfiguration(authorizationEndpoint: URL(string: "https://f8full.mycozy.cloud/auth/authorize")!,
+                                                    tokenEndpoint: URL(string: "https://f8full.mycozy.cloud/auth/authorize")!)
+        let authorizationRequest = OIDAuthorizationRequest(configuration: configuration,
+                                                            clientId: authClientRegistration.clientId,
+                                                            clientSecret: authClientRegistration.clientSecret,
+                                                            scopes: [OIDScopeOpenID, "io.cozy.files", "io.cozy.oauth.clients"],
+                                                            redirectURL: URL(string: "herdr://com.ludoscity.herdr.oauth2redirect")!,
+                                                            responseType: OIDResponseTypeCode,
+                                                            additionalParameters: nil)
+        // performs authentication request
+        //logMessage("Initiating authorization request with scope: \(request.scope ?? "DEFAULT_SCOPE")")
+
+        appDelegate.currentAuthorizationFlow = OIDAuthorizationService.present(authorizationRequest, presenting: self) { (response, error) in
+
+            if let response = response {
+                //let authState = OIDAuthState(authorizationResponse: response)
+                self.label.text = "CODE: " + (response.authorizationCode ?? "DEFAULT_CODE")
+                self.loginViewModel.exchangeCodeForAccessAndRefreshToken(authCode: response.authorizationCode ?? "")
+                //self.setAuthState(authState)
+                //self.logMessage("Authorization response with code: \(response.authorizationCode ?? "DEFAULT_CODE")")
+                // could just call [self tokenExchange:nil] directly, but will let the user initiate it.
+            } else {
+                //self.logMessage("Authorization error: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
+            }
+        }
+    }
+    
+    @objc func didButtonClick(_ sender: UIButton) {
+        loginViewModel.registerAuthClient(stackBaseUrl: "https://f8full.mycozy.cloud")
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+    deinit {
+        loginViewModel.onCleared()
     }
-    @IBOutlet weak var label: UILabel!
 }

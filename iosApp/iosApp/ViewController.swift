@@ -74,13 +74,13 @@ class ViewController: UIViewController {
         
         self.label.text = authClientRegistration.clientRegistrationToken
         
-        let configuration = OIDServiceConfiguration(authorizationEndpoint: URL(string: "https://f8full.mycozy.cloud/auth/authorize")!,
-                                                    tokenEndpoint: URL(string: "https://f8full.mycozy.cloud/auth/authorize")!)
+        let configuration = OIDServiceConfiguration(authorizationEndpoint: URL(string: authClientRegistration.stackBaseUrl + "/auth/authorize")!,
+                                                    tokenEndpoint: URL(string: authClientRegistration.stackBaseUrl + "/auth/authorize")!)
         let authorizationRequest = OIDAuthorizationRequest(configuration: configuration,
                                                             clientId: authClientRegistration.clientId,
                                                             clientSecret: authClientRegistration.clientSecret,
                                                             scopes: [OIDScopeOpenID, "io.cozy.files", "io.cozy.oauth.clients"],
-                                                            redirectURL: URL(string: "herdr://com.ludoscity.herdr.oauth2redirect")!,
+                                                            redirectURL: URL(string: authClientRegistration.redirectUriCollection[0])!,
                                                             responseType: OIDResponseTypeCode,
                                                             additionalParameters: nil)
         // performs authentication request

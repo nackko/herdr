@@ -16,13 +16,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.herdr.common.data
+package com.ludoscity.herdr.ui
 
-actual class SecureDataStore actual constructor() {
-    actual suspend fun storeString(key: String, data: String) {
-    }
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.ludoscity.herdr.common.data.SecureDataStore
+import com.ludoscity.herdr.common.ui.login.LoginViewModel
 
-    actual suspend fun retrieveString(key: String): String {
-        return "myString from Android with key: $key"
+class HerdrActivityModelFactory(private val dataStore: SecureDataStore) : ViewModelProvider.NewInstanceFactory() {
+
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+
+        @Suppress("UNCHECKED_CAST")
+        return LoginViewModel(dataStore) as T
     }
 }

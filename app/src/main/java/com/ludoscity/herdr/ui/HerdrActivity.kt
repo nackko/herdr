@@ -16,17 +16,19 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.herdr
+package com.ludoscity.herdr.ui
 
-import android.content.ComponentName
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import com.ludoscity.herdr.common.domain.entity.UserCredentials
+import com.ludoscity.herdr.R
 import com.ludoscity.herdr.common.base.Response
+import com.ludoscity.herdr.common.data.SecureDataStore
 import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
+import com.ludoscity.herdr.common.domain.entity.UserCredentials
 import com.ludoscity.herdr.common.ui.login.*
 import kotlinx.android.synthetic.main.activity_herdr.*
 import net.openid.appauth.*
@@ -50,7 +52,10 @@ class HerdrActivity : AppCompatActivity() {
         }
 
         //init viewmodel
-        loginViewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
+        loginViewModel = ViewModelProviders.of(
+            this,
+            HerdrActivityModelFactory(SecureDataStore())
+        ).get(LoginViewModel::class.java)
 
         //register observer
         loginViewModel.authClientRegistrationResult.addObserver { getClientRegistrationState(it) }
@@ -125,7 +130,7 @@ class HerdrActivity : AppCompatActivity() {
         val authService = AuthorizationService(this)
         val authIntent = authService.getAuthorizationRequestIntent(authRequestBuilder.build())
 
-        startActivityForResult(authIntent, Companion.RC_AUTH)
+        startActivityForResult(authIntent, RC_AUTH)
     }
 
     private fun showError(message: String?) {
@@ -136,7 +141,7 @@ class HerdrActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == Companion.RC_AUTH) {
+        if (requestCode == RC_AUTH) {
             data?.let {
                 val resp = AuthorizationResponse.fromIntent(it)
                 val ex = AuthorizationException.fromIntent(it)

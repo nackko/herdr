@@ -18,14 +18,12 @@
 
 package com.ludoscity.herdr.common.ui.login
 
-import com.ludoscity.herdr.common.domain.entity.UserCredentials
 import com.ludoscity.herdr.common.base.Response
+import com.ludoscity.herdr.common.data.SecureDataStore
 import com.ludoscity.herdr.common.di.KodeinInjector
 import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
-import com.ludoscity.herdr.common.domain.usecase.login.ExchangeCodeForAccessAndRefreshTokenUseCase
-import com.ludoscity.herdr.common.domain.usecase.login.ExchangeCodeForAccessAndRefreshTokenUseCaseInput
-import com.ludoscity.herdr.common.domain.usecase.login.RegisterAuthClientUseCase
-import com.ludoscity.herdr.common.domain.usecase.login.RegisterAuthClientUseCaseInput
+import com.ludoscity.herdr.common.domain.entity.UserCredentials
+import com.ludoscity.herdr.common.domain.usecase.login.*
 import com.ludoscity.herdr.common.utils.launchSilent
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
@@ -35,7 +33,7 @@ import kotlinx.coroutines.Job
 import org.kodein.di.erased.instance
 import kotlin.coroutines.CoroutineContext
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(secureDataStore: SecureDataStore) : ViewModel() {
 
     private val _authClientRegistrationResult =
         MutableLiveData<AuthClientRegistrationState>(
@@ -44,17 +42,24 @@ class LoginViewModel : ViewModel() {
     val authClientRegistrationResult: LiveData<AuthClientRegistrationState>
         get() = _authClientRegistrationResult
 
-    private val registerAuthClientUseCase by KodeinInjector.instance<RegisterAuthClientUseCase>()
+    private val registerAuthClientUseCase by KodeinInjector.instance<RegisterAuthClientUseCaseAsync>()
 
     private val _userCredentials =
-            MutableLiveData<UserCredentialsState>(
-                    InProgressUserCredentials()
-            )
+        MutableLiveData<UserCredentialsState>(
+            InProgressUserCredentials()
+        )
     val userCredentialsResult: LiveData<UserCredentialsState>
         get() = _userCredentials
 
     private val exchangeCodeForAccessAndRefreshTokenUseCase
-            by KodeinInjector.instance<ExchangeCodeForAccessAndRefreshTokenUseCase>()
+            by KodeinInjector.instance<ExchangeCodeForAccessAndRefreshTokenUseCaseAsync>()
+
+    private val injectDataStoreUseCase by KodeinInjector.instance<InjectDataStoreUseCaseSync>()
+
+    init {
+        val input = InjectDataStoreUseCaseInput(secureDataStore)
+        injectDataStoreUseCase.execute(input)
+    }
 
     // ASYNC - COROUTINES
     private val coroutineContext by KodeinInjector.instance<CoroutineContext>()

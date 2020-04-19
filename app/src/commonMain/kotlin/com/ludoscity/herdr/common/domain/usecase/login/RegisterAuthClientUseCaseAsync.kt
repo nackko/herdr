@@ -16,29 +16,16 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.herdr.common.data
+package com.ludoscity.herdr.common.domain.usecase.login
 
-import kotlin.coroutines.Continuation
-import kotlin.coroutines.suspendCoroutine
+import com.ludoscity.herdr.common.base.Response
+import com.ludoscity.herdr.common.data.repository.LoginRepository
+import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
+import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseAsync
 
-actual open class SecureDataStore actual constructor() {
-    actual suspend fun storeString(key: String, data: String) {
-        return suspendCoroutine { continuation ->
-            putString(key, data, continuation)
-        }
-    }
-
-    actual suspend fun retrieveString(key: String): String {
-        return suspendCoroutine { continuation ->
-            getString(key, continuation)
-        }
-    }
-
-    open fun putString(key: String, data: String, callback: Continuation<Unit>) {
-        throw NotImplementedError("iOS project should implement this")
-    }
-
-    open fun getString(key: String, callback: Continuation<String>) {
-        throw NotImplementedError("iOS project should implement this")
+class RegisterAuthClientUseCaseAsync(val repo: LoginRepository) :
+    BaseUseCaseAsync<RegisterAuthClientUseCaseInput, AuthClientRegistration>() {
+    override suspend fun run(): Response<AuthClientRegistration> {
+        return repo.getAuthClientRegistration(this.input!!)
     }
 }

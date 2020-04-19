@@ -16,29 +16,21 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.herdr.common.data
+package com.ludoscity.herdr.common.domain.usecase.base
 
-import kotlin.coroutines.Continuation
-import kotlin.coroutines.suspendCoroutine
+import com.ludoscity.herdr.common.base.Response
 
-actual open class SecureDataStore actual constructor() {
-    actual suspend fun storeString(key: String, data: String) {
-        return suspendCoroutine { continuation ->
-            putString(key, data, continuation)
-        }
+abstract class BaseUseCaseAsync<R : BaseUseCaseInput, T> {
+
+    protected var input: R? = null
+
+    suspend fun execute(input: R? = null): Response<T> {
+        this.input = input
+
+        val validated = input?.validate() ?: true
+        if (validated) return run()
+        return Response.Error(IllegalArgumentException())
     }
 
-    actual suspend fun retrieveString(key: String): String {
-        return suspendCoroutine { continuation ->
-            getString(key, continuation)
-        }
-    }
-
-    open fun putString(key: String, data: String, callback: Continuation<Unit>) {
-        throw NotImplementedError("iOS project should implement this")
-    }
-
-    open fun getString(key: String, callback: Continuation<String>) {
-        throw NotImplementedError("iOS project should implement this")
-    }
+    abstract suspend fun run(): Response<T>
 }

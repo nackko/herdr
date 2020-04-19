@@ -15,30 +15,17 @@
  *     You should have received a copy of the GNU Lesser General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+package com.ludoscity.herdr.common.domain.usecase.login
 
-package com.ludoscity.herdr.common.data
+import com.ludoscity.herdr.common.base.Response
+import com.ludoscity.herdr.common.data.repository.LoginRepository
+import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseSync
 
-import kotlin.coroutines.Continuation
-import kotlin.coroutines.suspendCoroutine
-
-actual open class SecureDataStore actual constructor() {
-    actual suspend fun storeString(key: String, data: String) {
-        return suspendCoroutine { continuation ->
-            putString(key, data, continuation)
-        }
-    }
-
-    actual suspend fun retrieveString(key: String): String {
-        return suspendCoroutine { continuation ->
-            getString(key, continuation)
-        }
-    }
-
-    open fun putString(key: String, data: String, callback: Continuation<Unit>) {
-        throw NotImplementedError("iOS project should implement this")
-    }
-
-    open fun getString(key: String, callback: Continuation<String>) {
-        throw NotImplementedError("iOS project should implement this")
+class InjectDataStoreUseCaseSync(private val repo: LoginRepository) :
+    BaseUseCaseSync<InjectDataStoreUseCaseInput,
+            Unit>() {
+    override fun run(): Response<Unit> {
+        repo.setDataStore(input!!.store)
+        return Response.Success(Unit)
     }
 }

@@ -20,12 +20,13 @@ package com.ludoscity.herdr.common.domain.usecase.login
 
 import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.data.repository.LoginRepository
-import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
-import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCase
+import com.ludoscity.herdr.common.domain.entity.UserCredentials
+import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseAsync
 
-class RegisterAuthClientUseCase(val repo: LoginRepository) :
-    BaseUseCase<RegisterAuthClientUseCaseInput, AuthClientRegistration>() {
-    override suspend fun run(): Response<AuthClientRegistration> {
-        return repo.getAuthClientRegistration(this.input!!)
+class ExchangeCodeForAccessAndRefreshTokenUseCaseAsync(private val repo: LoginRepository) :
+    BaseUseCaseAsync<ExchangeCodeForAccessAndRefreshTokenUseCaseInput,
+            UserCredentials>() {
+    override suspend fun run(): Response<UserCredentials> {
+        return repo.getUserCredentials(this.input!!)
     }
 }

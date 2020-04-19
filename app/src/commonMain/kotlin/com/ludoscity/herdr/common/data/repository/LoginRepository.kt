@@ -18,14 +18,21 @@
 
 package com.ludoscity.herdr.common.data.repository
 
-import com.ludoscity.herdr.common.domain.entity.UserCredentials
 import com.ludoscity.herdr.common.base.Response
+import com.ludoscity.herdr.common.data.SecureDataStore
 import com.ludoscity.herdr.common.data.network.INetworkDataPipe
 import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
+import com.ludoscity.herdr.common.domain.entity.UserCredentials
 import com.ludoscity.herdr.common.domain.usecase.login.ExchangeCodeForAccessAndRefreshTokenUseCaseInput
 import com.ludoscity.herdr.common.domain.usecase.login.RegisterAuthClientUseCaseInput
 
 class LoginRepository(private val networkDataPipe: INetworkDataPipe) {
+
+    private lateinit var secureDataStore: SecureDataStore
+
+    fun setDataStore(storeToSet: SecureDataStore) {
+        secureDataStore = storeToSet
+    }
 
     //memory cache
     private var authClientRegistration: AuthClientRegistration? = null

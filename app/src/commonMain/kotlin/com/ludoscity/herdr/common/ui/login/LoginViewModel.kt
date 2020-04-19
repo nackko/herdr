@@ -28,6 +28,7 @@ import com.ludoscity.herdr.common.utils.launchSilent
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import io.ktor.utils.io.errors.IOException
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
 import org.kodein.di.erased.instance
@@ -43,6 +44,7 @@ class LoginViewModel(secureDataStore: SecureDataStore) : ViewModel() {
         get() = _authClientRegistrationResult
 
     private val registerAuthClientUseCase by KodeinInjector.instance<RegisterAuthClientUseCaseAsync>()
+    private val unregisterAuthClientUseCase by KodeinInjector.instance<UnregisterAuthClientUseCaseAsync>()
 
     private val _userCredentials =
         MutableLiveData<UserCredentialsState>(
@@ -56,29 +58,66 @@ class LoginViewModel(secureDataStore: SecureDataStore) : ViewModel() {
 
     private val injectDataStoreUseCase by KodeinInjector.instance<InjectDataStoreUseCaseSync>()
 
-    init {
-        val input = InjectDataStoreUseCaseInput(secureDataStore)
-        injectDataStoreUseCase.execute(input)
-    }
-
     // ASYNC - COROUTINES
     private val coroutineContext by KodeinInjector.instance<CoroutineContext>()
     private var job: Job = Job()
     private val exceptionHandler = CoroutineExceptionHandler { _, _ -> }
+
+
+    init {
+        val input = InjectDataStoreUseCaseInput(secureDataStore)
+        injectDataStoreUseCase.execute(input)
+        //TODO: shall we check for injection error before proceeding. Would be hard to recover from
+        initAuthClientFromCache()
+    }
+
+
+    private fun initAuthClientFromCache() = launchSilent(
+        coroutineContext,
+        exceptionHandler, job
+    ) {
+        _authClientRegistrationResult.postValue(InProgressAuthClientRegistration())
+        val useCaseInput = RegisterAuthClientUseCaseInput(true)
+        val response = registerAuthClientUseCase.execute(useCaseInput)
+        processRegistrationResponse(response)
+    }
 
     fun registerAuthClient(stackBaseUrl: String) = launchSilent(
         coroutineContext,
         exceptionHandler, job
     ) {
         _authClientRegistrationResult.postValue(InProgressAuthClientRegistration())
-
-        val useCaseInput =
-            RegisterAuthClientUseCaseInput(
-                stackBaseUrl
-            )
+        val useCaseInput = RegisterAuthClientUseCaseInput(stackBaseUrl)
         val response = registerAuthClientUseCase.execute(useCaseInput)
-
         processRegistrationResponse(response)
+    }
+
+    fun unregisterAuthClient() = launchSilent(
+        coroutineContext,
+        exceptionHandler, job
+    ) {
+        _authClientRegistrationResult.postValue(InProgressAuthClientRegistration())
+        val response = unregisterAuthClientUseCase.execute()
+        processUnregisterResponse(response)
+    }
+
+    private fun processUnregisterResponse(response: Response<Unit>) {
+        when (response) {
+            is Response.Success -> {
+                _authClientRegistrationResult.postValue(
+                    ErrorAuthClientRegistration(
+                        Response.Error(
+                            IOException("Auth client registration cleared")
+                        )
+                    )
+                )
+            }
+            else -> {
+                //Something happened down there. Here at model level, simply repost
+                //it does eat the original probably network Error in response
+                _authClientRegistrationResult.postValue(authClientRegistrationResult.value)
+            }
+        }
     }
 
     private fun processRegistrationResponse(response: Response<AuthClientRegistration>) {

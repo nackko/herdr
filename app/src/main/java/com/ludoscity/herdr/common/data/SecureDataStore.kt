@@ -18,11 +18,43 @@
 
 package com.ludoscity.herdr.common.data
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.SharedPreferences
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKeys
+
 actual class SecureDataStore actual constructor() {
+    private lateinit var encryptedPreferences: SharedPreferences
+    private val sharedPrefFilename = "herdr_secure_prefs"
+
+    @SuppressLint("ApplySharedPref")
     actual suspend fun storeString(key: String, data: String) {
+        encryptedPreferences.edit()
+            .putString(key, data)
+            .commit()
     }
 
-    actual suspend fun retrieveString(key: String): String {
-        return "myString from Android with key: $key"
+    actual suspend fun retrieveString(key: String): String? {
+        return encryptedPreferences.getString(key, null)
+    }
+
+    @SuppressLint("ApplySharedPref")
+    actual suspend fun deleteKey(key: String) {
+        encryptedPreferences.edit()
+            .remove(key)
+            .commit()
+    }
+
+    constructor(ctx: Context) : this() {
+        val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
+        encryptedPreferences = EncryptedSharedPreferences
+            .create(
+                sharedPrefFilename,
+                masterKeyAlias,
+                ctx,
+                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            )
     }
 }

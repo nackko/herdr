@@ -18,10 +18,11 @@
 
 package com.ludoscity.herdr.common.data.network.cozy
 
-import com.ludoscity.herdr.common.domain.entity.UserCredentials
 import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
+import com.ludoscity.herdr.common.domain.entity.UserCredentials
 import io.ktor.client.HttpClient
+import io.ktor.client.request.delete
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
@@ -70,6 +71,23 @@ class CozyCloupApi {
             )
         } catch (e: Exception) {
             return Response.Error(exception = e, message = e.message)
+        }
+    }
+
+    suspend fun unregisterOAuthClient(registrationInfo: AuthClientRegistration):
+            Response<Unit> {
+
+        return try {
+            //https://docs.cozy.io/en/cozy-stack/auth/#delete-authregisterclient-id
+            httpClient.delete<String>(
+                "${registrationInfo.stackBaseUrl}/auth/register/${registrationInfo.clientId}"
+            ) {
+                header("Authorization", "Bearer ${registrationInfo.clientRegistrationToken}")
+            }
+
+            Response.Success(Unit)
+        } catch (e: Exception) {
+            Response.Error(exception = e, message = e.message)
         }
     }
 

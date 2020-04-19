@@ -20,5 +20,6 @@ package com.ludoscity.herdr.common.data
 
 expect class SecureDataStore() {
     suspend fun storeString(key: String, data: String)
-    suspend fun retrieveString(key: String): String
+    suspend fun retrieveString(key: String): String?
+    suspend fun deleteKey(key: String)
 }

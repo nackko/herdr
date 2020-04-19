@@ -50,6 +50,7 @@ ext {
     appAuthVersion = "0.7.1"
     androidXBrowserVersion = "1.2.0"
     materialDesignVersion = "1.1.0"
+    securityCryptoVersion = "1.0.0-rc01"
 }
 
 task clean(type: Delete) {

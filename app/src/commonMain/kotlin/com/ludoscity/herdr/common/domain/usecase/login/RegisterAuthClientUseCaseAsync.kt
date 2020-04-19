@@ -23,9 +23,9 @@ import com.ludoscity.herdr.common.data.repository.LoginRepository
 import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
 import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseAsync
 
-class RegisterAuthClientUseCaseAsync(val repo: LoginRepository) :
+class RegisterAuthClientUseCaseAsync(private val repo: LoginRepository) :
     BaseUseCaseAsync<RegisterAuthClientUseCaseInput, AuthClientRegistration>() {
     override suspend fun run(): Response<AuthClientRegistration> {
-        return repo.getAuthClientRegistration(this.input!!)
+        return repo.getAuthClientRegistration(input!!.baseUrl, input!!.fromCacheOnly)
     }
 }

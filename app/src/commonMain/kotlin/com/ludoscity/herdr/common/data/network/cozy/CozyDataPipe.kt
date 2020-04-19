@@ -18,10 +18,10 @@
 
 package com.ludoscity.herdr.common.data.network.cozy
 
-import com.ludoscity.herdr.common.domain.entity.UserCredentials
 import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.data.network.INetworkDataPipe
 import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
+import com.ludoscity.herdr.common.domain.entity.UserCredentials
 
 class CozyDataPipe(private val cozyCloupApi: CozyCloupApi) : INetworkDataPipe() {
 
@@ -34,5 +34,9 @@ class CozyDataPipe(private val cozyCloupApi: CozyCloupApi) : INetworkDataPipe() 
         authRegistrationInfo: AuthClientRegistration
     ): Response<UserCredentials> {
         return cozyCloupApi.exchangeCodeForAccessAndRefreshToken(authCode, authRegistrationInfo)
+    }
+
+    override suspend fun unregisterAuthClient(authRegistrationInfo: AuthClientRegistration): Response<Unit> {
+        return cozyCloupApi.unregisterOAuthClient(authRegistrationInfo)
     }
 }

@@ -16,18 +16,16 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.herdr.common.data.network
+package com.ludoscity.herdr.common.domain.usecase.login
 
 import com.ludoscity.herdr.common.base.Response
-import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
-import com.ludoscity.herdr.common.domain.entity.UserCredentials
+import com.ludoscity.herdr.common.data.repository.LoginRepository
+import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseAsync
+import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseInput
 
-abstract class INetworkDataPipe {
-    abstract suspend fun registerAuthClient(stackBase: String): Response<AuthClientRegistration>
-    abstract suspend fun exchangeCodeForAccessAndRefreshToken(
-        authCode: String,
-        authRegistrationInfo: AuthClientRegistration
-    ): Response<UserCredentials>
-
-    abstract suspend fun unregisterAuthClient(authRegistrationInfo: AuthClientRegistration): Response<Unit>
+class UnregisterAuthClientUseCaseAsync(private val repo: LoginRepository) :
+    BaseUseCaseAsync<BaseUseCaseInput, Unit>() {
+    override suspend fun run(): Response<Unit> {
+        return repo.clearAuthClientRegistration()
+    }
 }

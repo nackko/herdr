@@ -38,10 +38,20 @@
 
 
     <Button
-            android:id="@+id/activity_herdr_button"
+            android:id="@+id/activity_herdr_button_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Register OAuth client"
+            android:text="Login (register+authrozie)"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/activity_herdr_tv"/>
+
+    <Button
+            android:id="@+id/activity_herdr_button_logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Logout (unregister+clear authorization)"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

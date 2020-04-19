@@ -26,6 +26,7 @@ import com.ludoscity.herdr.common.data.repository.LoginRepository
 import com.ludoscity.herdr.common.domain.usecase.login.ExchangeCodeForAccessAndRefreshTokenUseCaseAsync
 import com.ludoscity.herdr.common.domain.usecase.login.InjectDataStoreUseCaseSync
 import com.ludoscity.herdr.common.domain.usecase.login.RegisterAuthClientUseCaseAsync
+import com.ludoscity.herdr.common.domain.usecase.login.UnregisterAuthClientUseCaseAsync
 import org.kodein.di.Kodein
 import org.kodein.di.erased.bind
 import org.kodein.di.erased.instance
@@ -46,6 +47,13 @@ val KodeinInjector = Kodein {
             instance()
         )
     }
+
+    bind<UnregisterAuthClientUseCaseAsync>() with singleton {
+        UnregisterAuthClientUseCaseAsync(
+            instance()
+        )
+    }
+
     bind<ExchangeCodeForAccessAndRefreshTokenUseCaseAsync>() with singleton {
         ExchangeCodeForAccessAndRefreshTokenUseCaseAsync(
             instance()

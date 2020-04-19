@@ -21,8 +21,8 @@ package com.ludoscity.herdr.ui
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.ludoscity.herdr.R
 import com.ludoscity.herdr.common.base.Response
@@ -46,15 +46,19 @@ class HerdrActivity : AppCompatActivity() {
         //bind views
         activity_herdr_tv.text = hello()
 
-        activity_herdr_button.setOnClickListener {
+        activity_herdr_button_login.setOnClickListener {
             //loginViewModel.registerAuthClient(hello())
             loginViewModel.registerAuthClient("https://f8full.mycozy.cloud")
+        }
+
+        activity_herdr_button_logout.setOnClickListener {
+            loginViewModel.unregisterAuthClient()
         }
 
         //init viewmodel
         loginViewModel = ViewModelProviders.of(
             this,
-            HerdrActivityModelFactory(SecureDataStore())
+            HerdrActivityModelFactory(SecureDataStore(this))
         ).get(LoginViewModel::class.java)
 
         //register observer
@@ -85,16 +89,22 @@ class HerdrActivity : AppCompatActivity() {
         when (state) {
             is SuccessAuthClientRegistration -> {
                 //TODO: hide in progress
+                activity_herdr_button_login.visibility = View.GONE
+                activity_herdr_button_logout.visibility = View.VISIBLE
                 val response = state.response as Response.Success
                 onClientRegistrationSuccess(registrationInfo = response.data)
             }
             is InProgressAuthClientRegistration -> {
                 //TODO: show in progress
+                activity_herdr_button_login.visibility = View.GONE
+                activity_herdr_button_logout.visibility = View.GONE
             }
             is ErrorAuthClientRegistration -> {
                 //TODO: hide loading
+                activity_herdr_button_login.visibility = View.VISIBLE
+                activity_herdr_button_logout.visibility = View.GONE
                 val response = state.response as Response.Error
-                showError(response.message)
+                showError("message: ${response.message}|e.message:${response.exception.message ?: ""}")
             }
         }
     }

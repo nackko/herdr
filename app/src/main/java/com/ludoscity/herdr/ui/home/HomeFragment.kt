@@ -16,20 +16,24 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.herdr.common.ui.login
+package com.ludoscity.herdr.ui.home
 
-import com.ludoscity.herdr.common.base.Response
-import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.ludoscity.herdr.R
 
-sealed class AuthClientRegistrationState {
-    abstract val response: Response<AuthClientRegistration>?
+/**
+ * A simple [Fragment] subclass.
+ */
+class HomeFragment : Fragment() {
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_home, container, false)
+    }
+
 }
-
-data class SuccessAuthClientRegistration(override val response: Response<AuthClientRegistration>) :
-    AuthClientRegistrationState()
-
-data class InProgressAuthClientRegistration(override val response: Response<AuthClientRegistration>? = null) :
-    AuthClientRegistrationState()
-
-data class ErrorAuthClientRegistration(override val response: Response<AuthClientRegistration>) :
-    AuthClientRegistrationState()

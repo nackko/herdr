@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.herdr.common.ui.login
+package com.ludoscity.herdr.common.ui.drivelogin
 
 import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.data.SecureDataStore

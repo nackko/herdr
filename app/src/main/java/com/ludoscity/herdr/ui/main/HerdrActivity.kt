@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.herdr.ui
+package com.ludoscity.herdr.ui.main
 
 import android.content.Intent
 import android.net.Uri
@@ -30,7 +30,7 @@ import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.data.SecureDataStore
 import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
 import com.ludoscity.herdr.common.domain.entity.UserCredentials
-import com.ludoscity.herdr.common.ui.login.*
+import com.ludoscity.herdr.common.ui.drivelogin.*
 import kotlinx.android.synthetic.main.activity_herdr.*
 import net.openid.appauth.*
 import sample.hello
@@ -59,8 +59,7 @@ class HerdrActivity : AppCompatActivity() {
 
         //init viewmodel
         loginViewModel = ViewModelProviders.of(
-            this,
-            HerdrActivityModelFactory(SecureDataStore(this))
+                this, HerdrActivityModelFactory(SecureDataStore(this))
         ).get(LoginViewModel::class.java)
 
         //register observer

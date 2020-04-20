@@ -23,7 +23,7 @@
                                                    android:id="@+id/activity_herdr_root"
                                                    android:layout_width="match_parent"
                                                    android:layout_height="match_parent"
-                                                   tools:context=".ui.HerdrActivity">
+    tools:context=".ui.main.HerdrActivity">
 
     <TextView
             android:id="@+id/activity_herdr_registration_tv"

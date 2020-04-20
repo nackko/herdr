@@ -53,8 +53,17 @@ class LoginViewModel(secureDataStore: SecureDataStore) : ViewModel() {
     val userCredentialsResult: LiveData<UserCredentialsState>
         get() = _userCredentials
 
-    private val exchangeCodeForAccessAndRefreshTokenUseCase
-            by KodeinInjector.instance<ExchangeCodeForAccessAndRefreshTokenUseCaseAsync>()
+    private val _requestAuthFlow =
+        MutableLiveData(false)
+    val requestAuthFlowEvent: LiveData<Boolean>
+        get() = _requestAuthFlow
+
+    fun authFlowRequestProcessed() {
+        _requestAuthFlow.value = false
+    }
+
+    private val retrieveAccessAndRefreshTokenUseCase
+            by KodeinInjector.instance<RetrieveAccessAndRefreshTokenUseCaseAsync>()
 
     private val injectDataStoreUseCase by KodeinInjector.instance<InjectDataStoreUseCaseSync>()
 
@@ -69,6 +78,7 @@ class LoginViewModel(secureDataStore: SecureDataStore) : ViewModel() {
         injectDataStoreUseCase.execute(input)
         //TODO: shall we check for injection error before proceeding. Would be hard to recover from
         initAuthClientFromCache()
+        initAuthAccessAndRefreshTokenFromCache()
     }
 
 
@@ -79,7 +89,17 @@ class LoginViewModel(secureDataStore: SecureDataStore) : ViewModel() {
         _authClientRegistrationResult.postValue(InProgressAuthClientRegistration())
         val useCaseInput = RegisterAuthClientUseCaseInput(true)
         val response = registerAuthClientUseCase.execute(useCaseInput)
-        processRegistrationResponse(response)
+        processRegistrationResponse(response, false)
+    }
+
+    private fun initAuthAccessAndRefreshTokenFromCache() = launchSilent(
+        coroutineContext,
+        exceptionHandler, job
+    ) {
+        _userCredentials.postValue(InProgressUserCredentials())
+        val useCaseInput = RetrieveAccessAndRefreshTokenUseCaseInput(true)
+        val response = retrieveAccessAndRefreshTokenUseCase.execute(useCaseInput)
+        processRetrieveAccessAndRefreshTokenResponse(response)
     }
 
     fun registerAuthClient(stackBaseUrl: String) = launchSilent(
@@ -89,7 +109,7 @@ class LoginViewModel(secureDataStore: SecureDataStore) : ViewModel() {
         _authClientRegistrationResult.postValue(InProgressAuthClientRegistration())
         val useCaseInput = RegisterAuthClientUseCaseInput(stackBaseUrl)
         val response = registerAuthClientUseCase.execute(useCaseInput)
-        processRegistrationResponse(response)
+        processRegistrationResponse(response, true)
     }
 
     fun unregisterAuthClient() = launchSilent(
@@ -111,6 +131,13 @@ class LoginViewModel(secureDataStore: SecureDataStore) : ViewModel() {
                         )
                     )
                 )
+                _userCredentials.postValue(
+                    ErrorUserCredentials(
+                        Response.Error(
+                            IOException("User credentials cleared")
+                        )
+                    )
+                )
             }
             else -> {
                 //Something happened down there. Here at model level, simply repost
@@ -120,14 +147,23 @@ class LoginViewModel(secureDataStore: SecureDataStore) : ViewModel() {
         }
     }
 
-    private fun processRegistrationResponse(response: Response<AuthClientRegistration>) {
+    private fun processRegistrationResponse(
+        response: Response<AuthClientRegistration>,
+        requestAuthorizationFlow: Boolean
+    ) {
         when (response) {
-            is Response.Success ->
+            is Response.Success -> {
                 _authClientRegistrationResult.postValue(
                     SuccessAuthClientRegistration(
                         response
                     )
                 )
+
+                if (requestAuthorizationFlow) {
+                    _userCredentials.postValue(InProgressUserCredentials())
+                    _requestAuthFlow.postValue(true)
+                }
+            }
             is Response.Error ->
                 _authClientRegistrationResult.postValue(
                     ErrorAuthClientRegistration(
@@ -143,13 +179,13 @@ class LoginViewModel(secureDataStore: SecureDataStore) : ViewModel() {
     ) {
         _userCredentials.postValue(InProgressUserCredentials())
 
-        val useCaseInput = ExchangeCodeForAccessAndRefreshTokenUseCaseInput(authCode)
-        val response = exchangeCodeForAccessAndRefreshTokenUseCase.execute(useCaseInput)
+        val useCaseInput = RetrieveAccessAndRefreshTokenUseCaseInput(authCode)
+        val response = retrieveAccessAndRefreshTokenUseCase.execute(useCaseInput)
 
-        processCodeExchangeResponse(response)
+        processRetrieveAccessAndRefreshTokenResponse(response)
     }
 
-    private fun processCodeExchangeResponse(response: Response<UserCredentials>) {
+    private fun processRetrieveAccessAndRefreshTokenResponse(response: Response<UserCredentials>) {
         when (response) {
             is Response.Success ->
                 _userCredentials.postValue(SuccessUserCredentials(response))

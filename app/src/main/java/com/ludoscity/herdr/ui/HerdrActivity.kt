@@ -22,6 +22,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.ludoscity.herdr.R
@@ -33,6 +34,7 @@ import com.ludoscity.herdr.common.ui.login.*
 import kotlinx.android.synthetic.main.activity_herdr.*
 import net.openid.appauth.*
 import sample.hello
+import java.io.IOException
 
 class HerdrActivity : AppCompatActivity() {
 
@@ -44,7 +46,7 @@ class HerdrActivity : AppCompatActivity() {
         setContentView(R.layout.activity_herdr)
 
         //bind views
-        activity_herdr_tv.text = hello()
+        activity_herdr_registration_tv.text = hello()
 
         activity_herdr_button_login.setOnClickListener {
             //loginViewModel.registerAuthClient(hello())
@@ -65,6 +67,18 @@ class HerdrActivity : AppCompatActivity() {
         loginViewModel.authClientRegistrationResult.addObserver { getClientRegistrationState(it) }
 
         loginViewModel.userCredentialsResult.addObserver { getUserCredentialsState(it) }
+
+        loginViewModel.requestAuthFlowEvent.addObserver {
+
+            if (it) {
+                val authInfo = ((loginViewModel.authClientRegistrationResult.value as SuccessAuthClientRegistration)
+                    .response as Response.Success)
+                    .data
+
+                launchAuthorizationFlow(authInfo)
+                loginViewModel.authFlowRequestProcessed()
+            }
+        }
     }
 
     private fun getUserCredentialsState(state: UserCredentialsState) {
@@ -72,15 +86,21 @@ class HerdrActivity : AppCompatActivity() {
             is SuccessUserCredentials -> {
                 //TODO: hide in progress
                 val response = state.response as Response.Success
+                activity_herdr_button_logout.visibility = View.VISIBLE
                 onUserCredentialsSuccess(userCredentials = response.data)
             }
             is InProgressUserCredentials -> {
                 //TODO: show in progress
+                activity_herdr_credentials_tv.text = "In progress..."
             }
             is ErrorUserCredentials -> {
                 //TODO: hide loading
+                activity_herdr_button_login.visibility = View.VISIBLE
                 val response = state.response as Response.Error
-                showError(response.message)
+                showError(
+                    "message: ${response.message}|e.message:${response.exception.message ?: ""}",
+                    activity_herdr_credentials_tv
+                )
             }
         }
     }
@@ -90,12 +110,12 @@ class HerdrActivity : AppCompatActivity() {
             is SuccessAuthClientRegistration -> {
                 //TODO: hide in progress
                 activity_herdr_button_login.visibility = View.GONE
-                activity_herdr_button_logout.visibility = View.VISIBLE
                 val response = state.response as Response.Success
                 onClientRegistrationSuccess(registrationInfo = response.data)
             }
             is InProgressAuthClientRegistration -> {
                 //TODO: show in progress
+                activity_herdr_registration_tv.text = "In progress..."
                 activity_herdr_button_login.visibility = View.GONE
                 activity_herdr_button_logout.visibility = View.GONE
             }
@@ -104,7 +124,10 @@ class HerdrActivity : AppCompatActivity() {
                 activity_herdr_button_login.visibility = View.VISIBLE
                 activity_herdr_button_logout.visibility = View.GONE
                 val response = state.response as Response.Error
-                showError("message: ${response.message}|e.message:${response.exception.message ?: ""}")
+                showError(
+                    "message: ${response.message}|e.message:${response.exception.message ?: ""}",
+                    activity_herdr_registration_tv
+                )
             }
         }
     }
@@ -112,15 +135,13 @@ class HerdrActivity : AppCompatActivity() {
     private fun onClientRegistrationSuccess(registrationInfo: AuthClientRegistration) {
 
         //debug
-        activity_herdr_tv.text = "Registration = $registrationInfo"
-
-        launchAuthorizationFlow(registrationInfo)
+        activity_herdr_registration_tv.text = "Registration = $registrationInfo"
     }
 
     private fun onUserCredentialsSuccess(userCredentials: UserCredentials) {
 
         //debug -- We are fully logged in
-        activity_herdr_tv.text = "Credentials = $userCredentials"
+        activity_herdr_credentials_tv.text = "Credentials = $userCredentials"
     }
 
     private fun launchAuthorizationFlow(registrationInfo: AuthClientRegistration) {
@@ -133,8 +154,8 @@ class HerdrActivity : AppCompatActivity() {
         val authRequestBuilder = AuthorizationRequest.Builder(
                 authorizationServiceConfig,
                 registrationInfo.clientId,
-                ResponseTypeValues.CODE,
-                Uri.parse(registrationInfo.redirectUriCollection[0])
+            ResponseTypeValues.CODE,
+            Uri.parse(registrationInfo.redirectUriCollection[0])
         ).setScope("openid io.cozy.files io.cozy.oauth.clients")
 
         val authService = AuthorizationService(this)
@@ -143,8 +164,8 @@ class HerdrActivity : AppCompatActivity() {
         startActivityForResult(authIntent, RC_AUTH)
     }
 
-    private fun showError(message: String?) {
-        activity_herdr_tv.text = message
+    private fun showError(message: String?, tv: TextView) {
+        tv.text = message
         //Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
@@ -160,7 +181,7 @@ class HerdrActivity : AppCompatActivity() {
                     loginViewModel.exchangeCodeForAccessAndRefreshToken(resp.authorizationCode!!)
                 } else {
                     ex?.let { authException ->
-                        loginViewModel.setErrorUserCredentials(authException.cause!!)
+                        loginViewModel.setErrorUserCredentials(authException.cause ?: IOException("Login error"))
                     }
                 }
             }

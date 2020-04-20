@@ -23,7 +23,6 @@ import com.ludoscity.herdr.common.data.SecureDataStore
 import com.ludoscity.herdr.common.data.network.INetworkDataPipe
 import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
 import com.ludoscity.herdr.common.domain.entity.UserCredentials
-import com.ludoscity.herdr.common.domain.usecase.login.ExchangeCodeForAccessAndRefreshTokenUseCaseInput
 import io.ktor.utils.io.errors.IOException
 
 class LoginRepository(private val networkDataPipe: INetworkDataPipe) {
@@ -43,6 +42,10 @@ class LoginRepository(private val networkDataPipe: INetworkDataPipe) {
     private val authClientRegistrationRedirectUriStoreKey = "redirect_uri"
     private val authClientRegistrationClientIdStoreKey = "client_id"
     private val authClientRegistrationClientSecretStoreKey = "client_secret"
+
+    private val userCredentialAccessTokenStoreKey = "access_token"
+    private val userCredentialRefreshTokenStoreKey = "refresh_token"
+
 
     suspend fun getAuthClientRegistration(baseUrl: String, localOnly: Boolean): Response<AuthClientRegistration> {
         //First see if we have in memory data...
@@ -100,10 +103,14 @@ class LoginRepository(private val networkDataPipe: INetworkDataPipe) {
                     deleteKey(authClientRegistrationRedirectUriStoreKey)
                     deleteKey(authClientRegistrationClientIdStoreKey)
                     deleteKey(authClientRegistrationClientSecretStoreKey)
+
+                    deleteKey(userCredentialAccessTokenStoreKey)
+                    deleteKey(userCredentialRefreshTokenStoreKey)
                 }
 
                 //clear memory cache
                 authClientRegistration = null
+                userCredentials = null
             }
 
             //forward network reply
@@ -114,19 +121,34 @@ class LoginRepository(private val networkDataPipe: INetworkDataPipe) {
         return Response.Success(Unit)
     }
 
-    suspend fun getUserCredentials(input: ExchangeCodeForAccessAndRefreshTokenUseCaseInput)
+    suspend fun getUserCredentials(authCode: String, localOnly: Boolean)
             : Response<UserCredentials> {
 
-        return if (userCredentials == null) {
-            val networkReply = networkDataPipe.exchangeCodeForAccessAndRefreshToken(input.authCode, authClientRegistration!!)
+        return if (userCredentials != null) {
+            Response.Success(userCredentials!!)
+        } else if (secureDataStore.retrieveString(userCredentialAccessTokenStoreKey) != null) {
+            secureDataStore.apply {
+                userCredentials = UserCredentials(
+                    retrieveString(userCredentialAccessTokenStoreKey)!!,
+                    retrieveString(userCredentialRefreshTokenStoreKey)!!
+                )
+            }
+
+            Response.Success(userCredentials!!)
+        } else if (!localOnly) {
+            val networkReply = networkDataPipe.exchangeCodeForAccessAndRefreshToken(authCode, authClientRegistration!!)
 
             if (networkReply is Response.Success) {
                 userCredentials = networkReply.data
+                secureDataStore.apply {
+                    storeString(userCredentialAccessTokenStoreKey, userCredentials!!.accessToken)
+                    storeString(userCredentialRefreshTokenStoreKey, userCredentials!!.refreshToken)
+                }
             }
 
             networkReply
         } else {
-            Response.Success(userCredentials!!)
+            Response.Error(IOException("localOnly==true but no local cache for OAuth access and refresh token"))
         }
     }
 }

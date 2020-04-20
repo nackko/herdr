@@ -102,13 +102,11 @@ class CozyCloupApi {
                 httpClient.post<String>("${authRegistrationInfo.stackBaseUrl}/auth/access_token") {
 
                     header("Accept", "application/json")
-                    //header("Content-Type", "application/x-www-form-urlencoded")
 
                     parameter("grant_type", "authorization_code")
                     parameter("code", authCode)
                     parameter("client_id", authRegistrationInfo.clientId)
                     parameter("client_secret", authRegistrationInfo.clientSecret)
-
             }
 
             val parsedReply = Json(JsonConfiguration.Stable.copy(ignoreUnknownKeys = true))

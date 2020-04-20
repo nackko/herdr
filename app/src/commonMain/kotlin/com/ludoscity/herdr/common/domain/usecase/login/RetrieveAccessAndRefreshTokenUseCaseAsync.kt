@@ -18,12 +18,14 @@
 
 package com.ludoscity.herdr.common.domain.usecase.login
 
-import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseInput
+import com.ludoscity.herdr.common.base.Response
+import com.ludoscity.herdr.common.data.repository.LoginRepository
+import com.ludoscity.herdr.common.domain.entity.UserCredentials
+import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseAsync
 
-class ExchangeCodeForAccessAndRefreshTokenUseCaseInput(val authCode: String) :
-    BaseUseCaseInput {
-    override fun validate(): Boolean {
-        //TODO: validate code
-        return true
+class RetrieveAccessAndRefreshTokenUseCaseAsync(private val repo: LoginRepository) :
+    BaseUseCaseAsync<RetrieveAccessAndRefreshTokenUseCaseInput, UserCredentials>() {
+    override suspend fun run(): Response<UserCredentials> {
+        return repo.getUserCredentials(input!!.authCode, input!!.fromCacheOnly)
     }
 }

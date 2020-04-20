@@ -38,7 +38,7 @@ class ViewController: UIViewController {
     }
     
     func initViewModel() {
-        loginViewModel = LoginViewModel()
+        loginViewModel = LoginViewModel(secureDataStore: SecureDataStoreImpl())
         observeLoginViewModel()
     }
     

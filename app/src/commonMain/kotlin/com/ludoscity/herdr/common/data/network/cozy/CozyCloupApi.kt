@@ -18,10 +18,11 @@
 
 package com.ludoscity.herdr.common.data.network.cozy
 
-import com.ludoscity.herdr.common.domain.entity.UserCredentials
 import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
+import com.ludoscity.herdr.common.domain.entity.UserCredentials
 import io.ktor.client.HttpClient
+import io.ktor.client.request.delete
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
@@ -73,6 +74,23 @@ class CozyCloupApi {
         }
     }
 
+    suspend fun unregisterOAuthClient(registrationInfo: AuthClientRegistration):
+            Response<Unit> {
+
+        return try {
+            //https://docs.cozy.io/en/cozy-stack/auth/#delete-authregisterclient-id
+            httpClient.delete<String>(
+                "${registrationInfo.stackBaseUrl}/auth/register/${registrationInfo.clientId}"
+            ) {
+                header("Authorization", "Bearer ${registrationInfo.clientRegistrationToken}")
+            }
+
+            Response.Success(Unit)
+        } catch (e: Exception) {
+            Response.Error(exception = e, message = e.message)
+        }
+    }
+
     suspend fun exchangeCodeForAccessAndRefreshToken(
         authCode: String,
         authRegistrationInfo: AuthClientRegistration
@@ -84,13 +102,11 @@ class CozyCloupApi {
                 httpClient.post<String>("${authRegistrationInfo.stackBaseUrl}/auth/access_token") {
 
                     header("Accept", "application/json")
-                    //header("Content-Type", "application/x-www-form-urlencoded")
 
                     parameter("grant_type", "authorization_code")
                     parameter("code", authCode)
                     parameter("client_id", authRegistrationInfo.clientId)
                     parameter("client_secret", authRegistrationInfo.clientSecret)
-
             }
 
             val parsedReply = Json(JsonConfiguration.Stable.copy(ignoreUnknownKeys = true))

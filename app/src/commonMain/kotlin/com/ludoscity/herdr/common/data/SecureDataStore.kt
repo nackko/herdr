@@ -16,16 +16,10 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.herdr.common.domain.usecase.login
+package com.ludoscity.herdr.common.data
 
-import com.ludoscity.herdr.common.base.Response
-import com.ludoscity.herdr.common.data.repository.LoginRepository
-import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
-import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCase
-
-class RegisterAuthClientUseCase(val repo: LoginRepository) :
-    BaseUseCase<RegisterAuthClientUseCaseInput, AuthClientRegistration>() {
-    override suspend fun run(): Response<AuthClientRegistration> {
-        return repo.getAuthClientRegistration(this.input!!)
-    }
+expect class SecureDataStore() {
+    suspend fun storeString(key: String, data: String)
+    suspend fun retrieveString(key: String): String?
+    suspend fun deleteKey(key: String)
 }

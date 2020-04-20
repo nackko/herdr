@@ -15,7 +15,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId 'com.ludoscity.herdr'
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 28
         versionCode 1
         versionName '1.0'
@@ -107,6 +107,9 @@ kotlin {
                 implementation fileTree(dir: 'libs', include: ['*.jar'])
                 implementation "androidx.appcompat:appcompat:$appCompatVersion"
                 implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
+
+                //secure local storage
+                implementation "androidx.security:security-crypto:$securityCryptoVersion"
 
                 //https://github.com/openid/AppAuth-Android
                 implementation "net.openid:appauth:$appAuthVersion"

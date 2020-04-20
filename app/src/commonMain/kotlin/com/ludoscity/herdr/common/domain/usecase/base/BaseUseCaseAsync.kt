@@ -16,18 +16,21 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.herdr.common.data.network
+package com.ludoscity.herdr.common.domain.usecase.base
 
 import com.ludoscity.herdr.common.base.Response
-import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
-import com.ludoscity.herdr.common.domain.entity.UserCredentials
 
-abstract class INetworkDataPipe {
-    abstract suspend fun registerAuthClient(stackBase: String): Response<AuthClientRegistration>
-    abstract suspend fun exchangeCodeForAccessAndRefreshToken(
-        authCode: String,
-        authRegistrationInfo: AuthClientRegistration
-    ): Response<UserCredentials>
+abstract class BaseUseCaseAsync<R : BaseUseCaseInput, T> {
 
-    abstract suspend fun unregisterAuthClient(authRegistrationInfo: AuthClientRegistration): Response<Unit>
+    protected var input: R? = null
+
+    suspend fun execute(input: R? = null): Response<T> {
+        this.input = input
+
+        val validated = input?.validate() ?: true
+        if (validated) return run()
+        return Response.Error(IllegalArgumentException())
+    }
+
+    abstract suspend fun run(): Response<T>
 }

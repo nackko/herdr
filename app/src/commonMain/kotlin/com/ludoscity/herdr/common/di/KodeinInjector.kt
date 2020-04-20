@@ -23,8 +23,10 @@ import com.ludoscity.herdr.common.data.network.INetworkDataPipe
 import com.ludoscity.herdr.common.data.network.cozy.CozyCloupApi
 import com.ludoscity.herdr.common.data.network.cozy.CozyDataPipe
 import com.ludoscity.herdr.common.data.repository.LoginRepository
-import com.ludoscity.herdr.common.domain.usecase.login.ExchangeCodeForAccessAndRefreshTokenUseCase
-import com.ludoscity.herdr.common.domain.usecase.login.RegisterAuthClientUseCase
+import com.ludoscity.herdr.common.domain.usecase.login.InjectDataStoreUseCaseSync
+import com.ludoscity.herdr.common.domain.usecase.login.RegisterAuthClientUseCaseAsync
+import com.ludoscity.herdr.common.domain.usecase.login.RetrieveAccessAndRefreshTokenUseCaseAsync
+import com.ludoscity.herdr.common.domain.usecase.login.UnregisterAuthClientUseCaseAsync
 import org.kodein.di.Kodein
 import org.kodein.di.erased.bind
 import org.kodein.di.erased.instance
@@ -40,13 +42,26 @@ val KodeinInjector = Kodein {
     bind<CoroutineContext>() with provider { ApplicationDispatcher }
 
     //use case
-    bind<RegisterAuthClientUseCase>() with singleton {
-        RegisterAuthClientUseCase(
+    bind<RegisterAuthClientUseCaseAsync>() with singleton {
+        RegisterAuthClientUseCaseAsync(
             instance()
         )
     }
-    bind<ExchangeCodeForAccessAndRefreshTokenUseCase>() with singleton {
-        ExchangeCodeForAccessAndRefreshTokenUseCase(
+
+    bind<UnregisterAuthClientUseCaseAsync>() with singleton {
+        UnregisterAuthClientUseCaseAsync(
+            instance()
+        )
+    }
+
+    bind<RetrieveAccessAndRefreshTokenUseCaseAsync>() with singleton {
+        RetrieveAccessAndRefreshTokenUseCaseAsync(
+            instance()
+        )
+    }
+
+    bind<InjectDataStoreUseCaseSync>() with singleton {
+        InjectDataStoreUseCaseSync(
             instance()
         )
     }

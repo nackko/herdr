@@ -16,18 +16,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.herdr.common.data.network
+package com.ludoscity.herdr.ui
 
-import com.ludoscity.herdr.common.base.Response
-import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
-import com.ludoscity.herdr.common.domain.entity.UserCredentials
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.ludoscity.herdr.common.data.SecureDataStore
+import com.ludoscity.herdr.common.ui.login.LoginViewModel
 
-abstract class INetworkDataPipe {
-    abstract suspend fun registerAuthClient(stackBase: String): Response<AuthClientRegistration>
-    abstract suspend fun exchangeCodeForAccessAndRefreshToken(
-        authCode: String,
-        authRegistrationInfo: AuthClientRegistration
-    ): Response<UserCredentials>
+class HerdrActivityModelFactory(private val dataStore: SecureDataStore) : ViewModelProvider.NewInstanceFactory() {
 
-    abstract suspend fun unregisterAuthClient(authRegistrationInfo: AuthClientRegistration): Response<Unit>
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+
+        @Suppress("UNCHECKED_CAST")
+        return LoginViewModel(dataStore) as T
+    }
 }

@@ -20,10 +20,11 @@ package com.ludoscity.herdr.common.domain.usecase.login
 
 import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseInput
 
-class RegisterAuthClientUseCaseInput(val baseUrl: String) :
+class RegisterAuthClientUseCaseInput(val baseUrl: String, val fromCacheOnly: Boolean = false) :
     BaseUseCaseInput {
     override fun validate(): Boolean {
-        //TODO: validate URL
-        return true
+        return !(fromCacheOnly && baseUrl.isNotEmpty())
     }
+
+    constructor(fromCacheOnly: Boolean) : this("", fromCacheOnly)
 }

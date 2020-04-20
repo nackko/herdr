@@ -20,11 +20,11 @@ package com.ludoscity.herdr.common.domain.usecase.base
 
 import com.ludoscity.herdr.common.base.Response
 
-abstract class BaseUseCase<R : BaseUseCaseInput, T> {
+abstract class BaseUseCaseSync<R : BaseUseCaseInput, T> {
 
     protected var input: R? = null
 
-    suspend fun execute(input: R? = null): Response<T> {
+    fun execute(input: R? = null): Response<T> {
         this.input = input
 
         val validated = input?.validate() ?: true
@@ -32,5 +32,5 @@ abstract class BaseUseCase<R : BaseUseCaseInput, T> {
         return Response.Error(IllegalArgumentException())
     }
 
-    abstract suspend fun run(): Response<T>
+    abstract fun run(): Response<T>
 }

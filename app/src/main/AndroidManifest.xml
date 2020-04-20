@@ -28,8 +28,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
-            android:name="com.ludoscity.herdr.HerdrActivity"
-            android:launchMode="singleTop">
+                android:name="com.ludoscity.herdr.ui.HerdrActivity"
+                android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

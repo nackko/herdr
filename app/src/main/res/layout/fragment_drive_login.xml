@@ -16,15 +16,107 @@
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.ludoscity.herdr.ui.drivelogin.DriveLoginFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+
+        <variable
+            name="driveLoginViewModel"
+            type="com.ludoscity.herdr.common.ui.drivelogin.LoginViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:context="com.ludoscity.herdr.ui.drivelogin.DriveLoginFragment">
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/activity_herdr_registration_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="[AuthClientRegistration]"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/activity_herdr_credentials_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="[UserCredentials]"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/domain_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text="Enter Domain:"
+            app:layout_constraintBottom_toTopOf="@+id/domain_editText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/domain_editText"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.90" />
+
+        <EditText
+            android:id="@+id/domain_editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="username or custom domain"
+            android:inputType="textPersonName"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.30" />
+
+        <TextView
+            android:id="@+id/final_domain_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="https://cozy.mycozy.cloud"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/domain_editText"
+            app:layout_constraintVertical_bias="0.25" />
+
+        <Button
+            android:id="@+id/drive_connect_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:width="250dp"
+            android:background="#FFFF96C8"
+            android:text="Connect"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/final_domain_text"
+            app:layout_constraintVertical_bias="0.20" />
+
+        <Button
+            android:id="@+id/create_account_button"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/create_account"
+            android:textAllCaps="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/drive_connect_button"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/activity_herdr_button_logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Logout (unregister+clear authorization)"
+            android:visibility="gone" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -18,50 +18,10 @@
   -->
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                   xmlns:tools="http://schemas.android.com/tools"
-                                                   android:id="@+id/activity_herdr_root"
-                                                   android:layout_width="match_parent"
-                                                   android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_herdr_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:context=".ui.main.HerdrActivity">
-
-    <TextView
-            android:id="@+id/activity_herdr_registration_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="[AuthClientRegistration]"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-
-    <TextView
-            android:id="@+id/activity_herdr_credentials_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="[UserCredentials]"
-            app:layout_constraintEnd_toEndOf="@+id/activity_herdr_registration_tv"
-            app:layout_constraintStart_toStartOf="@+id/activity_herdr_registration_tv"
-            app:layout_constraintTop_toBottomOf="@+id/activity_herdr_registration_tv"/>
-
-    <Button
-            android:id="@+id/activity_herdr_button_login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Login (register+authrozie)"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/activity_herdr_credentials_tv"/>
-
-    <Button
-            android:id="@+id/activity_herdr_button_logout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Logout (unregister+clear authorization)"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/activity_herdr_credentials_tv"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

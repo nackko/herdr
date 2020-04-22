@@ -31,7 +31,7 @@ import com.ludoscity.herdr.common.data.SecureDataStore
 import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
 import com.ludoscity.herdr.common.domain.entity.UserCredentials
 import com.ludoscity.herdr.common.ui.drivelogin.*
-import kotlinx.android.synthetic.main.activity_herdr.*
+import kotlinx.android.synthetic.main.fragment_drive_login.*
 import net.openid.appauth.*
 import sample.hello
 import java.io.IOException
@@ -43,16 +43,16 @@ class HerdrActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_herdr)
+        setContentView(R.layout.fragment_drive_login)
 
         //bind views
         activity_herdr_registration_tv.text = hello()
 
-        activity_herdr_button_login.setOnClickListener {
+        drive_connect_button.setOnClickListener {
             //loginViewModel.registerAuthClient(hello())
             loginViewModel.registerAuthClient("https://f8full.mycozy.cloud")
         }
-
+        //TODO: move logout to homepage
         activity_herdr_button_logout.setOnClickListener {
             loginViewModel.unregisterAuthClient()
         }
@@ -94,7 +94,7 @@ class HerdrActivity : AppCompatActivity() {
             }
             is ErrorUserCredentials -> {
                 //TODO: hide loading
-                activity_herdr_button_login.visibility = View.VISIBLE
+                drive_connect_button.visibility = View.VISIBLE
                 val response = state.response as Response.Error
                 showError(
                     "message: ${response.message}|e.message:${response.exception.message ?: ""}",
@@ -108,19 +108,19 @@ class HerdrActivity : AppCompatActivity() {
         when (state) {
             is SuccessAuthClientRegistration -> {
                 //TODO: hide in progress
-                activity_herdr_button_login.visibility = View.GONE
+                drive_connect_button.visibility = View.GONE
                 val response = state.response as Response.Success
                 onClientRegistrationSuccess(registrationInfo = response.data)
             }
             is InProgressAuthClientRegistration -> {
                 //TODO: show in progress
                 activity_herdr_registration_tv.text = "In progress..."
-                activity_herdr_button_login.visibility = View.GONE
+                drive_connect_button.visibility = View.GONE
                 activity_herdr_button_logout.visibility = View.GONE
             }
             is ErrorAuthClientRegistration -> {
                 //TODO: hide loading
-                activity_herdr_button_login.visibility = View.VISIBLE
+                drive_connect_button.visibility = View.VISIBLE
                 activity_herdr_button_logout.visibility = View.GONE
                 val response = state.response as Response.Error
                 showError(

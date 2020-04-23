@@ -37,14 +37,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="[AuthClientRegistration]"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/activity_herdr_credentials_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="[UserCredentials]"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/domain_text"
@@ -89,6 +91,7 @@
             android:width="250dp"
             android:background="#FFFF96C8"
             android:text="Connect"
+            android:onClick="@{() -> driveLoginViewModel.registerAuthClient(&quot;https://ross.mycozy.cloud&quot;)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -115,7 +118,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Logout (unregister+clear authorization)"
-            android:visibility="gone" />
+            android:onClick="@{() -> driveLoginViewModel.unregisterAuthClient()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

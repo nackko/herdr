@@ -23,59 +23,51 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
+import com.ludoscity.herdr.BR
 import com.ludoscity.herdr.R
 import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.data.SecureDataStore
 import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
 import com.ludoscity.herdr.common.domain.entity.UserCredentials
 import com.ludoscity.herdr.common.ui.drivelogin.*
+import com.ludoscity.herdr.databinding.FragmentDriveLoginBinding
+import dev.icerock.moko.mvvm.MvvmActivity
+import dev.icerock.moko.mvvm.createViewModelFactory
 import kotlinx.android.synthetic.main.fragment_drive_login.*
 import net.openid.appauth.*
-import sample.hello
 import java.io.IOException
 
-class HerdrActivity : AppCompatActivity() {
+class HerdrActivity : MvvmActivity<FragmentDriveLoginBinding, LoginViewModel>() {
+    override val layoutId: Int = R.layout.fragment_drive_login
+    override val viewModelVariableId: Int = BR.driveLoginViewModel
+    override val viewModelClass: Class<LoginViewModel> = LoginViewModel::class.java
 
-    private lateinit var loginViewModel: LoginViewModel
-
+    override fun viewModelFactory(): ViewModelProvider.Factory {
+        return createViewModelFactory {
+            LoginViewModel(
+                    secureDataStore = SecureDataStore(this)
+            )
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_drive_login)
-
-        //bind views
-        activity_herdr_registration_tv.text = hello()
-
-        drive_connect_button.setOnClickListener {
-            //loginViewModel.registerAuthClient(hello())
-            loginViewModel.registerAuthClient("https://f8full.mycozy.cloud")
-        }
-        //TODO: move logout to homepage
-        activity_herdr_button_logout.setOnClickListener {
-            loginViewModel.unregisterAuthClient()
-        }
-
-        //init viewmodel
-        loginViewModel = ViewModelProviders.of(
-                this, HerdrActivityModelFactory(SecureDataStore(this))
-        ).get(LoginViewModel::class.java)
 
         //register observer
-        loginViewModel.authClientRegistrationResult.addObserver { getClientRegistrationState(it) }
+        viewModel.authClientRegistrationResult.addObserver { getClientRegistrationState(it) }
 
-        loginViewModel.userCredentialsResult.addObserver { getUserCredentialsState(it) }
+        viewModel.userCredentialsResult.addObserver { getUserCredentialsState(it) }
 
-        loginViewModel.requestAuthFlowEvent.addObserver {
+        viewModel.requestAuthFlowEvent.addObserver {
 
             if (it) {
-                val authInfo = ((loginViewModel.authClientRegistrationResult.value as SuccessAuthClientRegistration)
+                val authInfo = ((viewModel.authClientRegistrationResult.value as SuccessAuthClientRegistration)
                     .response as Response.Success)
                     .data
 
                 launchAuthorizationFlow(authInfo)
-                loginViewModel.authFlowRequestProcessed()
+                viewModel.authFlowRequestProcessed()
             }
         }
     }
@@ -177,10 +169,11 @@ class HerdrActivity : AppCompatActivity() {
                 val ex = AuthorizationException.fromIntent(it)
 
                 if (resp != null) {
-                    loginViewModel.exchangeCodeForAccessAndRefreshToken(resp.authorizationCode!!)
+                    viewModel.exchangeCodeForAccessAndRefreshToken(resp.authorizationCode!!)
                 } else {
                     ex?.let { authException ->
-                        loginViewModel.setErrorUserCredentials(authException.cause ?: IOException("Login error"))
+                        viewModel.setErrorUserCredentials(authException.cause
+                                ?: IOException("Login error"))
                     }
                 }
             }

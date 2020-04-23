@@ -18,27 +18,31 @@
 
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/driveLoginFragment">
 
-    <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.ludoscity.herdr.ui.home.HomeFragment"
-        android:label="HomeFragment">
-        <action
-            android:id="@+id/action_homeFragment_to_driveSetupFragment"
-            app:destination="@id/driveSetupFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/driveSetupFragment"
-        android:name="com.ludoscity.herdr.ui.drivesetup.DriveSetupFragment"
-        android:label="DriveSetupFragment">
-        <action
-            android:id="@+id/action_driveSetupFragment_to_driveLoginFragment2"
-            app:destination="@id/driveLoginFragment" />
-    </fragment>
+    <!--
+        <fragment
+            android:id="@+id/homeFragment"
+            android:name="com.ludoscity.herdr.ui.home.HomeFragment"
+            android:label="HomeFragment">
+            <action
+                android:id="@+id/action_homeFragment_to_driveSetupFragment"
+                app:destination="@id/driveSetupFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/driveSetupFragment"
+            android:name="com.ludoscity.herdr.ui.drivesetup.DriveSetupFragment"
+            android:label="DriveSetupFragment">
+            <action
+                android:id="@+id/action_driveSetupFragment_to_driveLoginFragment2"
+                app:destination="@id/driveLoginFragment" />
+        </fragment>
+    -->
     <fragment
         android:id="@+id/driveLoginFragment"
         android:name="com.ludoscity.herdr.ui.drivelogin.DriveLoginFragment"
-        android:label="DriveLoginFragment" />
+        android:label="DriveLoginFragment"
+        tools:layout="@layout/fragment_drive_login" />
 </navigation>

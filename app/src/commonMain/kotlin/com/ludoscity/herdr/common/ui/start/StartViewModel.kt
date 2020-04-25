@@ -16,24 +16,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.herdr.ui.home
+package com.ludoscity.herdr.common.ui.start
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import com.ludoscity.herdr.R
+import dev.icerock.moko.mvvm.dispatcher.EventsDispatcher
+import dev.icerock.moko.mvvm.dispatcher.EventsDispatcherOwner
+import dev.icerock.moko.mvvm.viewmodel.ViewModel
 
-/**
- * A simple [Fragment] subclass.
- */
-class HomeFragment : Fragment() {
+class StartViewModel(override val eventsDispatcher: EventsDispatcher<StartFragmentEventListener>)
+    : ViewModel(), EventsDispatcherOwner<StartViewModel.StartFragmentEventListener> {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+    fun onSetupButtonPressed() {
+        eventsDispatcher.dispatchEvent { routeToDriveSetup() }
     }
 
+    interface StartFragmentEventListener {
+        fun routeToDriveSetup()
+    }
 }

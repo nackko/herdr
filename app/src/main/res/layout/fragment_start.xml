@@ -23,8 +23,8 @@
     <data>
 
         <variable
-            name="homeViewModel"
-            type="com.ludoscity.herdr.ui.home.HomeFragment" />
+            name="startViewModel"
+            type="com.ludoscity.herdr.common.ui.start.StartViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -49,6 +49,7 @@
             android:width="300dp"
             android:backgroundTint="#FFFF96C8"
             android:text="Cozy Cloud"
+            android:onClick="@{() -> startViewModel.onSetupButtonPressed()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

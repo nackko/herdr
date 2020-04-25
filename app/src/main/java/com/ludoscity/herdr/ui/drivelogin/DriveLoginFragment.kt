@@ -38,14 +38,14 @@ import dev.icerock.moko.mvvm.createViewModelFactory
 import net.openid.appauth.*
 import java.io.IOException
 
-class DriveLoginFragment : MvvmFragment<FragmentDriveLoginBinding, LoginViewModel>() {
+class DriveLoginFragment : MvvmFragment<FragmentDriveLoginBinding, DriveLoginViewModel>() {
     override val layoutId: Int = R.layout.fragment_drive_login
     override val viewModelVariableId: Int = com.ludoscity.herdr.BR.driveLoginViewModel
-    override val viewModelClass: Class<LoginViewModel> = LoginViewModel::class.java
+    override val viewModelClass: Class<DriveLoginViewModel> = DriveLoginViewModel::class.java
 
     override fun viewModelFactory(): ViewModelProvider.Factory {
         return createViewModelFactory {
-            LoginViewModel(
+            DriveLoginViewModel(
                     secureDataStore = SecureDataStore(requireActivity())
             )
         }

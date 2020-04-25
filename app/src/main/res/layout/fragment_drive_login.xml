@@ -24,7 +24,7 @@
 
         <variable
             name="driveLoginViewModel"
-            type="com.ludoscity.herdr.common.ui.drivelogin.LoginViewModel" />
+            type="com.ludoscity.herdr.common.ui.drivelogin.DriveLoginViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

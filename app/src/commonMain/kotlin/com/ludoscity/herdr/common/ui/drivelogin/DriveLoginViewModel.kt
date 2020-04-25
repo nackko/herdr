@@ -34,7 +34,7 @@ import kotlinx.coroutines.Job
 import org.kodein.di.erased.instance
 import kotlin.coroutines.CoroutineContext
 
-class LoginViewModel(secureDataStore: SecureDataStore) : ViewModel() {
+class DriveLoginViewModel(secureDataStore: SecureDataStore) : ViewModel() {
 
     private val _authClientRegistrationResult =
         MutableLiveData<AuthClientRegistrationState>(

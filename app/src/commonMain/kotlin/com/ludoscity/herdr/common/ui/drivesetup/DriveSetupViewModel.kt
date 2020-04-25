@@ -18,7 +18,18 @@
 
 package com.ludoscity.herdr.common.ui.drivesetup
 
+import dev.icerock.moko.mvvm.dispatcher.EventsDispatcher
+import dev.icerock.moko.mvvm.dispatcher.EventsDispatcherOwner
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 
-class DriveSetupViewModel : ViewModel() {
+class DriveSetupViewModel(override val eventsDispatcher: EventsDispatcher<DriveSetupFragmentEventListener>)
+    : ViewModel(), EventsDispatcherOwner<DriveSetupViewModel.DriveSetupFragmentEventListener> {
+
+    fun onLoginButtonPressed() {
+        eventsDispatcher.dispatchEvent { routeToDriveLogin() }
+    }
+
+    interface DriveSetupFragmentEventListener {
+        fun routeToDriveLogin()
+    }
 }

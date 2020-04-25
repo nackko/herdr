@@ -29,18 +29,17 @@
             tools:layout="@layout/fragment_start">
             <action
                 android:id="@+id/action_startFragment_to_driveSetupFragment"
-                app:destination="@id/driveLoginFragment" />
+                app:destination="@id/driveSetupFragment" />
         </fragment>
-    <!--
             <fragment
                 android:id="@+id/driveSetupFragment"
                 android:name="com.ludoscity.herdr.ui.drivesetup.DriveSetupFragment"
-                android:label="DriveSetupFragment">
+                android:label="DriveSetupFragment"
+                tools:layout="@layout/fragment_drive_setup">
                 <action
-                    android:id="@+id/action_driveSetupFragment_to_driveLoginFragment2"
+                    android:id="@+id/action_driveSetupFragment_to_driveLoginFragment"
                     app:destination="@id/driveLoginFragment" />
             </fragment>
-    -->
     <fragment
         android:id="@+id/driveLoginFragment"
         android:name="com.ludoscity.herdr.ui.drivelogin.DriveLoginFragment"

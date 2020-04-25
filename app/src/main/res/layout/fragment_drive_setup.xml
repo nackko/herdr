@@ -24,7 +24,7 @@
 
         <variable
             name="driveSetupViewModel"
-            type="com.ludoscity.herdr.ui.drivesetup.DriveSetupFragment" />
+            type="com.ludoscity.herdr.common.ui.drivesetup.DriveSetupViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -61,6 +61,7 @@
             android:width="250dp"
             android:backgroundTint="#FFFF96C8"
             android:text="Create Connection"
+            android:onClick="@{() -> driveSetupViewModel.onLoginButtonPressed()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

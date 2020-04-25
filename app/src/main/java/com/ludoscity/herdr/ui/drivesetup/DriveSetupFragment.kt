@@ -18,22 +18,27 @@
 
 package com.ludoscity.herdr.ui.drivesetup
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.ludoscity.herdr.BR
 import com.ludoscity.herdr.R
+import com.ludoscity.herdr.common.ui.drivesetup.DriveSetupViewModel
+import com.ludoscity.herdr.databinding.FragmentDriveSetupBinding
+import dev.icerock.moko.mvvm.MvvmEventsFragment
+import dev.icerock.moko.mvvm.createViewModelFactory
+import dev.icerock.moko.mvvm.dispatcher.eventsDispatcherOnMain
 
-/**
- * A simple [Fragment] subclass.
- */
-class DriveSetupFragment : Fragment() {
+class DriveSetupFragment : MvvmEventsFragment<FragmentDriveSetupBinding, DriveSetupViewModel,
+        DriveSetupViewModel.DriveSetupFragmentEventListener>(), DriveSetupViewModel.DriveSetupFragmentEventListener {
+    override val layoutId: Int = R.layout.fragment_drive_setup
+    override val viewModelVariableId: Int = BR.driveSetupViewModel
+    override val viewModelClass: Class<DriveSetupViewModel> = DriveSetupViewModel::class.java
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_drive_setup, container, false)
+    override fun viewModelFactory(): ViewModelProvider.Factory {
+        return createViewModelFactory { DriveSetupViewModel(eventsDispatcherOnMain()) }
     }
 
+    override fun routeToDriveLogin() {
+        this.findNavController().navigate(R.id.action_driveSetupFragment_to_driveLoginFragment)
+    }
 }

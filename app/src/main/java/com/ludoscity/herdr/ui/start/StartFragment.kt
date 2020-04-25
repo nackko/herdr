@@ -20,6 +20,7 @@ package com.ludoscity.herdr.ui.start
 
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.ludoscity.herdr.BR
 import com.ludoscity.herdr.R
 import com.ludoscity.herdr.common.ui.start.StartViewModel
 import com.ludoscity.herdr.databinding.FragmentStartBinding
@@ -30,7 +31,7 @@ import dev.icerock.moko.mvvm.dispatcher.eventsDispatcherOnMain
 class StartFragment : MvvmEventsFragment<FragmentStartBinding, StartViewModel,
         StartViewModel.StartFragmentEventListener>(), StartViewModel.StartFragmentEventListener {
     override val layoutId: Int = R.layout.fragment_start
-    override val viewModelVariableId: Int = com.ludoscity.herdr.BR.startViewModel
+    override val viewModelVariableId: Int = BR.startViewModel
     override val viewModelClass: Class<StartViewModel> = StartViewModel::class.java
 
     override fun viewModelFactory(): ViewModelProvider.Factory {

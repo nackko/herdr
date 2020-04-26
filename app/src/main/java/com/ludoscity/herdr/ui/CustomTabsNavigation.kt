@@ -27,6 +27,7 @@ import android.os.Bundle
 import android.util.AttributeSet
 import androidx.annotation.ColorRes
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.content.ContextCompat
 import androidx.core.content.withStyledAttributes
 import androidx.navigation.*
 import androidx.navigation.fragment.NavHostFragment
@@ -45,8 +46,8 @@ class CustomTabsNavigator(private val context: Context) :
         navigatorExtras: Extras?
     ): NavDestination? {
         val builder = CustomTabsIntent.Builder()
-        //builder.setToolbarColor(ContextCompat.getColor(context, destination.toolbarColor))
-        //builder.setSecondaryToolbarColor(ContextCompat.getColor(context, destination.secondaryToolbarColor))
+        builder.setToolbarColor(ContextCompat.getColor(context, destination.toolbarColor))
+        builder.setSecondaryToolbarColor(ContextCompat.getColor(context, destination.secondaryToolbarColor))
 
         val intent = builder.build()
         val url = args?.getString(URL_BUNDLE_KEY)

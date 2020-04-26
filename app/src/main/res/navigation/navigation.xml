@@ -50,11 +50,9 @@
         android:id="@+id/create_account"
         android:name="com.ludoscity.herdr.ui.CustomTabsNavigator"
         android:label="CreateAccount"
-            tools:layout="@layout/tools_graph_placeholder_layout"/>
-<!--
-        app:secondaryToolbarColor="#000000"
-        app:toolbarColor="#FFFFFF"
--->
+        app:secondaryToolbarColor="@color/theme_accent"
+        app:toolbarColor="@color/theme_primary"
+        tools:layout="@layout/tools_graph_placeholder_layout"/>
 
     <fragment
         android:id="@+id/driveLoginFragment"

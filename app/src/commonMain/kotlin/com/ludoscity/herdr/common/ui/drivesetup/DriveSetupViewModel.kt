@@ -29,7 +29,12 @@ class DriveSetupViewModel(override val eventsDispatcher: EventsDispatcher<DriveS
         eventsDispatcher.dispatchEvent { routeToDriveLogin() }
     }
 
+    fun onCreateAccountButtonPressed() {
+        eventsDispatcher.dispatchEvent { routeToCreateAccount() }
+    }
+
     interface DriveSetupFragmentEventListener {
         fun routeToDriveLogin()
+        fun routeToCreateAccount()
     }
 }

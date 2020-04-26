@@ -16,33 +16,50 @@
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
     app:startDestination="@id/startFragment">
 
-        <fragment
-            android:id="@+id/startFragment"
-            android:name="com.ludoscity.herdr.ui.start.StartFragment"
-            android:label="HomeFragment"
-            tools:layout="@layout/fragment_start">
-            <action
-                android:id="@+id/action_startFragment_to_driveSetupFragment"
-                app:destination="@id/driveSetupFragment" />
-        </fragment>
-            <fragment
-                android:id="@+id/driveSetupFragment"
-                android:name="com.ludoscity.herdr.ui.drivesetup.DriveSetupFragment"
-                android:label="DriveSetupFragment"
-                tools:layout="@layout/fragment_drive_setup">
-                <action
-                    android:id="@+id/action_driveSetupFragment_to_driveLoginFragment"
-                    app:destination="@id/driveLoginFragment" />
-            </fragment>
+    <fragment
+        android:id="@+id/startFragment"
+        android:name="com.ludoscity.herdr.ui.start.StartFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_start">
+        <action
+            android:id="@+id/action_startFragment_to_driveSetupFragment"
+            app:destination="@id/driveSetupFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/driveSetupFragment"
+        android:name="com.ludoscity.herdr.ui.drivesetup.DriveSetupFragment"
+        android:label="DriveSetupFragment"
+        tools:layout="@layout/fragment_drive_setup">
+        <action
+            android:id="@+id/action_driveSetupFragment_to_driveLoginFragment"
+            app:destination="@id/driveLoginFragment" />
+        <action
+            android:id="@+id/action_driveSetupFragment_to_createAccount"
+            app:destination="@id/create_account" />
+    </fragment>
+
+    <customtab
+        android:id="@+id/create_account"
+        android:name="com.ludoscity.herdr.ui.CustomTabsNavigator"
+        android:label="CreateAccount"
+            tools:layout="@layout/tools_graph_placeholder_layout"/>
+<!--
+        app:secondaryToolbarColor="#000000"
+        app:toolbarColor="#FFFFFF"
+-->
+
     <fragment
         android:id="@+id/driveLoginFragment"
         android:name="com.ludoscity.herdr.ui.drivelogin.DriveLoginFragment"
         android:label="DriveLoginFragment"
-        tools:layout="@layout/fragment_drive_login" />
+        tools:layout="@layout/fragment_drive_login" >
+    </fragment>
 </navigation>

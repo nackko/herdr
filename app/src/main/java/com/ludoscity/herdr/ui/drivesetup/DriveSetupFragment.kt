@@ -18,12 +18,14 @@
 
 package com.ludoscity.herdr.ui.drivesetup
 
+import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.ludoscity.herdr.BR
 import com.ludoscity.herdr.R
 import com.ludoscity.herdr.common.ui.drivesetup.DriveSetupViewModel
 import com.ludoscity.herdr.databinding.FragmentDriveSetupBinding
+import com.ludoscity.herdr.ui.CustomTabsNavigator
 import dev.icerock.moko.mvvm.MvvmEventsFragment
 import dev.icerock.moko.mvvm.createViewModelFactory
 import dev.icerock.moko.mvvm.dispatcher.eventsDispatcherOnMain
@@ -40,5 +42,16 @@ class DriveSetupFragment : MvvmEventsFragment<FragmentDriveSetupBinding, DriveSe
 
     override fun routeToDriveLogin() {
         this.findNavController().navigate(R.id.action_driveSetupFragment_to_driveLoginFragment)
+    }
+    override fun routeToCreateAccount() {
+        val cozyCreateAccountBundle = Bundle()
+
+        cozyCreateAccountBundle.putString(CustomTabsNavigator.URL_BUNDLE_KEY,
+            "https://manager.cozycloud.cc/cozy/create?lang=en")
+
+        this.findNavController().navigate(
+                R.id.action_driveSetupFragment_to_createAccount,
+                cozyCreateAccountBundle
+        )
     }
 }

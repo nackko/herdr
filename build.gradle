@@ -22,7 +22,6 @@ buildscript {
         jcenter()
     }
     ext {
-        androidXBrowserVersion = "1.2.0"
         androidxLifecycleVersion = "2.2.0"
         appCompatVersion = "1.1.0"
         appAuthVersion = "0.7.1"

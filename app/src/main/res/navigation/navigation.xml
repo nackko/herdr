@@ -59,5 +59,8 @@
         android:name="com.ludoscity.herdr.ui.drivelogin.DriveLoginFragment"
         android:label="DriveLoginFragment"
         tools:layout="@layout/fragment_drive_login" >
+        <action
+            android:id="@+id/action_driveLoginFragment_to_create_account"
+            app:destination="@id/create_account" />
     </fragment>
 </navigation>

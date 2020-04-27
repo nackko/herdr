@@ -24,8 +24,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.ludoscity.herdr.R
 import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.data.SecureDataStore
@@ -33,12 +36,16 @@ import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
 import com.ludoscity.herdr.common.domain.entity.UserCredentials
 import com.ludoscity.herdr.common.ui.drivelogin.*
 import com.ludoscity.herdr.databinding.FragmentDriveLoginBinding
-import dev.icerock.moko.mvvm.MvvmFragment
+import com.ludoscity.herdr.ui.CustomTabsNavigator
+import com.ludoscity.herdr.utils.afterTextChanged
+import dev.icerock.moko.mvvm.MvvmEventsFragment
 import dev.icerock.moko.mvvm.createViewModelFactory
+import dev.icerock.moko.mvvm.dispatcher.eventsDispatcherOnMain
 import net.openid.appauth.*
 import java.io.IOException
 
-class DriveLoginFragment : MvvmFragment<FragmentDriveLoginBinding, DriveLoginViewModel>() {
+class DriveLoginFragment : MvvmEventsFragment<FragmentDriveLoginBinding, DriveLoginViewModel,
+        DriveLoginViewModel.DriveLoginFragmentEventListener>(), DriveLoginViewModel.DriveLoginFragmentEventListener {
     override val layoutId: Int = R.layout.fragment_drive_login
     override val viewModelVariableId: Int = com.ludoscity.herdr.BR.driveLoginViewModel
     override val viewModelClass: Class<DriveLoginViewModel> = DriveLoginViewModel::class.java
@@ -46,9 +53,23 @@ class DriveLoginFragment : MvvmFragment<FragmentDriveLoginBinding, DriveLoginVie
     override fun viewModelFactory(): ViewModelProvider.Factory {
         return createViewModelFactory {
             DriveLoginViewModel(
-                    secureDataStore = SecureDataStore(requireActivity())
+                secureDataStore = SecureDataStore(requireActivity()),
+                eventsDispatcher = eventsDispatcherOnMain()
             )
         }
+    }
+
+    override fun routeToCreateAccount() {
+        val cozyCreateAccountBundle = Bundle()
+
+        cozyCreateAccountBundle.putString(
+            CustomTabsNavigator.URL_BUNDLE_KEY,
+            "https://manager.cozycloud.cc/cozy/create?lang=en")
+
+        this.findNavController().navigate(
+            R.id.action_driveLoginFragment_to_create_account,
+            cozyCreateAccountBundle
+        )
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -72,7 +93,24 @@ class DriveLoginFragment : MvvmFragment<FragmentDriveLoginBinding, DriveLoginVie
                 viewModel.authFlowRequestProcessed()
             }
         }
-        // Inflate the layout for this fragment
+
+        binding.usernameOrCustomDomain.apply {
+            //define what happens when user press <enter< opn virtual keyboard
+            setOnEditorActionListener { _, actionId, _ ->
+                when (actionId) {
+                    EditorInfo.IME_ACTION_DONE ->
+                        viewModel.registerAuthClient()
+                }
+                false
+            }
+
+            //define what happens when TextView content is edited
+            afterTextChanged {
+                viewModel.urlChanged(text.toString())
+            }
+
+
+        }
         return binding.root
     }
 
@@ -104,20 +142,23 @@ class DriveLoginFragment : MvvmFragment<FragmentDriveLoginBinding, DriveLoginVie
         when (state) {
             is SuccessAuthClientRegistration -> {
                 //TODO: hide in progress
-                binding.driveConnectButton.visibility = View.GONE
+                binding.driveConnectButton.visibility = View.INVISIBLE
+                binding.connectProgressBar.visibility = View.VISIBLE
                 val response = state.response as Response.Success
                 onClientRegistrationSuccess(registrationInfo = response.data)
             }
             is InProgressAuthClientRegistration -> {
                 //TODO: show in progress
                 binding.activityHerdrRegistrationTv.text = "In progress..."
-                binding.driveConnectButton.visibility = View.GONE
-                binding.activityHerdrButtonLogout.visibility = View.GONE
+                binding.driveConnectButton.visibility = View.INVISIBLE
+                binding.connectProgressBar.visibility = View.VISIBLE
+                binding.activityHerdrButtonLogout.visibility = View.INVISIBLE
             }
             is ErrorAuthClientRegistration -> {
                 //TODO: hide loading
                 binding.driveConnectButton.visibility = View.VISIBLE
-                binding.activityHerdrButtonLogout.visibility = View.GONE
+                binding.connectProgressBar.visibility = View.INVISIBLE
+                binding.activityHerdrButtonLogout.visibility = View.INVISIBLE
                 val response = state.response as Response.Error
                 showError(
                         "message: ${response.message}|e.message:${response.exception.message ?: ""}",
@@ -178,6 +219,7 @@ class DriveLoginFragment : MvvmFragment<FragmentDriveLoginBinding, DriveLoginVie
                     ex?.let { authException ->
                         viewModel.setErrorUserCredentials(authException.cause
                                 ?: IOException("Login error"))
+                        viewModel.unregisterAuthClient()
                     }
                 }
             }

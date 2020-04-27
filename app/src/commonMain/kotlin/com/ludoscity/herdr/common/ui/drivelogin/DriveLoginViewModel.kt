@@ -25,8 +25,11 @@ import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
 import com.ludoscity.herdr.common.domain.entity.UserCredentials
 import com.ludoscity.herdr.common.domain.usecase.login.*
 import com.ludoscity.herdr.common.utils.launchSilent
+import dev.icerock.moko.mvvm.dispatcher.EventsDispatcher
+import dev.icerock.moko.mvvm.dispatcher.EventsDispatcherOwner
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
+import dev.icerock.moko.mvvm.livedata.readOnly
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import io.ktor.utils.io.errors.IOException
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -34,7 +37,9 @@ import kotlinx.coroutines.Job
 import org.kodein.di.erased.instance
 import kotlin.coroutines.CoroutineContext
 
-class DriveLoginViewModel(secureDataStore: SecureDataStore) : ViewModel() {
+class DriveLoginViewModel(secureDataStore: SecureDataStore,
+    override val eventsDispatcher: EventsDispatcher<DriveLoginFragmentEventListener>)
+    : ViewModel(), EventsDispatcherOwner<DriveLoginViewModel.DriveLoginFragmentEventListener> {
 
     private val _authClientRegistrationResult =
         MutableLiveData<AuthClientRegistrationState>(
@@ -57,6 +62,12 @@ class DriveLoginViewModel(secureDataStore: SecureDataStore) : ViewModel() {
         MutableLiveData(false)
     val requestAuthFlowEvent: LiveData<Boolean>
         get() = _requestAuthFlow
+
+    //Seems to be the only way it works with xml syntax
+    //See: https://github.com/icerockdev/moko-mvvm/tree/release/0.6.0#viewmodel-for-login-feature
+    private val _finalUrl =
+        MutableLiveData("https://username.mycozy.cloud")
+    val finalUrl: LiveData<String> = _finalUrl.readOnly()
 
     fun authFlowRequestProcessed() {
         _requestAuthFlow.value = false
@@ -81,6 +92,21 @@ class DriveLoginViewModel(secureDataStore: SecureDataStore) : ViewModel() {
         initAuthAccessAndRefreshTokenFromCache()
     }
 
+    private fun getCozyUrl(userInput: String): String {
+        return when {
+            (!userInput.contains(URL_PERIOD)) && (!userInput.contains(URL_HTTP)) ->
+                "https://$userInput.mycozy.cloud"
+            (userInput.contains(URL_PERIOD)) && (!userInput.contains(URL_HTTP)) ->
+                "https://$userInput"
+            (!userInput.contains(URL_PERIOD)) && (userInput.contains(URL_HTTP)) ->
+                "$userInput.mycozy.cloud"
+            else -> userInput
+        }
+
+    }
+        fun urlChanged(newInput: String) {
+        _finalUrl.value = getCozyUrl(newInput)
+    }
 
     private fun initAuthClientFromCache() = launchSilent(
         coroutineContext,
@@ -102,12 +128,12 @@ class DriveLoginViewModel(secureDataStore: SecureDataStore) : ViewModel() {
         processRetrieveAccessAndRefreshTokenResponse(response)
     }
 
-    fun registerAuthClient(stackBaseUrl: String) = launchSilent(
+    fun registerAuthClient() = launchSilent(
         coroutineContext,
         exceptionHandler, job
     ) {
         _authClientRegistrationResult.postValue(InProgressAuthClientRegistration())
-        val useCaseInput = RegisterAuthClientUseCaseInput(stackBaseUrl)
+        val useCaseInput = RegisterAuthClientUseCaseInput(_finalUrl.value)
         val response = registerAuthClientUseCase.execute(useCaseInput)
         processRegistrationResponse(response, true)
     }
@@ -196,5 +222,18 @@ class DriveLoginViewModel(secureDataStore: SecureDataStore) : ViewModel() {
 
     fun setErrorUserCredentials(e: Throwable) {
         _userCredentials.postValue(ErrorUserCredentials(Response.Error(e)))
+    }
+
+    fun onCreateAccountButtonPressed() {
+        eventsDispatcher.dispatchEvent { routeToCreateAccount() }
+    }
+
+    interface DriveLoginFragmentEventListener {
+        fun routeToCreateAccount()
+    }
+
+    companion object {
+        private val URL_HTTP = Regex("^https?://", RegexOption.IGNORE_CASE)
+        private val URL_PERIOD = Regex("^.*[.]", RegexOption.IGNORE_CASE)
     }
 }

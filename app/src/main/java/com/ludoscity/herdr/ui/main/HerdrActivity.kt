@@ -16,20 +16,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.herdr.common.ui.login
+package com.ludoscity.herdr.ui.main
 
-import com.ludoscity.herdr.common.base.Response
-import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import com.ludoscity.herdr.R
 
-sealed class AuthClientRegistrationState {
-    abstract val response: Response<AuthClientRegistration>?
+class HerdrActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setContentView(R.layout.activity_herdr)
+    }
 }
-
-data class SuccessAuthClientRegistration(override val response: Response<AuthClientRegistration>) :
-    AuthClientRegistrationState()
-
-data class InProgressAuthClientRegistration(override val response: Response<AuthClientRegistration>? = null) :
-    AuthClientRegistrationState()
-
-data class ErrorAuthClientRegistration(override val response: Response<AuthClientRegistration>) :
-    AuthClientRegistrationState()

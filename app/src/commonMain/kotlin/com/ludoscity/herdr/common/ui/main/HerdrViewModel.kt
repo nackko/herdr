@@ -16,20 +16,9 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.herdr.common.ui.login
+package com.ludoscity.herdr.common.ui.main
 
-import com.ludoscity.herdr.common.domain.entity.UserCredentials
-import com.ludoscity.herdr.common.base.Response
+import dev.icerock.moko.mvvm.viewmodel.ViewModel
 
-sealed class UserCredentialsState {
-    abstract val response: Response<UserCredentials>?
+class HerdrViewModel : ViewModel() {
 }
-
-data class SuccessUserCredentials(override val response: Response<UserCredentials>) :
-    UserCredentialsState()
-
-data class InProgressUserCredentials(override val response: Response<UserCredentials>? = null) :
-    UserCredentialsState()
-
-data class ErrorUserCredentials(override val response: Response<UserCredentials>) :
-    UserCredentialsState()

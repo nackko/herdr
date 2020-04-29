@@ -17,21 +17,22 @@
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<!-- The merge tag can be used to eliminate redundant layouts when
-     including layouts, and it's a good idea to use it.
-     See: https://developer.android.com/training/improving-layouts/reusing-layouts -->
-
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/nav_host_fragment"
-        android:name="com.ludoscity.herdr.ui.MyNavHostFragment"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/navigation"
-        tools:context=".HerdrActivity"/>
+        android:background="#715177">
 
-</merge>
+    <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/primary_text_dark"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Web in CustomTab" />
+</androidx.constraintlayout.widget.ConstraintLayout>

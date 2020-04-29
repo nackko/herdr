@@ -1,0 +1,85 @@
+<!--
+  ~     Copyright (c) 2020. f8full https://github.com/f8full
+  ~     Herdr is a privacy conscious multiplatform mobile data collector
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Lesser General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Lesser General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU Lesser General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="driveSetupViewModel"
+            type="com.ludoscity.herdr.common.ui.drivesetup.DriveSetupViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.ludoscity.herdr.ui.drivesetup.DriveSetupFragment">
+
+        <ImageView
+            android:id="@+id/home_add_connection_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/btn_star_big_on"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.20" />
+
+        <TextView
+            android:id="@+id/drive_setup_confirm_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text="Would you like to connect your Cozy Drive?"
+            app:layout_constraintBottom_toTopOf="@+id/connection_setup_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/home_add_connection_image" />
+
+        <Button
+            android:id="@+id/connection_setup_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:width="250dp"
+            android:backgroundTint="#FFFF96C8"
+            android:text="Create Connection"
+            android:onClick="@{() -> driveSetupViewModel.onLoginButtonPressed()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:width="250dp"
+            android:background="#FFFFFF"
+            android:text="Create New Account"
+            android:onClick="@{() -> driveSetupViewModel.onCreateAccountButtonPressed()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/connection_setup_button"
+            app:layout_constraintVertical_bias="0.05" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

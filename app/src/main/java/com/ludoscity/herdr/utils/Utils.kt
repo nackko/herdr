@@ -16,18 +16,23 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.herdr.ui
+package com.ludoscity.herdr.utils
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.ludoscity.herdr.common.data.SecureDataStore
-import com.ludoscity.herdr.common.ui.login.LoginViewModel
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.EditText
 
-class HerdrActivityModelFactory(private val dataStore: SecureDataStore) : ViewModelProvider.NewInstanceFactory() {
+/**
+ * Extension function to simplify setting an afterTextChanged action to EditText components.
+ */
+fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
+    this.addTextChangedListener(object : TextWatcher {
+        override fun afterTextChanged(editable: Editable?) {
+            afterTextChanged.invoke(editable.toString())
+        }
 
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
-        @Suppress("UNCHECKED_CAST")
-        return LoginViewModel(dataStore) as T
-    }
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+    })
 }

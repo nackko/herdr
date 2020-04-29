@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~     Copyright (c) 2020. f8full https://github.com/f8full
+  ~     Herdr is a privacy conscious multiplatform mobile data collector
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Lesser General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Lesser General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU Lesser General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/startFragment">
+
+    <fragment
+        android:id="@+id/startFragment"
+        android:name="com.ludoscity.herdr.ui.start.StartFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_start">
+        <action
+            android:id="@+id/action_startFragment_to_driveSetupFragment"
+            app:destination="@id/driveSetupFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/driveSetupFragment"
+        android:name="com.ludoscity.herdr.ui.drivesetup.DriveSetupFragment"
+        android:label="DriveSetupFragment"
+        tools:layout="@layout/fragment_drive_setup">
+        <action
+            android:id="@+id/action_driveSetupFragment_to_driveLoginFragment"
+            app:destination="@id/driveLoginFragment" />
+        <action
+            android:id="@+id/action_driveSetupFragment_to_createAccount"
+            app:destination="@id/create_account" />
+    </fragment>
+
+    <customtab
+        android:id="@+id/create_account"
+        android:name="com.ludoscity.herdr.ui.CustomTabsNavigator"
+        android:label="CreateAccount"
+        app:secondaryToolbarColor="@color/theme_accent"
+        app:toolbarColor="@color/theme_primary"
+        tools:layout="@layout/tools_graph_placeholder_layout"/>
+
+    <fragment
+        android:id="@+id/driveLoginFragment"
+        android:name="com.ludoscity.herdr.ui.drivelogin.DriveLoginFragment"
+        android:label="DriveLoginFragment"
+        tools:layout="@layout/fragment_drive_login" >
+        <action
+            android:id="@+id/action_driveLoginFragment_to_create_account"
+            app:destination="@id/create_account" />
+    </fragment>
+</navigation>

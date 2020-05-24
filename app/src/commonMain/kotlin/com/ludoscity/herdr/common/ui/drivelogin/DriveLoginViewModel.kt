@@ -23,6 +23,8 @@ import com.ludoscity.herdr.common.data.SecureDataStore
 import com.ludoscity.herdr.common.di.KodeinInjector
 import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
 import com.ludoscity.herdr.common.domain.entity.UserCredentials
+import com.ludoscity.herdr.common.domain.usecase.injection.InjectDataStoreUseCaseInput
+import com.ludoscity.herdr.common.domain.usecase.injection.InjectDataStoreUseCaseSync
 import com.ludoscity.herdr.common.domain.usecase.login.*
 import com.ludoscity.herdr.common.utils.launchSilent
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcher
@@ -85,7 +87,9 @@ class DriveLoginViewModel(secureDataStore: SecureDataStore,
 
 
     init {
-        val input = InjectDataStoreUseCaseInput(secureDataStore)
+        val input = InjectDataStoreUseCaseInput(
+            secureDataStore
+        )
         injectDataStoreUseCase.execute(input)
         //TODO: shall we check for injection error before proceeding. Would be hard to recover from
         initAuthClientFromCache()

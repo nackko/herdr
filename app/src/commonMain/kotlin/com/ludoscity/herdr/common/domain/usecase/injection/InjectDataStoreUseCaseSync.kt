@@ -15,15 +15,17 @@
  *     You should have received a copy of the GNU Lesser General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.ludoscity.herdr.common.domain.usecase.login
+package com.ludoscity.herdr.common.domain.usecase.injection
 
-import com.ludoscity.herdr.common.data.SecureDataStore
-import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseInput
+import com.ludoscity.herdr.common.base.Response
+import com.ludoscity.herdr.common.data.repository.LoginRepository
+import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseSync
 
-class InjectDataStoreUseCaseInput(val store: SecureDataStore) :
-    BaseUseCaseInput {
-    override fun validate(): Boolean {
-        //TODO: validate store?
-        return true
+class InjectDataStoreUseCaseSync(private val repo: LoginRepository) :
+    BaseUseCaseSync<InjectDataStoreUseCaseInput,
+            Unit>() {
+    override fun run(): Response<Unit> {
+        repo.setDataStore(input!!.store)
+        return Response.Success(Unit)
     }
 }

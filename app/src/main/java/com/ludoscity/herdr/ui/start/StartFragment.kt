@@ -22,6 +22,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.ludoscity.herdr.BR
 import com.ludoscity.herdr.R
+import com.ludoscity.herdr.common.data.database.DatabaseCreator
+import com.ludoscity.herdr.common.data.database.DbArgs
 import com.ludoscity.herdr.common.ui.start.StartViewModel
 import com.ludoscity.herdr.databinding.FragmentStartBinding
 import dev.icerock.moko.mvvm.MvvmEventsFragment
@@ -35,7 +37,12 @@ class StartFragment : MvvmEventsFragment<FragmentStartBinding, StartViewModel,
     override val viewModelClass: Class<StartViewModel> = StartViewModel::class.java
 
     override fun viewModelFactory(): ViewModelProvider.Factory {
-        return createViewModelFactory { StartViewModel(eventsDispatcherOnMain()) }
+        return createViewModelFactory {
+            StartViewModel(
+                herdrDatabase = DatabaseCreator.getDataBase(DbArgs(requireContext()))!!,
+                eventsDispatcher = eventsDispatcherOnMain()
+            )
+        }
     }
 
     override fun routeToDriveSetup() {

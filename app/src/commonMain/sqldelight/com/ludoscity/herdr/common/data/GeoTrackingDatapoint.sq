@@ -1,0 +1,40 @@
+
+CREATE TABLE geoTrackingDatapoint (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    timestamp_epoch INTEGER NOT NULL,
+    altitude REAL,
+    accuracy_horizontal_meters REAL NOT NULL,
+    accuracy_vertical_meters REAL,
+    latitude REAL NOT NULL,
+    longitude REAL NOT NULL,
+    upload_completed INTEGER NOT NULL,
+    timestamp TEXT NOT NULL
+);
+
+
+insertOrReplace:
+INSERT OR REPLACE INTO geoTrackingDatapoint(
+    timestamp_epoch,
+    altitude,
+    accuracy_horizontal_meters,
+    accuracy_vertical_meters,
+    latitude,
+    longitude,
+    upload_completed,
+    timestamp
+    ) VALUES ?;
+
+getById:
+SELECT * FROM geoTrackingDatapoint WHERE id = ?;
+
+selectAll:
+SELECT * FROM geoTrackingDatapoint;
+
+deleteById:
+DELETE FROM geoTrackingDatapoint WHERE id = ?;
+
+deleteUploadedAll:
+DELETE FROM geoTrackingDatapoint WHERE upload_completed = 1;
+
+updateUploadCompleted:
+UPDATE geoTrackingDatapoint SET upload_completed = 1 WHERE id = ?;

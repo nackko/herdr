@@ -22,8 +22,10 @@ import com.ludoscity.herdr.common.ApplicationDispatcher
 import com.ludoscity.herdr.common.data.network.INetworkDataPipe
 import com.ludoscity.herdr.common.data.network.cozy.CozyCloupApi
 import com.ludoscity.herdr.common.data.network.cozy.CozyDataPipe
+import com.ludoscity.herdr.common.data.repository.GeoTrackingRepository
 import com.ludoscity.herdr.common.data.repository.LoginRepository
-import com.ludoscity.herdr.common.domain.usecase.login.InjectDataStoreUseCaseSync
+import com.ludoscity.herdr.common.domain.usecase.injection.InjectDataStoreUseCaseSync
+import com.ludoscity.herdr.common.domain.usecase.injection.InjectDatabaseUseCaseSync
 import com.ludoscity.herdr.common.domain.usecase.login.RegisterAuthClientUseCaseAsync
 import com.ludoscity.herdr.common.domain.usecase.login.RetrieveAccessAndRefreshTokenUseCaseAsync
 import com.ludoscity.herdr.common.domain.usecase.login.UnregisterAuthClientUseCaseAsync
@@ -66,8 +68,15 @@ val KodeinInjector = Kodein {
         )
     }
 
+    bind<InjectDatabaseUseCaseSync>() with singleton {
+        InjectDatabaseUseCaseSync(
+            instance()
+        )
+    }
+
     //repo
     bind<LoginRepository>() with singleton { LoginRepository(instance()) }
+    bind<GeoTrackingRepository>() with singleton { GeoTrackingRepository() }
 
     //data pipe
     bind<INetworkDataPipe>() with provider { CozyDataPipe(instance()) }

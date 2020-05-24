@@ -1,9 +1,10 @@
 plugins {
     //TODO: this should be synced with the kotlinVersion ext from root gradle file
-    id("org.jetbrains.kotlin.multiplatform") version "$kotlinVersion"
-    id("org.jetbrains.kotlin.kapt") version "$kotlinVersion"
+    id("org.jetbrains.kotlin.multiplatform") //version "$kotlinVersion"
+    id("org.jetbrains.kotlin.kapt") //version "$kotlinVersion"
     //TODO: use kotlinx serialization with Ktor
     id("org.jetbrains.kotlin.plugin.serialization") version "$kotlinVersion"
+    id("com.squareup.sqldelight")
     id("com.android.application")
 }
 repositories {
@@ -146,6 +147,9 @@ kotlin {
 
                 // KTOR
                 implementation "io.ktor:ktor-client-android:$ktorVersion"
+
+                // SQL Delight
+                implementation "com.squareup.sqldelight:android-driver:$sqlDelightVersion"
             }
         }
         androidTest {
@@ -165,6 +169,9 @@ kotlin {
 
             //KTOR
             implementation("io.ktor:ktor-client-ios:$ktorVersion")
+
+            // SQL Delight
+            implementation "com.squareup.sqldelight:ios-driver:$sqlDelightVersion"
         }
         iosTest {
         }
@@ -190,5 +197,11 @@ task copyFramework {
             include 'app.framework/**'
             include 'app.framework.dSYM'
         }
+    }
+}
+
+sqldelight {
+    HerdrDatabase {
+        packageName = "com.ludoscity.herdr.common.data.database"
     }
 }

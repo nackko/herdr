@@ -37,9 +37,11 @@ buildscript {
         navigationVersion = "2.2.2"
         securityCryptoVersion = "1.0.0-rc01"
         serializerVersion = "0.20.0"
+        sqlDelightVersion = "1.2.1"
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$gradleVersion"
+        classpath "com.squareup.sqldelight:gradle-plugin:$sqlDelightVersion"
     }
 }
 allprojects {

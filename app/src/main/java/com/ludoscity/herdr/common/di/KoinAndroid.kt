@@ -16,19 +16,28 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.herdr.common.domain.usecase.login
+package com.ludoscity.herdr.common.di
 
-import com.ludoscity.herdr.common.base.Response
-import com.ludoscity.herdr.common.data.repository.LoginRepository
-import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
-import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseAsync
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import co.touchlab.kermit.Kermit
+import co.touchlab.kermit.LogcatLogger
+import com.ludoscity.herdr.common.data.SecureDataStore
+import com.ludoscity.herdr.common.data.database.HerdrDatabase
+import com.squareup.sqldelight.android.AndroidSqliteDriver
+import com.squareup.sqldelight.db.SqlDriver
+import org.koin.core.module.Module
+import org.koin.dsl.module
 
-class RegisterAuthClientUseCaseAsync : KoinComponent,
-    BaseUseCaseAsync<RegisterAuthClientUseCaseInput, AuthClientRegistration>() {
-    private val repo: LoginRepository by inject()
-    override suspend fun run(): Response<AuthClientRegistration> {
-        return repo.getAuthClientRegistration(input!!.baseUrl, input!!.fromCacheOnly)
+
+actual val platformModule: Module = module {
+    single<SqlDriver> {
+        AndroidSqliteDriver(
+            HerdrDatabase.Schema,
+            get(),
+            "herdr.db"
+        )
     }
+
+    single { SecureDataStore(get()) }
+    val baseKermit = Kermit(LogcatLogger()).withTag("KampKit")
+    factory { (tag: String?) -> if (tag != null) baseKermit.withTag(tag) else baseKermit }
 }

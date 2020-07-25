@@ -18,45 +18,33 @@
 
 package com.ludoscity.herdr.common.ui.start
 
-import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.data.GeoTrackingDatapoint
-import com.ludoscity.herdr.common.data.database.HerdrDatabase
-import com.ludoscity.herdr.common.di.KodeinInjector
 import com.ludoscity.herdr.common.domain.usecase.geotracking.SaveGeotrackingDatapointUseCaseAsync
 import com.ludoscity.herdr.common.domain.usecase.geotracking.SaveGeotrackingDatapointUseCaseInput
-import com.ludoscity.herdr.common.domain.usecase.injection.InjectDatabaseUseCaseInput
-import com.ludoscity.herdr.common.domain.usecase.injection.InjectDatabaseUseCaseSync
 import com.ludoscity.herdr.common.utils.launchSilent
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcher
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcherOwner
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
-import org.kodein.di.erased.instance
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import kotlin.coroutines.CoroutineContext
 
 class StartViewModel(
-    herdrDatabase: HerdrDatabase,
     override val eventsDispatcher: EventsDispatcher<StartFragmentEventListener>
-) : ViewModel(), EventsDispatcherOwner<StartViewModel.StartFragmentEventListener> {
+) : KoinComponent, ViewModel(), EventsDispatcherOwner<StartViewModel.StartFragmentEventListener> {
 
-    private val injectDatabaseUseCase by KodeinInjector.instance<InjectDatabaseUseCaseSync>()
-    private val saveGeotrackingDatapointUseCaseAsync by KodeinInjector.instance<SaveGeotrackingDatapointUseCaseAsync>()
+    private val saveGeotrackingDatapointUseCaseAsync: SaveGeotrackingDatapointUseCaseAsync by inject()
 
     // ASYNC - COROUTINES
-    private val coroutineContext by KodeinInjector.instance<CoroutineContext>()
+    private val coroutineContext: CoroutineContext by inject()
     private var job: Job = Job()
     private val exceptionHandler = CoroutineExceptionHandler { _, _ -> }
-
-    init {
-        val input = InjectDatabaseUseCaseInput(herdrDatabase)
-        injectDatabaseUseCase.execute(input)
-    }
 
     fun onSetupButtonPressed() {
         eventsDispatcher.dispatchEvent { routeToDriveSetup() }
         //addRowToDb()
-
     }
 
     interface StartFragmentEventListener {
@@ -68,13 +56,8 @@ class StartViewModel(
         exceptionHandler, job
     ) {
         val useCaseInput = SaveGeotrackingDatapointUseCaseInput(
-            GeoTrackingDatapoint.Impl(-1, 666, null, 66.6, null, 66.6, 66.6, 0, "666")
+            GeoTrackingDatapoint(-1, 666, null, 66.6, null, 66.6, 66.6, 0, "666")
         )
         val response = saveGeotrackingDatapointUseCaseAsync.execute(useCaseInput)
-        if (response is Response.Success) {
-            eventsDispatcher.dispatchEvent { routeToDriveSetup() }
-        } else {
-            eventsDispatcher.dispatchEvent { routeToDriveSetup() }
-        }
     }
 }

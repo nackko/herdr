@@ -22,12 +22,19 @@ import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
 import com.ludoscity.herdr.common.domain.entity.UserCredentials
 
-abstract class INetworkDataPipe {
-    abstract suspend fun registerAuthClient(stackBase: String): Response<AuthClientRegistration>
-    abstract suspend fun exchangeCodeForAccessAndRefreshToken(
+interface INetworkDataPipe {
+    suspend fun registerAuthClient(stackBase: String): Response<AuthClientRegistration>
+    suspend fun exchangeCodeForAccessAndRefreshToken(
         authCode: String,
         authRegistrationInfo: AuthClientRegistration
     ): Response<UserCredentials>
 
-    abstract suspend fun unregisterAuthClient(authRegistrationInfo: AuthClientRegistration): Response<Unit>
+    suspend fun refreshAccessToken(
+        authRegistrationInfo: AuthClientRegistration,
+        expiredCred: UserCredentials
+    ): Response<UserCredentials>
+
+    suspend fun unregisterAuthClient(authRegistrationInfo: AuthClientRegistration): Response<Unit>
+
+    suspend fun postDirectory(stackBase: String, dirName: String): Response<String>
 }

@@ -15,15 +15,19 @@
  *     You should have received a copy of the GNU Lesser General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.ludoscity.herdr.common.domain.usecase.injection
 
-import com.ludoscity.herdr.common.data.database.HerdrDatabase
-import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseInput
+package com.ludoscity.herdr.ui.main
 
-class InjectDatabaseUseCaseInput(val db: HerdrDatabase) :
-    BaseUseCaseInput {
-    override fun validate(): Boolean {
-        //TODO: validate store?
-        return true
+import android.app.Application
+import android.content.Context
+import com.ludoscity.herdr.common.di.initKoin
+import org.koin.dsl.module
+
+class HerdrApp : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        initKoin {
+            modules(module { single<Context> { this@HerdrApp } })
+        }
     }
 }

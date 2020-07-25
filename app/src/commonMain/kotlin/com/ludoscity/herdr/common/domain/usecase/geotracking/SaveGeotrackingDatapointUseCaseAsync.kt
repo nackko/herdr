@@ -22,9 +22,12 @@ import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.data.GeoTrackingDatapoint
 import com.ludoscity.herdr.common.data.repository.GeoTrackingRepository
 import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseAsync
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-class SaveGeotrackingDatapointUseCaseAsync(private val repo: GeoTrackingRepository) :
+class SaveGeotrackingDatapointUseCaseAsync : KoinComponent,
     BaseUseCaseAsync<SaveGeotrackingDatapointUseCaseInput, List<GeoTrackingDatapoint>>() {
+    private val repo: GeoTrackingRepository by inject()
     override suspend fun run(): Response<List<GeoTrackingDatapoint>> {
         return repo.insertGeoTrackingDatapoint(input!!.toSave)
     }

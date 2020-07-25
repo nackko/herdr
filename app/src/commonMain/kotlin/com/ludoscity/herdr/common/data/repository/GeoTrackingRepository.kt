@@ -22,14 +22,12 @@ import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.data.GeoTrackingDatapoint
 import com.ludoscity.herdr.common.data.database.HerdrDatabase
 import com.ludoscity.herdr.common.data.database.dao.GeoTrackingDatapointDao
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-class GeoTrackingRepository {
+class GeoTrackingRepository : KoinComponent {
 
-    private lateinit var herdrDb: HerdrDatabase
-
-    fun setDatabase(dbToSet: HerdrDatabase) {
-        herdrDb = dbToSet
-    }
+    private val herdrDb: HerdrDatabase by inject()
 
     suspend fun insertGeoTrackingDatapoint(record: GeoTrackingDatapoint): Response<List<GeoTrackingDatapoint>> {
         val geoTrackingDao = GeoTrackingDatapointDao(herdrDb)

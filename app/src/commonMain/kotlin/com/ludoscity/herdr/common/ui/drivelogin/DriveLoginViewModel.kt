@@ -18,13 +18,10 @@
 
 package com.ludoscity.herdr.common.ui.drivelogin
 
+import co.touchlab.kermit.Kermit
 import com.ludoscity.herdr.common.base.Response
-import com.ludoscity.herdr.common.data.SecureDataStore
-import com.ludoscity.herdr.common.di.KodeinInjector
 import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
 import com.ludoscity.herdr.common.domain.entity.UserCredentials
-import com.ludoscity.herdr.common.domain.usecase.injection.InjectDataStoreUseCaseInput
-import com.ludoscity.herdr.common.domain.usecase.injection.InjectDataStoreUseCaseSync
 import com.ludoscity.herdr.common.domain.usecase.login.*
 import com.ludoscity.herdr.common.utils.launchSilent
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcher
@@ -36,12 +33,17 @@ import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import io.ktor.utils.io.errors.IOException
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
-import org.kodein.di.erased.instance
+import org.koin.core.KoinComponent
+import org.koin.core.inject
+import org.koin.core.parameter.parametersOf
 import kotlin.coroutines.CoroutineContext
 
-class DriveLoginViewModel(secureDataStore: SecureDataStore,
-    override val eventsDispatcher: EventsDispatcher<DriveLoginFragmentEventListener>)
-    : ViewModel(), EventsDispatcherOwner<DriveLoginViewModel.DriveLoginFragmentEventListener> {
+class DriveLoginViewModel(override val eventsDispatcher: EventsDispatcher<DriveLoginFragmentEventListener>) :
+    KoinComponent,
+    ViewModel(),
+    EventsDispatcherOwner<DriveLoginViewModel.DriveLoginFragmentEventListener> {
+
+    private val log: Kermit by inject { parametersOf("DriveLoginViewModel") }
 
     private val _authClientRegistrationResult =
         MutableLiveData<AuthClientRegistrationState>(
@@ -50,8 +52,9 @@ class DriveLoginViewModel(secureDataStore: SecureDataStore,
     val authClientRegistrationResult: LiveData<AuthClientRegistrationState>
         get() = _authClientRegistrationResult
 
-    private val registerAuthClientUseCase by KodeinInjector.instance<RegisterAuthClientUseCaseAsync>()
-    private val unregisterAuthClientUseCase by KodeinInjector.instance<UnregisterAuthClientUseCaseAsync>()
+    private val registerAuthClientUseCase: RegisterAuthClientUseCaseAsync by inject()
+    private val unregisterAuthClientUseCase: UnregisterAuthClientUseCaseAsync by inject()
+    private val createDirectoryUseCase: CreateDirectoryUseCaseAsync by inject()
 
     private val _userCredentials =
         MutableLiveData<UserCredentialsState>(
@@ -75,23 +78,16 @@ class DriveLoginViewModel(secureDataStore: SecureDataStore,
         _requestAuthFlow.value = false
     }
 
-    private val retrieveAccessAndRefreshTokenUseCase
-            by KodeinInjector.instance<RetrieveAccessAndRefreshTokenUseCaseAsync>()
-
-    private val injectDataStoreUseCase by KodeinInjector.instance<InjectDataStoreUseCaseSync>()
+    private val retrieveAccessAndRefreshTokenUseCase: RetrieveAccessAndRefreshTokenUseCaseAsync
+            by inject()
 
     // ASYNC - COROUTINES
-    private val coroutineContext by KodeinInjector.instance<CoroutineContext>()
+    private val coroutineContext: CoroutineContext by inject()
     private var job: Job = Job()
     private val exceptionHandler = CoroutineExceptionHandler { _, _ -> }
 
 
     init {
-        val input = InjectDataStoreUseCaseInput(
-            secureDataStore
-        )
-        injectDataStoreUseCase.execute(input)
-        //TODO: shall we check for injection error before proceeding. Would be hard to recover from
         initAuthClientFromCache()
         initAuthAccessAndRefreshTokenFromCache()
     }
@@ -136,6 +132,7 @@ class DriveLoginViewModel(secureDataStore: SecureDataStore,
         coroutineContext,
         exceptionHandler, job
     ) {
+        log.d { "About to register auth client" }
         _authClientRegistrationResult.postValue(InProgressAuthClientRegistration())
         val useCaseInput = RegisterAuthClientUseCaseInput(_finalUrl.value)
         val response = registerAuthClientUseCase.execute(useCaseInput)
@@ -224,12 +221,24 @@ class DriveLoginViewModel(secureDataStore: SecureDataStore,
         }
     }
 
+    private fun testConnection() = launchSilent(
+        coroutineContext,
+        exceptionHandler, job
+    ) {
+
+        //val useCaseInput = RetrieveAccessAndRefreshTokenUseCaseInput(authCode)
+        createDirectoryUseCase.execute()
+
+        //processRetrieveAccessAndRefreshTokenResponse(response)
+    }
+
     fun setErrorUserCredentials(e: Throwable) {
         _userCredentials.postValue(ErrorUserCredentials(Response.Error(e)))
     }
 
     fun onCreateAccountButtonPressed() {
         eventsDispatcher.dispatchEvent { routeToCreateAccount() }
+        //testConnection()
     }
 
     interface DriveLoginFragmentEventListener {

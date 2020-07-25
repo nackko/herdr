@@ -15,20 +15,18 @@
  *     You should have received a copy of the GNU Lesser General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+package com.ludoscity.herdr.common.domain.usecase.login
 
-package com.ludoscity.herdr.common.data.network.cozy
+import com.ludoscity.herdr.common.base.Response
+import com.ludoscity.herdr.common.data.repository.LoginRepository
+import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseAsync
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class TokenExchangeSuccessReply(
-    @SerialName("access_token")
-    val accessToken: String,
-    @SerialName("token_type")
-    val tokenType: String,
-    @SerialName("refresh_token")
-    val refreshToken: String,
-    @SerialName("scope")
-    val scope: String
-)
+class CreateDirectoryUseCaseAsync : KoinComponent,
+    BaseUseCaseAsync<Nothing, String>() {
+    private val repo: LoginRepository by inject()
+    override suspend fun run(): Response<String> {
+        return repo.createDirectory()
+    }
+}

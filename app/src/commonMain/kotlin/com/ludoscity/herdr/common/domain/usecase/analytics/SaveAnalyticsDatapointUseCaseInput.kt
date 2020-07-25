@@ -15,17 +15,15 @@
  *     You should have received a copy of the GNU Lesser General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.ludoscity.herdr.common.domain.usecase.injection
 
-import com.ludoscity.herdr.common.base.Response
-import com.ludoscity.herdr.common.data.repository.GeoTrackingRepository
-import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseSync
+package com.ludoscity.herdr.common.domain.usecase.analytics
 
-class InjectDatabaseUseCaseSync(private val repo: GeoTrackingRepository) :
-    BaseUseCaseSync<InjectDatabaseUseCaseInput,
-            Unit>() {
-    override fun run(): Response<Unit> {
-        repo.setDatabase(input!!.db)
-        return Response.Success(Unit)
+import com.ludoscity.herdr.common.data.AnalTrackingDatapoint
+import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseInput
+
+class SaveAnalyticsDatapointUseCaseInput(val toSave: AnalTrackingDatapoint) :
+    BaseUseCaseInput {
+    override fun validate(): Boolean {
+        return true
     }
 }

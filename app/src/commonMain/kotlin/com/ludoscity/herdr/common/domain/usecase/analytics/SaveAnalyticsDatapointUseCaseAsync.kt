@@ -15,15 +15,19 @@
  *     You should have received a copy of the GNU Lesser General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.ludoscity.herdr.common.domain.usecase.injection
+package com.ludoscity.herdr.common.domain.usecase.analytics
 
-import com.ludoscity.herdr.common.data.SecureDataStore
-import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseInput
+import com.ludoscity.herdr.common.base.Response
+import com.ludoscity.herdr.common.data.AnalTrackingDatapoint
+import com.ludoscity.herdr.common.data.repository.AnalTrackingRepository
+import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseAsync
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-class InjectDataStoreUseCaseInput(val store: SecureDataStore) :
-    BaseUseCaseInput {
-    override fun validate(): Boolean {
-        //TODO: validate store?
-        return true
+class SaveAnalyticsDatapointUseCaseAsync : KoinComponent,
+    BaseUseCaseAsync<SaveAnalyticsDatapointUseCaseInput, List<AnalTrackingDatapoint>>() {
+    private val repo: AnalTrackingRepository by inject()
+    override suspend fun run(): Response<List<AnalTrackingDatapoint>> {
+        return repo.insertAnalTrackingDatapoint(input!!.toSave)
     }
 }

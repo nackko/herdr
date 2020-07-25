@@ -184,7 +184,7 @@ kotlin {
             implementation("io.ktor:ktor-client-serialization-native:$ktorVersion")
 
             // SQL Delight
-            implementation "com.squareup.sqldelight:ios-driver:$sqlDelightVersion"
+            implementation "com.squareup.sqldelight:native-driver:$sqlDelightVersion"
         }
         iosTest {
         }

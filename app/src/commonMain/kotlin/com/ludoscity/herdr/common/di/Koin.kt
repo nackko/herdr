@@ -4,8 +4,10 @@ import com.ludoscity.herdr.common.ApplicationDispatcher
 import com.ludoscity.herdr.common.data.database.HerdrDatabase
 import com.ludoscity.herdr.common.data.network.INetworkDataPipe
 import com.ludoscity.herdr.common.data.network.cozy.CozyCloupApi
+import com.ludoscity.herdr.common.data.repository.AnalTrackingRepository
 import com.ludoscity.herdr.common.data.repository.GeoTrackingRepository
 import com.ludoscity.herdr.common.data.repository.LoginRepository
+import com.ludoscity.herdr.common.domain.usecase.analytics.SaveAnalyticsDatapointUseCaseAsync
 import com.ludoscity.herdr.common.domain.usecase.geotracking.SaveGeotrackingDatapointUseCaseAsync
 import com.ludoscity.herdr.common.domain.usecase.login.*
 import org.koin.core.context.startKoin
@@ -29,6 +31,7 @@ private val coreModule = module {
     //repo
     single { LoginRepository() }
     single { GeoTrackingRepository() }
+    single { AnalTrackingRepository() }
 
     //use case
     single { RegisterAuthClientUseCaseAsync() }
@@ -37,6 +40,7 @@ private val coreModule = module {
     single { RefreshAccessAndRefreshTokenUseCaseAsync() }
     single { CreateDirectoryUseCaseAsync() }
     single { SaveGeotrackingDatapointUseCaseAsync() }
+    single { SaveAnalyticsDatapointUseCaseAsync() }
 }
 
 internal inline fun <reified T> Scope.getWith(vararg params: Any?): T {

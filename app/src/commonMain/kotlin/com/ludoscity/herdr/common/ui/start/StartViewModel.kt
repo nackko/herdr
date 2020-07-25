@@ -18,7 +18,10 @@
 
 package com.ludoscity.herdr.common.ui.start
 
+import com.ludoscity.herdr.common.data.AnalTrackingDatapoint
 import com.ludoscity.herdr.common.data.GeoTrackingDatapoint
+import com.ludoscity.herdr.common.domain.usecase.analytics.SaveAnalyticsDatapointUseCaseAsync
+import com.ludoscity.herdr.common.domain.usecase.analytics.SaveAnalyticsDatapointUseCaseInput
 import com.ludoscity.herdr.common.domain.usecase.geotracking.SaveGeotrackingDatapointUseCaseAsync
 import com.ludoscity.herdr.common.domain.usecase.geotracking.SaveGeotrackingDatapointUseCaseInput
 import com.ludoscity.herdr.common.utils.launchSilent
@@ -36,6 +39,7 @@ class StartViewModel(
 ) : KoinComponent, ViewModel(), EventsDispatcherOwner<StartViewModel.StartFragmentEventListener> {
 
     private val saveGeotrackingDatapointUseCaseAsync: SaveGeotrackingDatapointUseCaseAsync by inject()
+    private val saveAnaltrackingDatapointUseCaseAsync: SaveAnalyticsDatapointUseCaseAsync by inject()
 
     // ASYNC - COROUTINES
     private val coroutineContext: CoroutineContext by inject()
@@ -44,14 +48,15 @@ class StartViewModel(
 
     fun onSetupButtonPressed() {
         eventsDispatcher.dispatchEvent { routeToDriveSetup() }
-        //addRowToDb()
+        //testAddGeolocationRowToDb()
+        //testAddAnalyticsRowToDb()
     }
 
     interface StartFragmentEventListener {
         fun routeToDriveSetup()
     }
 
-    fun addRowToDb() = launchSilent(
+    private fun testAddGeolocationRowToDb() = launchSilent(
         coroutineContext,
         exceptionHandler, job
     ) {
@@ -59,5 +64,15 @@ class StartViewModel(
             GeoTrackingDatapoint(-1, 666, null, 66.6, null, 66.6, 66.6, 0, "666")
         )
         val response = saveGeotrackingDatapointUseCaseAsync.execute(useCaseInput)
+    }
+
+    private fun testAddAnalyticsRowToDb() = launchSilent(
+        coroutineContext,
+        exceptionHandler, job
+    ) {
+        val useCaseInput = SaveAnalyticsDatapointUseCaseInput(
+            AnalTrackingDatapoint(-1, 666, "666", 66, "666", "666", "666", null, "666", 0, "666")
+        )
+        val response = saveAnaltrackingDatapointUseCaseAsync.execute(useCaseInput)
     }
 }

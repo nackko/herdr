@@ -16,19 +16,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.herdr.common.domain.usecase.login
+package com.ludoscity.herdr.ui.main
 
-import com.ludoscity.herdr.common.base.Response
-import com.ludoscity.herdr.common.data.repository.LoginRepository
-import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
-import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseAsync
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import android.app.Application
+import android.content.Context
+import com.ludoscity.herdr.common.di.initKoin
+import org.koin.dsl.module
 
-class RegisterAuthClientUseCaseAsync : KoinComponent,
-    BaseUseCaseAsync<RegisterAuthClientUseCaseInput, AuthClientRegistration>() {
-    private val repo: LoginRepository by inject()
-    override suspend fun run(): Response<AuthClientRegistration> {
-        return repo.getAuthClientRegistration(input!!.baseUrl, input!!.fromCacheOnly)
+class HerdrApp : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        initKoin {
+            modules(module { single<Context> { this@HerdrApp } })
+        }
     }
 }

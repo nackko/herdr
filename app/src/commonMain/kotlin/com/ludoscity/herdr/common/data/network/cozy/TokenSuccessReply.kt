@@ -15,17 +15,20 @@
  *     You should have received a copy of the GNU Lesser General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.ludoscity.herdr.common.domain.usecase.login
 
-import com.ludoscity.herdr.common.base.Response
-import com.ludoscity.herdr.common.data.repository.LoginRepository
-import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseSync
+package com.ludoscity.herdr.common.data.network.cozy
 
-class InjectDataStoreUseCaseSync(private val repo: LoginRepository) :
-    BaseUseCaseSync<InjectDataStoreUseCaseInput,
-            Unit>() {
-    override fun run(): Response<Unit> {
-        repo.setDataStore(input!!.store)
-        return Response.Success(Unit)
-    }
-}
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class TokenSuccessReply(
+    @SerialName("access_token")
+    val accessToken: String,
+    @SerialName("token_type")
+    val tokenType: String,
+    @SerialName("refresh_token")
+    val refreshToken: String? = null,
+    @SerialName("scope")
+    val scope: String
+)

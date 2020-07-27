@@ -18,20 +18,23 @@
 
 package com.ludoscity.herdr.common.data.repository
 
+import co.touchlab.kermit.Kermit
 import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.data.SecureDataStore
 import com.ludoscity.herdr.common.data.network.INetworkDataPipe
 import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
 import com.ludoscity.herdr.common.domain.entity.UserCredentials
 import io.ktor.utils.io.errors.IOException
+import org.koin.core.KoinComponent
+import org.koin.core.inject
+import org.koin.core.parameter.parametersOf
 
-class LoginRepository(private val networkDataPipe: INetworkDataPipe) {
+class LoginRepository : KoinComponent {
 
-    private lateinit var secureDataStore: SecureDataStore
+    private val log: Kermit by inject { parametersOf("LoginRepository") }
+    private val networkDataPipe: INetworkDataPipe by inject()
 
-    fun setDataStore(storeToSet: SecureDataStore) {
-        secureDataStore = storeToSet
-    }
+    private val secureDataStore: SecureDataStore by inject()
 
     //memory cache
     private var authClientRegistration: AuthClientRegistration? = null
@@ -48,6 +51,7 @@ class LoginRepository(private val networkDataPipe: INetworkDataPipe) {
 
 
     suspend fun getAuthClientRegistration(baseUrl: String, localOnly: Boolean): Response<AuthClientRegistration> {
+        log.d { "About to check for existing client registration..." }
         //First see if we have in memory data...
         return if (authClientRegistration != null) {
             Response.Success(authClientRegistration!!)
@@ -123,6 +127,7 @@ class LoginRepository(private val networkDataPipe: INetworkDataPipe) {
 
     suspend fun getUserCredentials(authCode: String, localOnly: Boolean)
             : Response<UserCredentials> {
+        //log.d { "retrieving user credentials in repo with access token: ${userCredentials?.accessToken}" }
 
         return if (userCredentials != null) {
             Response.Success(userCredentials!!)
@@ -150,5 +155,29 @@ class LoginRepository(private val networkDataPipe: INetworkDataPipe) {
         } else {
             Response.Error(IOException("localOnly==true but no local cache for OAuth access and refresh token"))
         }
+    }
+
+    suspend fun createDirectory(): Response<String> {
+        return networkDataPipe.postDirectory(authClientRegistration?.stackBaseUrl ?: "", "niceDirectory")
+    }
+
+    suspend fun refreshAccessToken(): Response<UserCredentials> {
+        getAuthClientRegistration("", true)
+        getUserCredentials("", true)
+
+        val result = networkDataPipe.refreshAccessToken(authClientRegistration!!, userCredentials!!)
+
+        if (result is Response.Success) {
+            //log.d { "Updating credentials in repository with access token: ${result.data.accessToken}" }
+            userCredentials = result.data
+            secureDataStore.apply {
+                storeString(userCredentialAccessTokenStoreKey, userCredentials!!.accessToken)
+                storeString(userCredentialRefreshTokenStoreKey, userCredentials!!.refreshToken)
+            }
+        } else {
+            Response.Error(IOException("Could not refresh token"))
+        }
+
+        return result
     }
 }

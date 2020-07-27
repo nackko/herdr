@@ -18,18 +18,61 @@
 
 package com.ludoscity.herdr.common.ui.start
 
+import com.ludoscity.herdr.common.data.AnalTrackingDatapoint
+import com.ludoscity.herdr.common.data.GeoTrackingDatapoint
+import com.ludoscity.herdr.common.domain.usecase.analytics.SaveAnalyticsDatapointUseCaseAsync
+import com.ludoscity.herdr.common.domain.usecase.analytics.SaveAnalyticsDatapointUseCaseInput
+import com.ludoscity.herdr.common.domain.usecase.geotracking.SaveGeotrackingDatapointUseCaseAsync
+import com.ludoscity.herdr.common.domain.usecase.geotracking.SaveGeotrackingDatapointUseCaseInput
+import com.ludoscity.herdr.common.utils.launchSilent
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcher
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcherOwner
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Job
+import org.koin.core.KoinComponent
+import org.koin.core.inject
+import kotlin.coroutines.CoroutineContext
 
-class StartViewModel(override val eventsDispatcher: EventsDispatcher<StartFragmentEventListener>)
-    : ViewModel(), EventsDispatcherOwner<StartViewModel.StartFragmentEventListener> {
+class StartViewModel(
+    override val eventsDispatcher: EventsDispatcher<StartFragmentEventListener>
+) : KoinComponent, ViewModel(), EventsDispatcherOwner<StartViewModel.StartFragmentEventListener> {
+
+    private val saveGeotrackingDatapointUseCaseAsync: SaveGeotrackingDatapointUseCaseAsync by inject()
+    private val saveAnaltrackingDatapointUseCaseAsync: SaveAnalyticsDatapointUseCaseAsync by inject()
+
+    // ASYNC - COROUTINES
+    private val coroutineContext: CoroutineContext by inject()
+    private var job: Job = Job()
+    private val exceptionHandler = CoroutineExceptionHandler { _, _ -> }
 
     fun onSetupButtonPressed() {
         eventsDispatcher.dispatchEvent { routeToDriveSetup() }
+        //testAddGeolocationRowToDb()
+        //testAddAnalyticsRowToDb()
     }
 
     interface StartFragmentEventListener {
         fun routeToDriveSetup()
+    }
+
+    private fun testAddGeolocationRowToDb() = launchSilent(
+        coroutineContext,
+        exceptionHandler, job
+    ) {
+        val useCaseInput = SaveGeotrackingDatapointUseCaseInput(
+            GeoTrackingDatapoint(-1, 666, null, 66.6, null, 66.6, 66.6, 0, "666")
+        )
+        val response = saveGeotrackingDatapointUseCaseAsync.execute(useCaseInput)
+    }
+
+    private fun testAddAnalyticsRowToDb() = launchSilent(
+        coroutineContext,
+        exceptionHandler, job
+    ) {
+        val useCaseInput = SaveAnalyticsDatapointUseCaseInput(
+            AnalTrackingDatapoint(-1, 666, "666", 66, "666", "666", "666", null, "666", 0, "666")
+        )
+        val response = saveAnaltrackingDatapointUseCaseAsync.execute(useCaseInput)
     }
 }

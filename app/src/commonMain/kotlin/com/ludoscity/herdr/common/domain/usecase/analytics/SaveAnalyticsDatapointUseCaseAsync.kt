@@ -15,20 +15,19 @@
  *     You should have received a copy of the GNU Lesser General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+package com.ludoscity.herdr.common.domain.usecase.analytics
 
-package com.ludoscity.herdr.common.data.network.cozy
+import com.ludoscity.herdr.common.base.Response
+import com.ludoscity.herdr.common.data.AnalTrackingDatapoint
+import com.ludoscity.herdr.common.data.repository.AnalTrackingRepository
+import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseAsync
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class TokenExchangeSuccessReply(
-    @SerialName("access_token")
-    val accessToken: String,
-    @SerialName("token_type")
-    val tokenType: String,
-    @SerialName("refresh_token")
-    val refreshToken: String,
-    @SerialName("scope")
-    val scope: String
-)
+class SaveAnalyticsDatapointUseCaseAsync : KoinComponent,
+    BaseUseCaseAsync<SaveAnalyticsDatapointUseCaseInput, List<AnalTrackingDatapoint>>() {
+    private val repo: AnalTrackingRepository by inject()
+    override suspend fun run(): Response<List<AnalTrackingDatapoint>> {
+        return repo.insertAnalTrackingDatapoint(input!!.toSave)
+    }
+}

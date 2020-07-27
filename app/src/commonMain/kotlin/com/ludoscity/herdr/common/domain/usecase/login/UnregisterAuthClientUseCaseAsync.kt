@@ -22,9 +22,12 @@ import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.data.repository.LoginRepository
 import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseAsync
 import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseInput
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-class UnregisterAuthClientUseCaseAsync(private val repo: LoginRepository) :
+class UnregisterAuthClientUseCaseAsync() : KoinComponent,
     BaseUseCaseAsync<BaseUseCaseInput, Unit>() {
+    private val repo: LoginRepository by inject()
     override suspend fun run(): Response<Unit> {
         return repo.clearAuthClientRegistration()
     }

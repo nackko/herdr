@@ -16,19 +16,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.herdr.common.domain.usecase.login
+package com.ludoscity.herdr.common.domain.usecase.analytics
 
-import com.ludoscity.herdr.common.base.Response
-import com.ludoscity.herdr.common.data.repository.LoginRepository
-import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
-import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseAsync
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import com.ludoscity.herdr.common.data.AnalTrackingDatapoint
+import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseInput
 
-class RegisterAuthClientUseCaseAsync : KoinComponent,
-    BaseUseCaseAsync<RegisterAuthClientUseCaseInput, AuthClientRegistration>() {
-    private val repo: LoginRepository by inject()
-    override suspend fun run(): Response<AuthClientRegistration> {
-        return repo.getAuthClientRegistration(input!!.baseUrl, input!!.fromCacheOnly)
+class SaveAnalyticsDatapointUseCaseInput(val toSave: AnalTrackingDatapoint) :
+    BaseUseCaseInput {
+    override fun validate(): Boolean {
+        return true
     }
 }

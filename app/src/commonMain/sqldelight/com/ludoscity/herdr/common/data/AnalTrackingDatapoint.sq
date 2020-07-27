@@ -1,0 +1,44 @@
+
+CREATE TABLE analTrackingDatapoint (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    timestamp_epoch INTEGER NOT NULL,
+    app_version TEXT NOT NULL,
+    api_level INTEGER NOT NULL,
+    device_model TEXT NOT NULL,
+    language TEXT NOT NULL,
+    country TEXT NOT NULL,
+    battery_charge_percentage INTEGER,
+    description TEXT NOT NULL,
+    upload_completed INTEGER NOT NULL,
+    timestamp TEXT NOT NULL
+);
+
+
+insertOrReplace:
+INSERT OR REPLACE INTO analTrackingDatapoint(
+    timestamp_epoch,
+    app_version,
+    api_level,
+    device_model,
+    language,
+    country,
+    battery_charge_percentage,
+    description,
+    upload_completed,
+    timestamp
+    ) VALUES ?;
+
+getById:
+SELECT * FROM analTrackingDatapoint WHERE id = ?;
+
+selectAll:
+SELECT * FROM analTrackingDatapoint;
+
+deleteById:
+DELETE FROM analTrackingDatapoint WHERE id = ?;
+
+deleteUploadedAll:
+DELETE FROM analTrackingDatapoint WHERE upload_completed = 1;
+
+updateUploadCompleted:
+UPDATE analTrackingDatapoint SET upload_completed = 1 WHERE id = ?;

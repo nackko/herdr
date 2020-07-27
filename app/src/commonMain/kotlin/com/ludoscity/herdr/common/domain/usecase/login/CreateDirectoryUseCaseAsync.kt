@@ -15,20 +15,18 @@
  *     You should have received a copy of the GNU Lesser General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package com.ludoscity.herdr.common.domain.usecase.login
 
 import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.data.repository.LoginRepository
-import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
 import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseAsync
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
-class RegisterAuthClientUseCaseAsync : KoinComponent,
-    BaseUseCaseAsync<RegisterAuthClientUseCaseInput, AuthClientRegistration>() {
+class CreateDirectoryUseCaseAsync : KoinComponent,
+    BaseUseCaseAsync<Nothing, String>() {
     private val repo: LoginRepository by inject()
-    override suspend fun run(): Response<AuthClientRegistration> {
-        return repo.getAuthClientRegistration(input!!.baseUrl, input!!.fromCacheOnly)
+    override suspend fun run(): Response<String> {
+        return repo.createDirectory()
     }
 }

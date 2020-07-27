@@ -1,9 +1,10 @@
 plugins {
     //TODO: this should be synced with the kotlinVersion ext from root gradle file
-    id("org.jetbrains.kotlin.multiplatform") version "$kotlinVersion"
-    id("org.jetbrains.kotlin.kapt") version "$kotlinVersion"
+    id("org.jetbrains.kotlin.multiplatform") //version "$kotlinVersion"
+    id("org.jetbrains.kotlin.kapt") //version "$kotlinVersion"
     //TODO: use kotlinx serialization with Ktor
     id("org.jetbrains.kotlin.plugin.serialization") version "$kotlinVersion"
+    id("com.squareup.sqldelight")
     id("com.android.application")
 }
 repositories {
@@ -95,15 +96,23 @@ kotlin {
                 // MOKO - MVVM
                 implementation "dev.icerock.moko:mvvm:$mokoMvvmVersion"
 
-                // KODEIN
-                implementation "org.kodein.di:kodein-di-core:$kodeinVersion"
-                implementation "org.kodein.di:kodein-di-erased:$kodeinVersion"
+                // KOIN
+                implementation "org.koin:koin-core:$koinVersion"
 
                 // SERIALIZATION
                 implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serializerVersion"
 
                 // KTOR
                 implementation "io.ktor:ktor-client-core:$ktorVersion"
+                implementation "io.ktor:ktor-client-logging:$ktorVersion"
+                implementation "io.ktor:ktor-client-json:$ktorVersion"
+                implementation "io.ktor:ktor-client-serialization:$ktorVersion"
+
+                // SQL Delight
+                implementation "com.squareup.sqldelight:runtime:$sqlDelightVersion"
+
+                //KERMIT
+                api("co.touchlab:kermit:$kermitVersion")
             }
         }
         commonTest {
@@ -141,11 +150,15 @@ kotlin {
                 // MOKO - MVVM
                 implementation "androidx.lifecycle:lifecycle-extensions:$androidxLifecycleVersion"
 
-                // SERIALIZATION
-                implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializerVersion"
-
                 // KTOR
+                //implementation "io.ktor:ktor-client-core-jvm:$ktorVersion"
+                implementation "io.ktor:ktor-client-json-jvm:$ktorVersion"
                 implementation "io.ktor:ktor-client-android:$ktorVersion"
+                implementation "io.ktor:ktor-client-logging-jvm:$ktorVersion"
+                implementation "io.ktor:ktor-client-serialization-jvm:$ktorVersion"
+
+                // SQL Delight
+                implementation "com.squareup.sqldelight:android-driver:$sqlDelightVersion"
             }
         }
         androidTest {
@@ -165,6 +178,13 @@ kotlin {
 
             //KTOR
             implementation("io.ktor:ktor-client-ios:$ktorVersion")
+            implementation("io.ktor:ktor-client-core-native:$ktorVersion")
+            implementation("io.ktor:ktor-client-logging-native:$ktorVersion")
+            implementation("io.ktor:ktor-client-json-native:$ktorVersion")
+            implementation("io.ktor:ktor-client-serialization-native:$ktorVersion")
+
+            // SQL Delight
+            implementation "com.squareup.sqldelight:native-driver:$sqlDelightVersion"
         }
         iosTest {
         }
@@ -190,5 +210,11 @@ task copyFramework {
             include 'app.framework/**'
             include 'app.framework.dSYM'
         }
+    }
+}
+
+sqldelight {
+    HerdrDatabase {
+        packageName = "com.ludoscity.herdr.common.data.database"
     }
 }

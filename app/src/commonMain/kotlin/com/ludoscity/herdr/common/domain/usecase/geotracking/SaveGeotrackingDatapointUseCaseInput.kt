@@ -15,15 +15,15 @@
  *     You should have received a copy of the GNU Lesser General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.ludoscity.herdr.common.domain.usecase.login
 
-import com.ludoscity.herdr.common.data.SecureDataStore
+package com.ludoscity.herdr.common.domain.usecase.geotracking
+
+import com.ludoscity.herdr.common.data.GeoTrackingDatapoint
 import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseInput
 
-class InjectDataStoreUseCaseInput(val store: SecureDataStore) :
+class SaveGeotrackingDatapointUseCaseInput(val toSave: GeoTrackingDatapoint) :
     BaseUseCaseInput {
     override fun validate(): Boolean {
-        //TODO: validate store?
         return true
     }
 }

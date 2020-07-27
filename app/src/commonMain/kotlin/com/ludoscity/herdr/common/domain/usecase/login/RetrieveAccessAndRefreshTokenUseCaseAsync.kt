@@ -22,9 +22,12 @@ import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.data.repository.LoginRepository
 import com.ludoscity.herdr.common.domain.entity.UserCredentials
 import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseAsync
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-class RetrieveAccessAndRefreshTokenUseCaseAsync(private val repo: LoginRepository) :
+class RetrieveAccessAndRefreshTokenUseCaseAsync : KoinComponent,
     BaseUseCaseAsync<RetrieveAccessAndRefreshTokenUseCaseInput, UserCredentials>() {
+    private val repo: LoginRepository by inject()
     override suspend fun run(): Response<UserCredentials> {
         return repo.getUserCredentials(input!!.authCode, input!!.fromCacheOnly)
     }

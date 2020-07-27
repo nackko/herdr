@@ -35,7 +35,11 @@ class StartFragment : MvvmEventsFragment<FragmentStartBinding, StartViewModel,
     override val viewModelClass: Class<StartViewModel> = StartViewModel::class.java
 
     override fun viewModelFactory(): ViewModelProvider.Factory {
-        return createViewModelFactory { StartViewModel(eventsDispatcherOnMain()) }
+        return createViewModelFactory {
+            StartViewModel(
+                eventsDispatcher = eventsDispatcherOnMain()
+            )
+        }
     }
 
     override fun routeToDriveSetup() {

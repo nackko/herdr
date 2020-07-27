@@ -24,7 +24,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var logoutButton: UIButton!
     
-    private var loginViewModel: LoginViewModel!
+    private var loginViewModel: DriveLoginViewModel!
     
     
     override func viewDidLoad() {
@@ -35,12 +35,12 @@ class ViewController: UIViewController {
     }
     
     func configView() {
-        loginButton.addTarget(self, action: #selector(didLoginButtonClick), for: .touchUpInside)
+        loginButton.addTarget(self, action: #selector(didButtonClick), for: .touchUpInside)
         logoutButton.addTarget(self, action: #selector(didLogoutButtonClick), for: .touchUpInside)
     }
     
     func initViewModel() {
-        loginViewModel = LoginViewModel(secureDataStore: SecureDataStoreImpl())
+        loginViewModel = DriveLoginViewModel()
         observeLoginViewModel()
     }
     
@@ -110,7 +110,7 @@ class ViewController: UIViewController {
     }
     
     @objc func didButtonClick(_ sender: UIButton) {
-        loginViewModel.registerAuthClient(stackBaseUrl: "https://f8full.mycozy.cloud")
+        loginViewModel.registerAuthClient()
     }
     
     @objc func didLogoutButtonClick(_ sender: UIButton) {

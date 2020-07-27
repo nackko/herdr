@@ -28,7 +28,7 @@ buildscript {
         constraintLayoutVersion = "1.1.3"
         coroutineVersion = "1.3.5"
         fragmentVersion = "1.2.4"
-        gradleVersion = "3.6.2"
+        gradleVersion = "3.6.3"
         kermitVersion = "0.1.7"
         koinVersion = "3.0.0-alpha-2"
         kotlinVersion = "1.3.72"

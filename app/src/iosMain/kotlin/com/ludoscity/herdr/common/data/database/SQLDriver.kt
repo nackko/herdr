@@ -1,7 +1,7 @@
 package com.ludoscity.herdr.common.data.database
 
 import com.squareup.sqldelight.db.SqlDriver
-import com.squareup.sqldelight.drivers.ios.NativeSqliteDriver
+import com.squareup.sqldelight.drivers.native.NativeSqliteDriver
 
 actual class DbArgs(
 )

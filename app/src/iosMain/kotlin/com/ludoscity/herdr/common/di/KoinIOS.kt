@@ -1,5 +1,8 @@
 package com.ludoscity.herdr.common.di
 
+import co.touchlab.kermit.Kermit
+import co.touchlab.kermit.NSLogLogger
+import com.ludoscity.herdr.common.data.SecureDataStore
 import com.ludoscity.herdr.common.data.database.HerdrDatabase
 import com.squareup.sqldelight.db.SqlDriver
 import com.squareup.sqldelight.drivers.native.NativeSqliteDriver
@@ -15,10 +18,10 @@ actual val platformModule = module {
     //    AppleSettings(userDefaults)
     //}
     single<SqlDriver> { NativeSqliteDriver(HerdrDatabase.Schema, "herdr.db") }
-    single { SecureDataStoreImpl() }
+    single { SecureDataStore() }
 
-    //val baseKermit = Kermit(NSLogLogger()).withTag("KampKit")
-    //factory { (tag: String?) -> if (tag != null) baseKermit.withTag(tag) else baseKermit }
+    val baseKermit = Kermit(NSLogLogger()).withTag("KampKit")
+    factory { (tag: String?) -> if (tag != null) baseKermit.withTag(tag) else baseKermit }
 }
 
 object KoinIOS {

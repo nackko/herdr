@@ -23,7 +23,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var label: UILabel!
     
-    private var loginViewModel: LoginViewModel!
+    private var loginViewModel: DriveLoginViewModel!
     
     
     override func viewDidLoad() {
@@ -38,7 +38,7 @@ class ViewController: UIViewController {
     }
     
     func initViewModel() {
-        loginViewModel = LoginViewModel(secureDataStore: SecureDataStoreImpl())
+        loginViewModel = DriveLoginViewModel()
         observeLoginViewModel()
     }
     

@@ -15,7 +15,8 @@ actual val platformModule = module {
     //    AppleSettings(userDefaults)
     //}
     single<SqlDriver> { NativeSqliteDriver(HerdrDatabase.Schema, "herdr.db") }
-    single { SecureDataStoreImpl() }
+    //TODO: fix secure data store implementation
+    //single { SecureDataStoreImpl() }
 
     //val baseKermit = Kermit(NSLogLogger()).withTag("KampKit")
     //factory { (tag: String?) -> if (tag != null) baseKermit.withTag(tag) else baseKermit }

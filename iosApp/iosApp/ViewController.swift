@@ -22,6 +22,7 @@ import app
 class ViewController: UIViewController {
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var label: UILabel!
+    @IBOutlet weak var logoutButton: UIButton!
     
     private var loginViewModel: LoginViewModel!
     
@@ -34,7 +35,8 @@ class ViewController: UIViewController {
     }
     
     func configView() {
-        loginButton.addTarget(self, action: #selector(didButtonClick), for: .touchUpInside)
+        loginButton.addTarget(self, action: #selector(didLoginButtonClick), for: .touchUpInside)
+        logoutButton.addTarget(self, action: #selector(didLogoutButtonClick), for: .touchUpInside)
     }
     
     func initViewModel() {
@@ -49,6 +51,10 @@ class ViewController: UIViewController {
                 let successState = registrationState as! SuccessAuthClientRegistration
                 let response = (successState.response as! Response.Success)
                 self.onClientRegistrationSuccess(authClientRegistration: response.data as! AuthClientRegistration)
+            } else if(registrationState is InProgressAuthClientRegistration) {
+                self.label.text = "InProgressAuthClientRegistration"
+            } else {
+                self.label.text = "ErrorAuthClientRegistration"
             }
         }
         
@@ -59,28 +65,33 @@ class ViewController: UIViewController {
                 self.onUserCredentialsSuccess(userCredentials: response.data as! UserCredentials)
             }
         }
+        
+        loginViewModel.requestAuthFlowEvent.addObserver{ flowRequested in
+            if(flowRequested != nil && flowRequested is Bool && flowRequested as! Bool == true ) {
+                let authInfo = ((self.loginViewModel.authClientRegistrationResult.value as! SuccessAuthClientRegistration)
+                    .response as! Response.Success)
+                    .data as! AuthClientRegistration
+                
+                self.launchAuthorizationFlow(authInfo: authInfo)
+                self.loginViewModel.authFlowRequestProcessed()
+            }
+        }
     }
     
-    func onUserCredentialsSuccess(userCredentials: UserCredentials) {
-        self.label.text = userCredentials.accessToken
-    }
-    
-    func onClientRegistrationSuccess(authClientRegistration: AuthClientRegistration) {
+    func launchAuthorizationFlow(authInfo: AuthClientRegistration) {
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             //self.logMessage("Error accessing AppDelegate")
             return
         }
         
-        self.label.text = authClientRegistration.clientRegistrationToken
-        
-        let configuration = OIDServiceConfiguration(authorizationEndpoint: URL(string: authClientRegistration.stackBaseUrl + "/auth/authorize")!,
-                                                    tokenEndpoint: URL(string: authClientRegistration.stackBaseUrl + "/auth/authorize")!)
+        let configuration = OIDServiceConfiguration(authorizationEndpoint: URL(string: authInfo.stackBaseUrl + "/auth/authorize")!,
+                                                    tokenEndpoint: URL(string: authInfo.stackBaseUrl + "/auth/authorize")!)
         let authorizationRequest = OIDAuthorizationRequest(configuration: configuration,
-                                                            clientId: authClientRegistration.clientId,
-                                                            clientSecret: authClientRegistration.clientSecret,
+                                                            clientId: authInfo.clientId,
+                                                            clientSecret: authInfo.clientSecret,
                                                             scopes: [OIDScopeOpenID, "io.cozy.files", "io.cozy.oauth.clients"],
-                                                            redirectURL: URL(string: authClientRegistration.redirectUriCollection[0])!,
+                                                            redirectURL: URL(string: authInfo.redirectUriCollection[0])!,
                                                             responseType: OIDResponseTypeCode,
                                                             additionalParameters: nil)
         // performs authentication request
@@ -89,11 +100,8 @@ class ViewController: UIViewController {
         appDelegate.currentAuthorizationFlow = OIDAuthorizationService.present(authorizationRequest, presenting: self) { (response, error) in
 
             if let response = response {
-                //let authState = OIDAuthState(authorizationResponse: response)
                 self.label.text = "CODE: " + (response.authorizationCode ?? "DEFAULT_CODE")
                 self.loginViewModel.exchangeCodeForAccessAndRefreshToken(authCode: response.authorizationCode ?? "")
-                //self.setAuthState(authState)
-                //self.logMessage("Authorization response with code: \(response.authorizationCode ?? "DEFAULT_CODE")")
                 // could just call [self tokenExchange:nil] directly, but will let the user initiate it.
             } else {
                 //self.logMessage("Authorization error: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
@@ -103,6 +111,10 @@ class ViewController: UIViewController {
     
     @objc func didButtonClick(_ sender: UIButton) {
         loginViewModel.registerAuthClient(stackBaseUrl: "https://f8full.mycozy.cloud")
+    }
+    
+    @objc func didLogoutButtonClick(_ sender: UIButton) {
+        loginViewModel.unregisterAuthClient()
     }
 
     deinit {

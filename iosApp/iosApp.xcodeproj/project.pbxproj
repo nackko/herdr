@@ -3,11 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		1E110A972448C08A007D7E4A /* SecureDataStoreImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E110A962448C08A007D7E4A /* SecureDataStoreImpl.swift */; };
+		1E110A9A2455C92E007D7E4A /* SecureDefaults in Frameworks */ = {isa = PBXBuildFile; productRef = 1E110A992455C92E007D7E4A /* SecureDefaults */; };
 		F861D7E1207FA40F0085E80D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F861D7E0207FA40F0085E80D /* AppDelegate.swift */; };
 		F861D7E3207FA40F0085E80D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F861D7E2207FA40F0085E80D /* ViewController.swift */; };
 		F861D7E6207FA40F0085E80D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F861D7E4207FA40F0085E80D /* Main.storyboard */; };
@@ -189,6 +190,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F861D80C207FA4200085E80D /* app.framework in Frameworks */,
+				1E110A9A2455C92E007D7E4A /* SecureDefaults in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,6 +297,9 @@
 				F861D80B207FA4200085E80D /* PBXTargetDependency */,
 			);
 			name = iosApp;
+			packageProductDependencies = (
+				1E110A992455C92E007D7E4A /* SecureDefaults */,
+			);
 			productName = iosApp;
 			productReference = F861D7DD207FA40F0085E80D /* iosApp.app */;
 			productType = "com.apple.product-type.application";
@@ -362,6 +367,9 @@
 				Base,
 			);
 			mainGroup = F861D7D4207FA40F0085E80D;
+			packageReferences = (
+				1E110A982455C92C007D7E4A /* XCRemoteSwiftPackageReference "SecureDefaults" */,
+			);
 			productRefGroup = F861D7DE207FA40F0085E80D /* Products */;
 			projectDirPath = "";
 			projectReferences = (
@@ -892,6 +900,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1E110A982455C92C007D7E4A /* XCRemoteSwiftPackageReference "SecureDefaults" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/vpeschenkov/SecureDefaults";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 1.0.5;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1E110A992455C92E007D7E4A /* SecureDefaults */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1E110A982455C92C007D7E4A /* XCRemoteSwiftPackageReference "SecureDefaults" */;
+			productName = SecureDefaults;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F861D7D5207FA40F0085E80D /* Project object */;
 }

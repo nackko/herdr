@@ -23,7 +23,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var currentAuthorizationFlow: OIDExternalUserAgentSession?
 
-    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+    func application(
+        _ app: UIApplication,
+        open url: URL,
+        didFinishLaunchingWithOptions: [UIApplicationOpenURLOptionsKey : Any] = [:]
+    ) -> Bool {
         if let authorizationFlow = self.currentAuthorizationFlow, authorizationFlow.resumeExternalUserAgentFlow(with: url) {
             self.currentAuthorizationFlow = nil
             return true

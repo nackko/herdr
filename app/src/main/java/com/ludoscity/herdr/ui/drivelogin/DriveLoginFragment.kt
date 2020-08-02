@@ -36,6 +36,7 @@ import com.ludoscity.herdr.common.domain.entity.UserCredentials
 import com.ludoscity.herdr.common.ui.drivelogin.*
 import com.ludoscity.herdr.databinding.FragmentDriveLoginBinding
 import com.ludoscity.herdr.ui.CustomTabsNavigator
+import com.ludoscity.herdr.utils.afterTextChanged
 import dev.icerock.moko.mvvm.MvvmEventsFragment
 import dev.icerock.moko.mvvm.createViewModelFactory
 import dev.icerock.moko.mvvm.dispatcher.eventsDispatcherOnMain

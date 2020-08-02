@@ -21,3 +21,8 @@ jobs:
       run: bash ./gradlew assembleDebug --stacktrace
     - name: Build release apk with Gradle
       run: bash ./gradlew assembleRelease
+    - name: Persist apk
+      uses: actions/upload-artifact@v2
+      with:
+        name: herdr
+        path: app/build/outputs/apk/debug/app-debug.apk

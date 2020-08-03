@@ -18,7 +18,61 @@
 
 package com.ludoscity.herdr.common.ui.main
 
+import co.touchlab.kermit.Kermit
+import com.ludoscity.herdr.common.base.Response
+import com.ludoscity.herdr.common.domain.entity.UserCredentials
+import com.ludoscity.herdr.common.domain.usecase.login.RetrieveAccessAndRefreshTokenUseCaseAsync
+import com.ludoscity.herdr.common.domain.usecase.login.RetrieveAccessAndRefreshTokenUseCaseInput
+import com.ludoscity.herdr.common.utils.launchSilent
+import dev.icerock.moko.mvvm.livedata.LiveData
+import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Job
+import org.koin.core.KoinComponent
+import org.koin.core.inject
+import org.koin.core.parameter.parametersOf
+import kotlin.coroutines.CoroutineContext
 
-class HerdrViewModel : ViewModel() {
+class HerdrViewModel : KoinComponent, ViewModel() {
+
+    private val log: Kermit by inject { parametersOf("HerdrViewModel") }
+
+    private val _loggedIn =
+            MutableLiveData(
+                    false
+            )
+    val isLoggedIn: LiveData<Boolean>
+        get() = _loggedIn
+
+    private val retrieveAccessAndRefreshTokenUseCase: RetrieveAccessAndRefreshTokenUseCaseAsync
+            by inject()
+
+    // ASYNC - COROUTINES
+    private val coroutineContext: CoroutineContext by inject()
+    private var job: Job = Job()
+    private val exceptionHandler = CoroutineExceptionHandler { _, _ -> }
+
+    init {
+        initAuthAccessAndRefreshTokenFromCache()
+    }
+
+    private fun initAuthAccessAndRefreshTokenFromCache() = launchSilent(
+            coroutineContext,
+            exceptionHandler, job
+    ) {
+        _loggedIn.postValue(false)
+        val useCaseInput = RetrieveAccessAndRefreshTokenUseCaseInput(true)
+        val response = retrieveAccessAndRefreshTokenUseCase.execute(useCaseInput)
+        processRetrieveAccessAndRefreshTokenResponse(response)
+    }
+
+    private fun processRetrieveAccessAndRefreshTokenResponse(response: Response<UserCredentials>) {
+        when (response) {
+            is Response.Success ->
+                _loggedIn.postValue(true)
+            is Response.Error ->
+                _loggedIn.postValue(false)
+        }
+    }
 }

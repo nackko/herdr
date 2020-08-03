@@ -16,32 +16,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.herdr.common.domain.usecase.analytics
+package com.ludoscity.herdr.common.domain.usecase.geotracking
 
-import com.ludoscity.herdr.common.Platform
-import com.ludoscity.herdr.common.data.AnalTrackingDatapoint
 import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseInput
 
-class SaveAnalyticsDatapointUseCaseInput(
-        batteryChargePercentage: Long? = null,
-        description: String
-
-) :
+class ObserveGeoTrackingUseCaseInput(val observer: (Boolean) -> Unit) :
     BaseUseCaseInput {
-    val toSave: AnalTrackingDatapoint = AnalTrackingDatapoint(
-            -1,
-            Platform.now,
-            Platform.app_version,
-            Platform.api_level,
-            Platform.device_model,
-            Platform.language,
-            Platform.country,
-            batteryChargePercentage,
-            description,
-            0L,
-            Platform.nowString
-    )
-
     override fun validate(): Boolean {
         return true
     }

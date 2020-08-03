@@ -18,12 +18,17 @@
 
 package com.ludoscity.herdr.common.domain.usecase.geotracking
 
-import com.ludoscity.herdr.common.data.GeoTrackingDatapoint
-import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseInput
+import com.ludoscity.herdr.common.base.Response
+import com.ludoscity.herdr.common.data.repository.GeoTrackingRepository
+import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseSync
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-class SaveGeotrackingDatapointUseCaseInput(val toSave: GeoTrackingDatapoint) :
-    BaseUseCaseInput {
-    override fun validate(): Boolean {
-        return true
+class UpdateGeoTrackingUseCaseSync : KoinComponent,
+    BaseUseCaseSync<UpdateGeoTrackingUseCaseInput, Unit>() {
+    private val repo: GeoTrackingRepository by inject()
+    override fun run(): Response<Unit> {
+
+        return repo.updateGeoTracking(input!!.newState)
     }
 }

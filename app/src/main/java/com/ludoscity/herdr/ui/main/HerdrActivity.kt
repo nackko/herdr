@@ -19,14 +19,36 @@
 package com.ludoscity.herdr.ui.main
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.ludoscity.herdr.R
+import com.ludoscity.herdr.common.ui.drivelogin.SuccessUserCredentials
+import com.ludoscity.herdr.common.ui.main.HerdrViewModel
+import com.ludoscity.herdr.data.transrecognition.TransitionRecognitionService
+import com.ludoscity.herdr.databinding.ActivityHerdrBinding
+import com.ludoscity.herdr.utils.startServiceForeground
+import dev.icerock.moko.mvvm.MvvmActivity
+import dev.icerock.moko.mvvm.createViewModelFactory
+import org.jetbrains.anko.intentFor
 
-class HerdrActivity : AppCompatActivity() {
+class HerdrActivity : MvvmActivity<ActivityHerdrBinding, HerdrViewModel>() {
+
+    override val layoutId: Int = R.layout.activity_herdr
+    override val viewModelVariableId: Int = com.ludoscity.herdr.BR.herdrViewModel
+    override val viewModelClass: Class<HerdrViewModel> = HerdrViewModel::class.java
+
+    override fun viewModelFactory(): ViewModelProvider.Factory {
+        return createViewModelFactory { HerdrViewModel() }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_herdr)
+        viewModel.isLoggedIn.addObserver {
+            if (it) {
+                startServiceForeground(intentFor<TransitionRecognitionService>())
+            } else {
+                stopService(intentFor<TransitionRecognitionService>())
+            }
+        }
     }
 }

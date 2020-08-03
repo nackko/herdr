@@ -21,9 +21,17 @@
      including layouts, and it's a good idea to use it.
      See: https://developer.android.com/training/improving-layouts/reusing-layouts -->
 
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="herdrViewModel"
+            type="com.ludoscity.herdr.common.ui.main.HerdrViewModel" />
+    </data>
+
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
@@ -34,4 +42,4 @@
         app:navGraph="@navigation/navigation"
         tools:context=".HerdrActivity"/>
 
-</merge>
+</layout>

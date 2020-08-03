@@ -16,33 +16,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.herdr.common.domain.usecase.analytics
+package com.ludoscity.herdr.common
 
-import com.ludoscity.herdr.common.Platform
-import com.ludoscity.herdr.common.data.AnalTrackingDatapoint
-import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseInput
-
-class SaveAnalyticsDatapointUseCaseInput(
-        batteryChargePercentage: Long? = null,
-        description: String
-
-) :
-    BaseUseCaseInput {
-    val toSave: AnalTrackingDatapoint = AnalTrackingDatapoint(
-            -1,
-            Platform.now,
-            Platform.app_version,
-            Platform.api_level,
-            Platform.device_model,
-            Platform.language,
-            Platform.country,
-            batteryChargePercentage,
-            description,
-            0L,
-            Platform.nowString
-    )
-
-    override fun validate(): Boolean {
-        return true
-    }
+actual object Platform {
+    actual val app_version: String = "iOS:"
+    actual val api_level: Long
+        get() = TODO("Not yet implemented")
+    actual val device_model: String
+        get() = TODO("Not yet implemented")
+    actual val language: String
+        get() = TODO("Not yet implemented")
+    actual val country: String
+        get() = TODO("Not yet implemented")
+    actual val now: Long
+        get() = TODO("Not yet implemented")
+    actual val nowString: String
+        get() = TODO("Not yet implemented")
 }

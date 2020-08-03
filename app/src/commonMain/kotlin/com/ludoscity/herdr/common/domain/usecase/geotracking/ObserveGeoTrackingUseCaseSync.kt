@@ -16,33 +16,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.herdr.common.domain.usecase.analytics
+package com.ludoscity.herdr.common.domain.usecase.geotracking
 
-import com.ludoscity.herdr.common.Platform
-import com.ludoscity.herdr.common.data.AnalTrackingDatapoint
-import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseInput
+import com.ludoscity.herdr.common.base.Response
+import com.ludoscity.herdr.common.data.repository.GeoTrackingRepository
+import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseSync
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-class SaveAnalyticsDatapointUseCaseInput(
-        batteryChargePercentage: Long? = null,
-        description: String
-
-) :
-    BaseUseCaseInput {
-    val toSave: AnalTrackingDatapoint = AnalTrackingDatapoint(
-            -1,
-            Platform.now,
-            Platform.app_version,
-            Platform.api_level,
-            Platform.device_model,
-            Platform.language,
-            Platform.country,
-            batteryChargePercentage,
-            description,
-            0L,
-            Platform.nowString
-    )
-
-    override fun validate(): Boolean {
-        return true
+class ObserveGeoTrackingUseCaseSync : KoinComponent,
+    BaseUseCaseSync<ObserveGeoTrackingUseCaseInput, Unit>() {
+    private val repo: GeoTrackingRepository by inject()
+    override fun run(): Response<Unit> {
+        return repo.addGeoTrackingObserver(input!!.observer)
     }
 }

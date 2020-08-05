@@ -1,0 +1,16 @@
+PODS:
+  - app (1.0)
+
+DEPENDENCIES:
+  - app (from `/Users/f8full/Documents/GitHub/herdr/app`)
+
+EXTERNAL SOURCES:
+  app:
+    :path: "/Users/f8full/Documents/GitHub/herdr/app"
+
+SPEC CHECKSUMS:
+  app: 9b9cc8c8f74191cd315d6856b78013b1309bfa73
+
+PODFILE CHECKSUM: 956121bf0e6a6c8866921f4c52842feccef39e6d
+
+COCOAPODS: 1.9.3

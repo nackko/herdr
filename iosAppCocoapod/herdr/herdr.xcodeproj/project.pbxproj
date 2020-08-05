@@ -1,0 +1,662 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1E5F533C24CE7EEE007B0476 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5F533B24CE7EEE007B0476 /* AppDelegate.swift */; };
+		1E5F533E24CE7EEE007B0476 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5F533D24CE7EEE007B0476 /* SceneDelegate.swift */; };
+		1E5F534024CE7EEE007B0476 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5F533F24CE7EEE007B0476 /* ContentView.swift */; };
+		1E5F534224CE7EF1007B0476 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1E5F534124CE7EF1007B0476 /* Assets.xcassets */; };
+		1E5F534524CE7EF1007B0476 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1E5F534424CE7EF1007B0476 /* Preview Assets.xcassets */; };
+		1E5F534824CE7EF1007B0476 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E5F534624CE7EF1007B0476 /* LaunchScreen.storyboard */; };
+		1E5F535324CE7EF2007B0476 /* herdrTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5F535224CE7EF2007B0476 /* herdrTests.swift */; };
+		1E5F535E24CE7EF2007B0476 /* herdrUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5F535D24CE7EF2007B0476 /* herdrUITests.swift */; };
+		906BF0236B17999EE534DCCF /* Pods_herdr.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88DAA9E44AE412CC1AA56643 /* Pods_herdr.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		1E5F534F24CE7EF2007B0476 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E5F533024CE7EEE007B0476 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1E5F533724CE7EEE007B0476;
+			remoteInfo = herdr;
+		};
+		1E5F535A24CE7EF2007B0476 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E5F533024CE7EEE007B0476 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1E5F533724CE7EEE007B0476;
+			remoteInfo = herdr;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1E5F533824CE7EEE007B0476 /* herdr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = herdr.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E5F533B24CE7EEE007B0476 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		1E5F533D24CE7EEE007B0476 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		1E5F533F24CE7EEE007B0476 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		1E5F534124CE7EF1007B0476 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1E5F534424CE7EF1007B0476 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		1E5F534724CE7EF1007B0476 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		1E5F534924CE7EF1007B0476 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1E5F534E24CE7EF2007B0476 /* herdrTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = herdrTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E5F535224CE7EF2007B0476 /* herdrTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = herdrTests.swift; sourceTree = "<group>"; };
+		1E5F535424CE7EF2007B0476 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1E5F535924CE7EF2007B0476 /* herdrUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = herdrUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E5F535D24CE7EF2007B0476 /* herdrUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = herdrUITests.swift; sourceTree = "<group>"; };
+		1E5F535F24CE7EF2007B0476 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		88DAA9E44AE412CC1AA56643 /* Pods_herdr.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_herdr.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A90B5E51E6DC2B8A55539062 /* Pods-herdr.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-herdr.release.xcconfig"; path = "Target Support Files/Pods-herdr/Pods-herdr.release.xcconfig"; sourceTree = "<group>"; };
+		C1996C6E014925510221A141 /* Pods-herdr.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-herdr.debug.xcconfig"; path = "Target Support Files/Pods-herdr/Pods-herdr.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1E5F533524CE7EEE007B0476 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				906BF0236B17999EE534DCCF /* Pods_herdr.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1E5F534B24CE7EF2007B0476 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1E5F535624CE7EF2007B0476 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1E5F532F24CE7EEE007B0476 = {
+			isa = PBXGroup;
+			children = (
+				1E5F533A24CE7EEE007B0476 /* herdr */,
+				1E5F535124CE7EF2007B0476 /* herdrTests */,
+				1E5F535C24CE7EF2007B0476 /* herdrUITests */,
+				1E5F533924CE7EEE007B0476 /* Products */,
+				6D08D7AC4522A801B887F568 /* Pods */,
+				A5AFE94B865E9E6272A52125 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		1E5F533924CE7EEE007B0476 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1E5F533824CE7EEE007B0476 /* herdr.app */,
+				1E5F534E24CE7EF2007B0476 /* herdrTests.xctest */,
+				1E5F535924CE7EF2007B0476 /* herdrUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1E5F533A24CE7EEE007B0476 /* herdr */ = {
+			isa = PBXGroup;
+			children = (
+				1E5F533B24CE7EEE007B0476 /* AppDelegate.swift */,
+				1E5F533D24CE7EEE007B0476 /* SceneDelegate.swift */,
+				1E5F533F24CE7EEE007B0476 /* ContentView.swift */,
+				1E5F534124CE7EF1007B0476 /* Assets.xcassets */,
+				1E5F534624CE7EF1007B0476 /* LaunchScreen.storyboard */,
+				1E5F534924CE7EF1007B0476 /* Info.plist */,
+				1E5F534324CE7EF1007B0476 /* Preview Content */,
+			);
+			path = herdr;
+			sourceTree = "<group>";
+		};
+		1E5F534324CE7EF1007B0476 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				1E5F534424CE7EF1007B0476 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		1E5F535124CE7EF2007B0476 /* herdrTests */ = {
+			isa = PBXGroup;
+			children = (
+				1E5F535224CE7EF2007B0476 /* herdrTests.swift */,
+				1E5F535424CE7EF2007B0476 /* Info.plist */,
+			);
+			path = herdrTests;
+			sourceTree = "<group>";
+		};
+		1E5F535C24CE7EF2007B0476 /* herdrUITests */ = {
+			isa = PBXGroup;
+			children = (
+				1E5F535D24CE7EF2007B0476 /* herdrUITests.swift */,
+				1E5F535F24CE7EF2007B0476 /* Info.plist */,
+			);
+			path = herdrUITests;
+			sourceTree = "<group>";
+		};
+		6D08D7AC4522A801B887F568 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C1996C6E014925510221A141 /* Pods-herdr.debug.xcconfig */,
+				A90B5E51E6DC2B8A55539062 /* Pods-herdr.release.xcconfig */,
+			);
+			name = Pods;
+			path = ../Pods;
+			sourceTree = "<group>";
+		};
+		A5AFE94B865E9E6272A52125 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				88DAA9E44AE412CC1AA56643 /* Pods_herdr.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1E5F533724CE7EEE007B0476 /* herdr */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1E5F536224CE7EF2007B0476 /* Build configuration list for PBXNativeTarget "herdr" */;
+			buildPhases = (
+				54F6F63AA65FA98FD52697B1 /* [CP] Check Pods Manifest.lock */,
+				1E5F533424CE7EEE007B0476 /* Sources */,
+				1E5F533524CE7EEE007B0476 /* Frameworks */,
+				1E5F533624CE7EEE007B0476 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = herdr;
+			productName = herdr;
+			productReference = 1E5F533824CE7EEE007B0476 /* herdr.app */;
+			productType = "com.apple.product-type.application";
+		};
+		1E5F534D24CE7EF2007B0476 /* herdrTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1E5F536524CE7EF2007B0476 /* Build configuration list for PBXNativeTarget "herdrTests" */;
+			buildPhases = (
+				1E5F534A24CE7EF2007B0476 /* Sources */,
+				1E5F534B24CE7EF2007B0476 /* Frameworks */,
+				1E5F534C24CE7EF2007B0476 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1E5F535024CE7EF2007B0476 /* PBXTargetDependency */,
+			);
+			name = herdrTests;
+			productName = herdrTests;
+			productReference = 1E5F534E24CE7EF2007B0476 /* herdrTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		1E5F535824CE7EF2007B0476 /* herdrUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1E5F536824CE7EF2007B0476 /* Build configuration list for PBXNativeTarget "herdrUITests" */;
+			buildPhases = (
+				1E5F535524CE7EF2007B0476 /* Sources */,
+				1E5F535624CE7EF2007B0476 /* Frameworks */,
+				1E5F535724CE7EF2007B0476 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1E5F535B24CE7EF2007B0476 /* PBXTargetDependency */,
+			);
+			name = herdrUITests;
+			productName = herdrUITests;
+			productReference = 1E5F535924CE7EF2007B0476 /* herdrUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1E5F533024CE7EEE007B0476 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1130;
+				LastUpgradeCheck = 1130;
+				ORGANIZATIONNAME = Ludosicty;
+				TargetAttributes = {
+					1E5F533724CE7EEE007B0476 = {
+						CreatedOnToolsVersion = 11.3.1;
+					};
+					1E5F534D24CE7EF2007B0476 = {
+						CreatedOnToolsVersion = 11.3.1;
+						TestTargetID = 1E5F533724CE7EEE007B0476;
+					};
+					1E5F535824CE7EF2007B0476 = {
+						CreatedOnToolsVersion = 11.3.1;
+						TestTargetID = 1E5F533724CE7EEE007B0476;
+					};
+				};
+			};
+			buildConfigurationList = 1E5F533324CE7EEE007B0476 /* Build configuration list for PBXProject "herdr" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 1E5F532F24CE7EEE007B0476;
+			productRefGroup = 1E5F533924CE7EEE007B0476 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1E5F533724CE7EEE007B0476 /* herdr */,
+				1E5F534D24CE7EF2007B0476 /* herdrTests */,
+				1E5F535824CE7EF2007B0476 /* herdrUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1E5F533624CE7EEE007B0476 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1E5F534824CE7EF1007B0476 /* LaunchScreen.storyboard in Resources */,
+				1E5F534524CE7EF1007B0476 /* Preview Assets.xcassets in Resources */,
+				1E5F534224CE7EF1007B0476 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1E5F534C24CE7EF2007B0476 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1E5F535724CE7EF2007B0476 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		54F6F63AA65FA98FD52697B1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-herdr-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1E5F533424CE7EEE007B0476 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1E5F533C24CE7EEE007B0476 /* AppDelegate.swift in Sources */,
+				1E5F533E24CE7EEE007B0476 /* SceneDelegate.swift in Sources */,
+				1E5F534024CE7EEE007B0476 /* ContentView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1E5F534A24CE7EF2007B0476 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1E5F535324CE7EF2007B0476 /* herdrTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1E5F535524CE7EF2007B0476 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1E5F535E24CE7EF2007B0476 /* herdrUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		1E5F535024CE7EF2007B0476 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1E5F533724CE7EEE007B0476 /* herdr */;
+			targetProxy = 1E5F534F24CE7EF2007B0476 /* PBXContainerItemProxy */;
+		};
+		1E5F535B24CE7EF2007B0476 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1E5F533724CE7EEE007B0476 /* herdr */;
+			targetProxy = 1E5F535A24CE7EF2007B0476 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		1E5F534624CE7EF1007B0476 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1E5F534724CE7EF1007B0476 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		1E5F536024CE7EF2007B0476 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		1E5F536124CE7EF2007B0476 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		1E5F536324CE7EF2007B0476 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C1996C6E014925510221A141 /* Pods-herdr.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"herdr/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = herdr/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"c++\"",
+					"-framework",
+					"\"MultiPlatformLibrary\"",
+					"-lsqlite3",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ludoscity.herdr;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1E5F536424CE7EF2007B0476 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A90B5E51E6DC2B8A55539062 /* Pods-herdr.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"herdr/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = herdr/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"c++\"",
+					"-framework",
+					"\"MultiPlatformLibrary\"",
+					"-lsqlite3",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ludoscity.herdr;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		1E5F536624CE7EF2007B0476 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = herdrTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ludoscity.herdrTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/herdr.app/herdr";
+			};
+			name = Debug;
+		};
+		1E5F536724CE7EF2007B0476 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = herdrTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ludoscity.herdrTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/herdr.app/herdr";
+			};
+			name = Release;
+		};
+		1E5F536924CE7EF2007B0476 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = herdrUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ludoscity.herdrUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = herdr;
+			};
+			name = Debug;
+		};
+		1E5F536A24CE7EF2007B0476 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = herdrUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ludoscity.herdrUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = herdr;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1E5F533324CE7EEE007B0476 /* Build configuration list for PBXProject "herdr" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1E5F536024CE7EF2007B0476 /* Debug */,
+				1E5F536124CE7EF2007B0476 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1E5F536224CE7EF2007B0476 /* Build configuration list for PBXNativeTarget "herdr" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1E5F536324CE7EF2007B0476 /* Debug */,
+				1E5F536424CE7EF2007B0476 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1E5F536524CE7EF2007B0476 /* Build configuration list for PBXNativeTarget "herdrTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1E5F536624CE7EF2007B0476 /* Debug */,
+				1E5F536724CE7EF2007B0476 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1E5F536824CE7EF2007B0476 /* Build configuration list for PBXNativeTarget "herdrUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1E5F536924CE7EF2007B0476 /* Debug */,
+				1E5F536A24CE7EF2007B0476 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1E5F533024CE7EEE007B0476 /* Project object */;
+}

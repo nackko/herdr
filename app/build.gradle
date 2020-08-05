@@ -1,6 +1,7 @@
 plugins {
     //TODO: this should be synced with the kotlinVersion ext from root gradle file
     id("org.jetbrains.kotlin.multiplatform") //version "$kotlinVersion"
+    id("org.jetbrains.kotlin.native.cocoapods")
     id("org.jetbrains.kotlin.kapt") //version "$kotlinVersion"
     //TODO: use kotlinx serialization with Ktor
     id("org.jetbrains.kotlin.plugin.serialization") version "$kotlinVersion"
@@ -73,18 +74,21 @@ android {
     }
 }
 
+version = "1.0"
 
 kotlin {
+    //TODO: when switching to .kts file, see https://github.com/cashapp/sqldelight/issues/1442#issuecomment-615991279
     targets {
         android("android")
         // This is for iPhone emulator
         // Switch here to iosArm64 (or iosArm32) to build library for iPhone device
-        iosX64("ios") {
+        iosX64("ios") /*{
             binaries {
                 framework()
             }
-        }
+        }*/
     }
+
     sourceSets {
         commonMain {
             dependencies {
@@ -189,27 +193,13 @@ kotlin {
         iosTest {
         }
     }
-}
 
-// This task attaches native framework built from ios module to Xcode project
-// (see iosApp directory). Don't run this task directly,
-// Xcode runs this task itself during its build process.
-// Before opening the project from iosApp directory in Xcode,
-// make sure all Gradle infrastructure exists (gradle.wrapper, gradlew).
-task copyFramework {
-    def buildType = project.findProperty('kotlin.build.type') ?: 'DEBUG'
-    def target = project.findProperty('kotlin.target') ?: 'ios'
-    dependsOn kotlin.targets."$target".binaries.getFramework(buildType).linkTask
+    cocoapods {
+        summary = "Common library for Herdr"
+        homepage = "https://github.com/f8full/herdr"
+        //isStatic = false
 
-    doLast {
-        def srcFile = kotlin.targets."$target".binaries.getFramework(buildType).outputFile
-        def targetDir = getProperty('configuration.build.dir')
-        copy {
-            from srcFile.parent
-            into targetDir
-            include 'app.framework/**'
-            include 'app.framework.dSYM'
-        }
+        frameworkName = "MultiPlatformLibrary"
     }
 }
 

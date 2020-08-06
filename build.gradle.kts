@@ -20,38 +20,28 @@ buildscript {
     repositories {
         google()
         jcenter()
+        mavenCentral()
     }
-    ext {
-        androidxLifecycleVersion = "2.2.0"
-        appCompatVersion = "1.1.0"
-        appAuthVersion = "0.7.1"
-        constraintLayoutVersion = "1.1.3"
-        coroutineVersion = "1.3.5"
-        fragmentVersion = "1.2.4"
-        gradleVersion = "3.6.2"
-        kermitVersion = "0.1.7"
-        koinVersion = "3.0.0-alpha-2"
-        kotlinVersion = "1.3.72"
-        ktorVersion = "1.3.2"
-        materialDesignVersion = "1.1.0"
-        mokoMvvmVersion = "0.6.0"
-        navigationVersion = "2.2.2"
-        securityCryptoVersion = "1.0.0-rc01"
-        serializerVersion = "0.20.0"
-        sqlDelightVersion = "1.4.0"
-    }
+
     dependencies {
-        classpath "com.android.tools.build:gradle:$gradleVersion"
-        classpath "com.squareup.sqldelight:gradle-plugin:$sqlDelightVersion"
-    }
-}
-allprojects {
-    repositories {
-        maven { url = "https://dl.bintray.com/icerockdev/moko" }
-        maven { url = "https://dl.bintray.com/ekito/koin" }
+        classpath(Deps.androidGradlePlugin)
+        classpath(Deps.SqlDelight.gradle)
+        //classpath(Deps.cocoapodsExt)
+
+        classpath(kotlin("gradle-plugin", Versions.kotlin))
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+        maven(url = "https://dl.bintray.com/icerockdev/moko")
+        maven(url = "https://dl.bintray.com/ekito/koin")
+    }
+}
+
+tasks.register("clean", Delete::class) {
+    delete(rootProject.buildDir)
 }

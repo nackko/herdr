@@ -16,8 +16,10 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-rootProject.name = 'herdr'
+plugins {
+    `kotlin-dsl`
+}
 
-include ':app'
-
-enableFeaturePreview("GRADLE_METADATA")
+repositories {
+    jcenter()
+}

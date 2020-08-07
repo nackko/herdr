@@ -25,7 +25,8 @@ repositories {
 plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
-    //kotlin("kapt")
+    kotlin("kapt")
+    kotlin("plugin.serialization") version (Versions.kotlin)
     id("com.android.application")
     id("com.squareup.sqldelight")
 }
@@ -70,6 +71,11 @@ android {
     dataBinding {
         isEnabled = true
     }
+
+    packagingOptions {
+        exclude("META-INF/proguard/coroutines.pro")
+        exclude("META-INF/*.kotlin_module")
+    }
 }
 
 kotlin {
@@ -97,8 +103,9 @@ kotlin {
     }*/
 
     sourceSets["commonMain"].dependencies {
-        implementation(kotlin("stdlib-common", Versions.kotlin))
+        api(kotlin("stdlib-common", Versions.kotlin))
         implementation(Deps.Coroutines.common)
+        implementation(Deps.Serialization.common)
         implementation(Deps.MokoMvvn.common)
         implementation(Deps.koinCore)
         implementation(Deps.Ktor.commonCore)
@@ -116,6 +123,7 @@ kotlin {
     }
     sourceSets["androidMain"].dependencies {
         implementation(kotlin("stdlib", Versions.kotlin))
+        implementation(kotlin("stdlib-common", Versions.kotlin))
         implementation(Deps.appCompatX)
         implementation(Deps.fragmentX)
         implementation(Deps.constraintlayoutX)
@@ -131,6 +139,9 @@ kotlin {
         implementation(Deps.Ktor.androidLogging)
         implementation(Deps.Ktor.androidSerialization)
         implementation(Deps.SqlDelight.driverAndroid)
+
+        // fix of package javax.annotation does not exist import javax.annotation.Generated in DataBinding code
+        compileOnly("javax.annotation:jsr250-api:1.0")
     }
 
     sourceSets["androidTest"].dependencies {
@@ -139,6 +150,7 @@ kotlin {
     }
 
     sourceSets["iosMain"].dependencies {
+        implementation(Deps.Serialization.ios)
         implementation(Deps.Coroutines.native) {
             version {
                 strictly("1.3.5-native-mt")
@@ -166,3 +178,4 @@ sqldelight {
         packageName = "com.ludoscity.herdr.common.data.database"
     }
 }
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> { kotlinOptions.jvmTarget = "1.8" }

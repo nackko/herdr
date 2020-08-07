@@ -36,6 +36,7 @@ object Versions {
     val mokoMvvm = "0.6.0"
     val navigation = "2.2.2"
     val securityCrypto = "1.0.0-rc01"
+    val serializer = "0.20.0"
     val sqlDelight = "1.4.0"
 }
 
@@ -81,6 +82,12 @@ object Deps {
     object MokoMvvn {
         val common = "dev.icerock.moko:mvvm:${Versions.mokoMvvm}"
         val android = "androidx.lifecycle:lifecycle-extensions:${Versions.androidxLifecycle}"
+    }
+
+    object Serialization {
+        val common =
+            "org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:${Versions.serializer}"
+        val ios = "org.jetbrains.kotlinx:kotlinx-serialization-runtime-native:${Versions.serializer}"
     }
 
     object SqlDelight {

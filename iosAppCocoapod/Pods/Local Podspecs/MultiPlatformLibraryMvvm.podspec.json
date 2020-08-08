@@ -1,0 +1,50 @@
+{
+  "name": "MultiPlatformLibraryMvvm",
+  "version": "0.3.0",
+  "homepage": "https://github.com/icerockdev/moko-mvvm",
+  "source": {
+    "git": "https://github.com/icerockdev/moko-mvvm.git",
+    "tag": "release/0.3.0"
+  },
+  "authors": "IceRock Development",
+  "license": {
+    "type": "Apache 2",
+    "file": "LICENSE.md"
+  },
+  "summary": "Swift additions to moko-mvvm Kotlin/Native library",
+  "module_name": "MultiPlatformLibraryMvvm",
+  "dependencies": {
+    "MultiPlatformLibrary": [
+    ]
+  },
+  "platforms": {
+    "ios": "11.0"
+  },
+  "swift_versions": "4.2",
+  "pod_target_xcconfig": {
+    "VALID_ARCHS": "$(ARCHS_STANDARD_64_BIT)"
+  },
+  "subspecs": [
+    {
+      "name": "Core",
+      "source_files": "mvvm/src/iosMain/swift/Core/**/*.{h,m,swift}"
+    },
+    {
+      "name": "AlamofireImage",
+      "source_files": "mvvm/src/iosMain/swift/AlamofireImage/**/*.{h,m,swift}",
+      "dependencies": {
+        "AlamofireImage": [
+        ]
+      }
+    },
+    {
+      "name": "SkyFloatingLabelTextField",
+      "source_files": "mvvm/src/iosMain/swift/SkyFloatingLabelTextField/**/*.{h,m,swift}",
+      "dependencies": {
+        "SkyFloatingLabelTextField": [
+        ]
+      }
+    }
+  ],
+  "swift_version": "4.2"
+}

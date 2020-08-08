@@ -1,0 +1,6 @@
+framework module MultiPlatformLibraryMvvm {
+  umbrella header "MultiPlatformLibraryMvvm-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -24,9 +24,9 @@ repositories {
 
 plugins {
     kotlin("multiplatform")
-    kotlin("native.cocoapods")
     kotlin("kapt")
     kotlin("plugin.serialization") version (Versions.kotlin)
+    id("co.touchlab.native.cocoapods")
     id("com.android.application")
     id("com.squareup.sqldelight")
 }
@@ -106,7 +106,7 @@ kotlin {
         api(kotlin("stdlib-common", Versions.kotlin))
         implementation(Deps.Coroutines.common)
         implementation(Deps.Serialization.common)
-        implementation(Deps.MokoMvvn.common)
+        api(Deps.MokoMvvn.common)
         implementation(Deps.koinCore)
         implementation(Deps.Ktor.commonCore)
         implementation(Deps.Ktor.commonLogging)
@@ -162,14 +162,29 @@ kotlin {
         implementation(Deps.Ktor.iosJson)
         implementation(Deps.Ktor.iosSerialization)
         implementation(Deps.SqlDelight.driverIos)
+        //api(Deps.MokoMvvn.iosX64)
+        //api(Deps.MokoMvvn.iodArm64)
     }
 
     sourceSets["iosTest"].dependencies { }
 
-    cocoapods {
+    /*cocoapods {
         summary = "Common libary for herdr"
         homepage = "https://github.com/f8full/herdr"
         frameworkName = "MultiPlatformLibrary"
+    }*/
+    cocoapodsext {
+        summary = "Common libary for herdr"
+        homepage = "https://github.com/f8full/herdr"
+        framework {
+            isStatic = false
+            export(Deps.kermit)
+            export(Deps.MokoMvvn.common)
+            //export(Deps.MokoMvvn.iosX64)
+            //export(Deps.MokoMvvn.iodArm64)
+            transitiveExport = true
+            baseName = "MultiPlatformLibrary"
+        }
     }
 }
 

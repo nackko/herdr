@@ -1,16 +1,64 @@
 PODS:
-  - app (1.0)
+  - Alamofire (5.2.2)
+  - AlamofireImage (4.1.0):
+    - Alamofire (~> 5.1)
+  - AppAuth (1.4.0):
+    - AppAuth/Core (= 1.4.0)
+    - AppAuth/ExternalUserAgent (= 1.4.0)
+  - AppAuth/Core (1.4.0)
+  - AppAuth/ExternalUserAgent (1.4.0)
+  - MultiPlatformLibrary (1.0)
+  - MultiPlatformLibraryMvvm (0.3.0):
+    - MultiPlatformLibrary
+    - MultiPlatformLibraryMvvm/AlamofireImage (= 0.3.0)
+    - MultiPlatformLibraryMvvm/Core (= 0.3.0)
+    - MultiPlatformLibraryMvvm/SkyFloatingLabelTextField (= 0.3.0)
+  - MultiPlatformLibraryMvvm/AlamofireImage (0.3.0):
+    - AlamofireImage
+    - MultiPlatformLibrary
+  - MultiPlatformLibraryMvvm/Core (0.3.0):
+    - MultiPlatformLibrary
+  - MultiPlatformLibraryMvvm/SkyFloatingLabelTextField (0.3.0):
+    - MultiPlatformLibrary
+    - SkyFloatingLabelTextField
+  - SecureDefaults (1.0.5)
+  - SkyFloatingLabelTextField (3.8.0)
 
 DEPENDENCIES:
-  - app (from `/Users/f8full/Documents/GitHub/herdr/app`)
+  - AppAuth
+  - MultiPlatformLibrary (from `../app`)
+  - MultiPlatformLibraryMvvm (from `https://github.com/icerockdev/moko-mvvm.git`, tag `release/0.7.1`)
+  - SecureDefaults (= 1.0.5)
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - AlamofireImage
+    - AppAuth
+    - SecureDefaults
+    - SkyFloatingLabelTextField
 
 EXTERNAL SOURCES:
-  app:
-    :path: "/Users/f8full/Documents/GitHub/herdr/app"
+  MultiPlatformLibrary:
+    :path: "../app"
+  MultiPlatformLibraryMvvm:
+    :git: https://github.com/icerockdev/moko-mvvm.git
+    :tag: release/0.7.1
+
+CHECKOUT OPTIONS:
+  MultiPlatformLibraryMvvm:
+    :git: https://github.com/icerockdev/moko-mvvm.git
+    :tag: release/0.7.1
 
 SPEC CHECKSUMS:
-  app: 9b9cc8c8f74191cd315d6856b78013b1309bfa73
+  Alamofire: 814429acc853c6c54ff123fc3d2ef66803823ce0
+  AlamofireImage: c4a2ba349885fb3064feb74d2e547bd42ce9be10
+  AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
+  MultiPlatformLibrary: 62d7866a9788648826c63e52441e4edc6558350e
+  MultiPlatformLibraryMvvm: 999ac3896d8214fd65e0e0a376a2e553bf4515b3
+  SecureDefaults: 1d84f828e6c525b9197e2a164f8c465b4af86cd9
+  SkyFloatingLabelTextField: 5a338412114808e961fe2d14ea2c5452c8b6e4aa
 
-PODFILE CHECKSUM: 956121bf0e6a6c8866921f4c52842feccef39e6d
+PODFILE CHECKSUM: 48f7e95acbba5e7af7d4ff427c4907bdc0846563
 
 COCOAPODS: 1.9.3

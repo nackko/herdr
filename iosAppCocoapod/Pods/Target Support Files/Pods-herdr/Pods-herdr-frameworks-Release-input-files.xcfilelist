@@ -1,0 +1,9 @@
+${PODS_ROOT}/Target Support Files/Pods-herdr/Pods-herdr-frameworks.sh
+${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework
+${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework
+${BUILT_PRODUCTS_DIR}/AppAuth/AppAuth.framework
+${PODS_ROOT}/../../app/build/cocoapods/framework/MultiPlatformLibrary.framework
+${PODS_ROOT}/../../app/build/cocoapods/framework/MultiPlatformLibrary.framework.dSYM
+${BUILT_PRODUCTS_DIR}/MultiPlatformLibraryMvvm/MultiPlatformLibraryMvvm.framework
+${BUILT_PRODUCTS_DIR}/SecureDefaults/SecureDefaults.framework
+${BUILT_PRODUCTS_DIR}/SkyFloatingLabelTextField/SkyFloatingLabelTextField.framework

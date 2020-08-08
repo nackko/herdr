@@ -26,7 +26,7 @@ buildscript {
     dependencies {
         classpath(Deps.androidGradlePlugin)
         classpath(Deps.SqlDelight.gradle)
-        //classpath(Deps.cocoapodsExt)
+        classpath(Deps.cocoapodsExt)
 
         classpath(kotlin("gradle-plugin", Versions.kotlin))
     }

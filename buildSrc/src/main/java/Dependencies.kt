@@ -23,7 +23,7 @@ object Versions {
     val androidxLifecycle = "2.2.0"
     val appCompat = "1.1.0"
     val appAuth = "0.7.1"
-    val cocoapodsext = "0.9"
+    val cocoapodsExt = "0.9"
     val constraintLayout = "1.1.3"
     val coroutines = "1.3.5"
     val fragment = "1.2.4"
@@ -33,7 +33,7 @@ object Versions {
     val kotlin = "1.3.72"
     val ktor = "1.3.2"
     val materialDesign = "1.1.0"
-    val mokoMvvm = "0.6.0"
+    val mokoMvvm = "0.7.1"
     val navigation = "2.2.2"
     val securityCrypto = "1.0.0-rc01"
     val serializer = "0.20.0"
@@ -45,6 +45,7 @@ object Deps {
     val androidGradlePlugin = "com.android.tools.build:gradle:${Versions.androidGradlePlugin}"
     val appCompatX = "androidx.appcompat:appcompat:${Versions.appCompat}"
     val appAuth = "net.openid:appauth:${Versions.appAuth}"
+    val cocoapodsExt = "co.touchlab:kotlinnativecocoapods:${Versions.cocoapodsExt}"
     val constraintlayoutX = "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
     val fragmentX = "androidx.fragment:fragment:${Versions.fragment}"
     val kermit = "co.touchlab:kermit:${Versions.kermit}"
@@ -82,6 +83,8 @@ object Deps {
     object MokoMvvn {
         val common = "dev.icerock.moko:mvvm:${Versions.mokoMvvm}"
         val android = "androidx.lifecycle:lifecycle-extensions:${Versions.androidxLifecycle}"
+        val iosX64 = "dev.icerock.moko:mvvm-iosx64:${Versions.mokoMvvm}"
+        val iodArm64 = "dev.icerock.moko:mvvm-iosarm64:${Versions.mokoMvvm}"
     }
 
     object Serialization {

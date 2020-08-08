@@ -1,6 +1,10 @@
-FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/../../app/build/cocoapods/framework"
+ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES
+FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/Alamofire" "${PODS_CONFIGURATION_BUILD_DIR}/AlamofireImage" "${PODS_CONFIGURATION_BUILD_DIR}/AppAuth" "${PODS_CONFIGURATION_BUILD_DIR}/MultiPlatformLibraryMvvm" "${PODS_CONFIGURATION_BUILD_DIR}/SecureDefaults" "${PODS_CONFIGURATION_BUILD_DIR}/SkyFloatingLabelTextField" "${PODS_ROOT}/../../app/build/cocoapods/framework"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-OTHER_LDFLAGS = $(inherited) -ObjC -l"c++" -framework "MultiPlatformLibrary"
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/Alamofire/Alamofire.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/AlamofireImage/AlamofireImage.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/AppAuth/AppAuth.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/MultiPlatformLibraryMvvm/MultiPlatformLibraryMvvm.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/SecureDefaults/SecureDefaults.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/SkyFloatingLabelTextField/SkyFloatingLabelTextField.framework/Headers"
+LD_RUNPATH_SEARCH_PATHS = $(inherited) '@executable_path/Frameworks' '@loader_path/Frameworks'
+OTHER_LDFLAGS = $(inherited) -l"c++" -framework "Alamofire" -framework "AlamofireImage" -framework "AppAuth" -framework "CFNetwork" -framework "MultiPlatformLibrary" -framework "MultiPlatformLibraryMvvm" -framework "SafariServices" -framework "SecureDefaults" -framework "SkyFloatingLabelTextField" -weak_framework "AuthenticationServices"
+OTHER_SWIFT_FLAGS = $(inherited) -D COCOAPODS
 PODS_BUILD_DIR = ${BUILD_DIR}
 PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
 PODS_PODFILE_DIR_PATH = ${SRCROOT}/..

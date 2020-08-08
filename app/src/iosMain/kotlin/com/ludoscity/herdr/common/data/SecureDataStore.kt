@@ -36,11 +36,11 @@ actual open class SecureDataStore actual constructor() {
 
     actual suspend fun deleteKey(key: String) {
         return suspendCoroutine { continuation ->
-            deleteKey(key, continuation)
+            clearKey(key, continuation)
         }
     }
 
-    open fun putString(key: String, data: String, callback: Continuation<Unit>) {
+    open fun putString(key: String, data: String?, callback: Continuation<Unit>) {
         throw NotImplementedError("iOS project should implement this")
     }
 
@@ -48,7 +48,7 @@ actual open class SecureDataStore actual constructor() {
         throw NotImplementedError("iOS project should implement this")
     }
 
-    open fun deleteKey(key: String, callback: Continuation<Unit>) {
+    open fun clearKey(key: String, callback: Continuation<Unit>) {
         throw NotImplementedError("iOS project should implement this")
     }
 }

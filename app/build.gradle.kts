@@ -24,11 +24,12 @@ repositories {
 
 plugins {
     kotlin("multiplatform")
-    kotlin("native.cocoapods")
+    //kotlin("native.cocoapods")
     kotlin("kapt")
     kotlin("plugin.serialization") version (Versions.kotlin)
-    id("com.android.application")
+    id("com.android.library")
     id("com.squareup.sqldelight")
+    id("dev.icerock.mobile.multiplatform")
 }
 
 
@@ -103,6 +104,8 @@ kotlin {
     }*/
 
     sourceSets["commonMain"].dependencies {
+        //implementation("dev.icerock:mobile-multiplatform:0.6.1")
+
         api(kotlin("stdlib-common", Versions.kotlin))
         implementation(Deps.Coroutines.common)
         implementation(Deps.Serialization.common)
@@ -164,13 +167,13 @@ kotlin {
         implementation(Deps.SqlDelight.driverIos)
     }
 
-    sourceSets["iosTest"].dependencies { }
+    /*sourceSets["iosTest"].dependencies { }
 
     cocoapods {
         summary = "Common libary for herdr"
         homepage = "https://github.com/f8full/herdr"
         frameworkName = "MultiPlatformLibrary"
-    }
+    }*/
 }
 
 sqldelight {

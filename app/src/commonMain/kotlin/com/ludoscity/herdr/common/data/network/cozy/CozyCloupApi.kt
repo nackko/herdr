@@ -67,12 +67,19 @@ class CozyCloupApi(private val log: Kermit) : KoinComponent, INetworkDataPipe {
 
             //Add Authorization header to outgoing requests
             requestPipeline.intercept(HttpRequestPipeline.Before) {
-                val useCaseInput = RetrieveAccessAndRefreshTokenUseCaseInput(true)
-                val userCred = retrieveAccessAndRefreshTokenUseCaseAsync.execute(useCaseInput)
-                if (userCred is Response.Success) {
-                    //log.v("Network") { "About to set Auth header with token: ${userCred.data.accessToken}" }
-                    context.headers["Authorization"] =
-                        "Bearer ${userCred.data.accessToken}"
+                if (context.headers["Authorization"] == null) {
+                    // unregister requests also use Authorization Bearer header
+                    // but with *registration* token instead of *access* token.
+                    // Such requests will have a header already set
+                    // For request that were intercepted because token was expired, we nix the old
+                    // access token header before retrying.
+                    val useCaseInput = RetrieveAccessAndRefreshTokenUseCaseInput(true)
+                    val userCred = retrieveAccessAndRefreshTokenUseCaseAsync.execute(useCaseInput)
+                    if (userCred is Response.Success) {
+                        //log.v("Network") { "About to set Auth header with token: ${userCred.data.accessToken}" }
+                        context.headers["Authorization"] =
+                            "Bearer ${userCred.data.accessToken}"
+                    }
                 }
                 proceed()
             }
@@ -85,11 +92,13 @@ class CozyCloupApi(private val log: Kermit) : KoinComponent, INetworkDataPipe {
                     //refresh access token
                     refreshAccessAndRefreshTokenUseCaseAsync.execute()
 
+                    // nix old token from original request
+                    val oldResquestBuilder = HttpRequestBuilder().takeFrom(context.request)
+                    oldResquestBuilder.headers.remove("Authorization")
+
                     //retry
-                    val retryCall = requestPipeline.execute(
-                        HttpRequestBuilder().takeFrom(context.request),
-                        EmptyContent
-                    ) as HttpClientCall
+                    val retryCall = requestPipeline.execute(oldResquestBuilder, EmptyContent)
+                            as HttpClientCall
 
                     proceedWith(retryCall.response)
 
@@ -151,6 +160,7 @@ class CozyCloupApi(private val log: Kermit) : KoinComponent, INetworkDataPipe {
 
             Response.Success(Unit)
         } catch (e: Exception) {
+            log.d { "Caught exception: ${e.message}" }
             Response.Error(exception = e, message = e.message)
         }
     }

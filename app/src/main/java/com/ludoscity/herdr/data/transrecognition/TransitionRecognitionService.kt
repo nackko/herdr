@@ -7,9 +7,8 @@ import android.os.*
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.android.gms.location.*
-import com.ludoscity.herdr.common.data.GeoTrackingDatapoint
 import com.ludoscity.herdr.R
-
+import com.ludoscity.herdr.common.data.GeoTrackingDatapoint
 import com.ludoscity.herdr.common.domain.usecase.analytics.SaveAnalyticsDatapointUseCaseAsync
 import com.ludoscity.herdr.common.domain.usecase.analytics.SaveAnalyticsDatapointUseCaseInput
 import com.ludoscity.herdr.common.domain.usecase.geotracking.ObserveGeoTrackingUseCaseInput
@@ -20,7 +19,6 @@ import com.ludoscity.herdr.common.utils.launchSilent
 import com.ludoscity.herdr.ui.main.HerdrActivity
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
-import org.jetbrains.anko.intentFor
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import kotlin.coroutines.CoroutineContext
@@ -176,7 +174,7 @@ class TransitionRecognitionService : Service(), KoinComponent {
 
         observeGeoTrackingUseCaseSync.execute(ObserveGeoTrackingUseCaseInput {
             if (it) {
-                Log.d(TAG, "Requesting location updates for tracing")
+                Log.d(TAG, "Requesting location updates for geolocation trac(k)ing")
                 //Utils.setRequestingLocationUpdates(this, true)
                 try {
                     fusedLocationClient.requestLocationUpdates(locationRequest,
@@ -192,7 +190,7 @@ class TransitionRecognitionService : Service(), KoinComponent {
                     Log.e(TAG, "Lost location permission. Could not request updates. $unlikely")
                 }
             } else {
-                Log.d(TAG, "Removing location updates for tracing")
+                Log.d(TAG, "Removing location updates for geolocation trac(k)ing")
                 try {
                     fusedLocationClient.removeLocationUpdates(locationCallback)
                     //This is saved in repo (sharedPref) in the sample

@@ -149,8 +149,10 @@ class DriveLoginViewModel(override val eventsDispatcher: EventsDispatcher<DriveL
     }
 
     private fun processUnregisterResponse(response: Response<Unit>) {
+        log.d { "About to process client unregister response" }
         when (response) {
             is Response.Success -> {
+                log.d { "Posting ErrorAuthClientRegistration" }
                 _authClientRegistrationResult.postValue(
                     ErrorAuthClientRegistration(
                         Response.Error(
@@ -158,6 +160,7 @@ class DriveLoginViewModel(override val eventsDispatcher: EventsDispatcher<DriveL
                         )
                     )
                 )
+                log.d { "Posting ErrorUserCredentials" }
                 _userCredentials.postValue(
                     ErrorUserCredentials(
                         Response.Error(
@@ -167,6 +170,7 @@ class DriveLoginViewModel(override val eventsDispatcher: EventsDispatcher<DriveL
                 )
             }
             else -> {
+                log.d { "Something is wrong. Posting again" }
                 //Something happened down there. Here at model level, simply repost
                 //it does eat the original probably network Error in response
                 _authClientRegistrationResult.postValue(authClientRegistrationResult.value)

@@ -46,6 +46,7 @@ private val coreModule = module {
     single { SaveAnalyticsDatapointUseCaseAsync() }
     single { UpdateUserLocGeoTrackingDatapointUseCaseSync() }
     single { ObserveGeoTrackingUseCaseSync() }
+    single { ObserveLoggedInUseCaseSync() }
     single { UpdateGeoTrackingUseCaseSync() }
 }
 

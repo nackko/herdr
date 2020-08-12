@@ -20,12 +20,11 @@ package com.ludoscity.herdr.common.ui.main
 
 import co.touchlab.kermit.Kermit
 import com.ludoscity.herdr.common.base.Response
-import com.ludoscity.herdr.common.domain.entity.UserCredentials
+import com.ludoscity.herdr.common.domain.usecase.login.ObserveLoggedInUseCaseInput
+import com.ludoscity.herdr.common.domain.usecase.login.ObserveLoggedInUseCaseSync
 import com.ludoscity.herdr.common.domain.usecase.login.RetrieveAccessAndRefreshTokenUseCaseAsync
 import com.ludoscity.herdr.common.domain.usecase.login.RetrieveAccessAndRefreshTokenUseCaseInput
 import com.ludoscity.herdr.common.utils.launchSilent
-import dev.icerock.moko.mvvm.livedata.LiveData
-import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
@@ -36,17 +35,16 @@ import kotlin.coroutines.CoroutineContext
 
 class HerdrViewModel : KoinComponent, ViewModel() {
 
-    private val log: Kermit by inject { parametersOf("HerdrViewModel") }
+    fun addLoggedInObserver(observer: (Boolean?) -> Unit): Response<Unit> {
+        return observeLoggedInUseCaseSync.execute(ObserveLoggedInUseCaseInput(observer))
+    }
 
-    private val _loggedIn =
-            MutableLiveData(
-                    false
-            )
-    val isLoggedIn: LiveData<Boolean>
-        get() = _loggedIn
+    private val log: Kermit by inject { parametersOf("HerdrViewModel") }
 
     private val retrieveAccessAndRefreshTokenUseCase: RetrieveAccessAndRefreshTokenUseCaseAsync
             by inject()
+
+    private val observeLoggedInUseCaseSync: ObserveLoggedInUseCaseSync by inject()
 
     // ASYNC - COROUTINES
     private val coroutineContext: CoroutineContext by inject()
@@ -57,22 +55,13 @@ class HerdrViewModel : KoinComponent, ViewModel() {
         initAuthAccessAndRefreshTokenFromCache()
     }
 
+    // So that initial logged in status happen -- shouldn't that be in init { } of repo?
+    // TODO: clarify if/how *async* local storage could happen in LoginRepository init block
     private fun initAuthAccessAndRefreshTokenFromCache() = launchSilent(
-            coroutineContext,
-            exceptionHandler, job
+        coroutineContext,
+        exceptionHandler, job
     ) {
-        _loggedIn.postValue(false)
         val useCaseInput = RetrieveAccessAndRefreshTokenUseCaseInput(true)
-        val response = retrieveAccessAndRefreshTokenUseCase.execute(useCaseInput)
-        processRetrieveAccessAndRefreshTokenResponse(response)
-    }
-
-    private fun processRetrieveAccessAndRefreshTokenResponse(response: Response<UserCredentials>) {
-        when (response) {
-            is Response.Success ->
-                _loggedIn.postValue(true)
-            is Response.Error ->
-                _loggedIn.postValue(false)
-        }
+        retrieveAccessAndRefreshTokenUseCase.execute(useCaseInput)
     }
 }

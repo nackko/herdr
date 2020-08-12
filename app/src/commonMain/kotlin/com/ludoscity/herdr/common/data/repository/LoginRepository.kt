@@ -24,12 +24,23 @@ import com.ludoscity.herdr.common.data.SecureDataStore
 import com.ludoscity.herdr.common.data.network.INetworkDataPipe
 import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
 import com.ludoscity.herdr.common.domain.entity.UserCredentials
+import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import io.ktor.utils.io.errors.IOException
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import org.koin.core.parameter.parametersOf
 
 class LoginRepository : KoinComponent {
+
+    fun addLoggedInObserver(observer: (Boolean?) -> Unit): Response<Unit> {
+        _loggedIn.addObserver(observer)
+        return Response.Success(Unit)
+    }
+
+    private val _loggedIn =
+        MutableLiveData<Boolean?>(
+            null
+        )
 
     private val log: Kermit by inject { parametersOf("LoginRepository") }
     private val networkDataPipe: INetworkDataPipe by inject()
@@ -115,6 +126,7 @@ class LoginRepository : KoinComponent {
                 //clear memory cache
                 authClientRegistration = null
                 userCredentials = null
+                _loggedIn.postValue(false)
             }
 
             //forward network reply
@@ -122,6 +134,7 @@ class LoginRepository : KoinComponent {
         }
 
         //if memory cache is already cleared, simply return Success
+        //TOTHINKABOUT: a case where authClientRegistration is null but userCredentials is NOT?
         return Response.Success(Unit)
     }
 
@@ -138,6 +151,7 @@ class LoginRepository : KoinComponent {
                     retrieveString(userCredentialRefreshTokenStoreKey)!!
                 )
             }
+            _loggedIn.postValue(true)
 
             Response.Success(userCredentials!!)
         } else if (!localOnly) {
@@ -145,6 +159,7 @@ class LoginRepository : KoinComponent {
 
             if (networkReply is Response.Success) {
                 userCredentials = networkReply.data
+                _loggedIn.postValue(true)
                 secureDataStore.apply {
                     storeString(userCredentialAccessTokenStoreKey, userCredentials!!.accessToken)
                     storeString(userCredentialRefreshTokenStoreKey, userCredentials!!.refreshToken)

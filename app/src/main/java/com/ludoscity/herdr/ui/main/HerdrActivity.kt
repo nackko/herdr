@@ -21,14 +21,11 @@ package com.ludoscity.herdr.ui.main
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.ludoscity.herdr.R
-import com.ludoscity.herdr.common.ui.drivelogin.SuccessUserCredentials
 import com.ludoscity.herdr.common.ui.main.HerdrViewModel
 import com.ludoscity.herdr.data.transrecognition.TransitionRecognitionService
 import com.ludoscity.herdr.databinding.ActivityHerdrBinding
-import com.ludoscity.herdr.utils.startServiceForeground
 import dev.icerock.moko.mvvm.MvvmActivity
 import dev.icerock.moko.mvvm.createViewModelFactory
-import org.jetbrains.anko.intentFor
 
 class HerdrActivity : MvvmActivity<ActivityHerdrBinding, HerdrViewModel>() {
 
@@ -43,11 +40,17 @@ class HerdrActivity : MvvmActivity<ActivityHerdrBinding, HerdrViewModel>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.isLoggedIn.addObserver {
-            if (it) {
-                startServiceForeground(intentFor<TransitionRecognitionService>())
-            } else {
-                stopService(intentFor<TransitionRecognitionService>())
+        //TODO: loggedIn signal is only really useful for data upload
+        // app already can trac(k)e user activity changes (bike <--> walk <--> ...) and trac(k)e geolocation (GPS)
+        // and persist in local db.
+        // For now, logging out disconnects both tracking, nothing gets persisted to db
+        viewModel.addLoggedInObserver {
+            it?.let { loggedIn ->
+                if (loggedIn) {
+                    startServiceForeground(intentFor<TransitionRecognitionService>())
+                } else {
+                    stopService(intentFor<TransitionRecognitionService>())
+                }
             }
         }
     }

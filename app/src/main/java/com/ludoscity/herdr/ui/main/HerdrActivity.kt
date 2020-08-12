@@ -24,8 +24,10 @@ import com.ludoscity.herdr.R
 import com.ludoscity.herdr.common.ui.main.HerdrViewModel
 import com.ludoscity.herdr.data.transrecognition.TransitionRecognitionService
 import com.ludoscity.herdr.databinding.ActivityHerdrBinding
+import com.ludoscity.herdr.utils.startServiceForeground
 import dev.icerock.moko.mvvm.MvvmActivity
 import dev.icerock.moko.mvvm.createViewModelFactory
+import org.jetbrains.anko.intentFor
 
 class HerdrActivity : MvvmActivity<ActivityHerdrBinding, HerdrViewModel>() {
 

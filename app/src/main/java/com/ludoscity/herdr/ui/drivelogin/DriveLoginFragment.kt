@@ -115,17 +115,17 @@ class DriveLoginFragment : MvvmEventsFragment<FragmentDriveLoginBinding, DriveLo
     private fun getUserCredentialsState(state: UserCredentialsState) {
         when (state) {
             is SuccessUserCredentials -> {
-                //TODO: hide in progress
                 val response = state.response as Response.Success
                 binding.activityHerdrButtonLogout.visibility = View.VISIBLE
+                binding.connectProgressBar.visibility = View.INVISIBLE
                 onUserCredentialsSuccess(userCredentials = response.data)
             }
             is InProgressUserCredentials -> {
-                //TODO: show in progress
+                binding.connectProgressBar.visibility = View.VISIBLE
                 binding.activityHerdrCredentialsTv.text = "In progress..."
             }
             is ErrorUserCredentials -> {
-                //TODO: hide loading
+                binding.connectProgressBar.visibility = View.INVISIBLE
                 binding.driveConnectButton.visibility = View.VISIBLE
                 val response = state.response as Response.Error
                 showError(
@@ -139,21 +139,18 @@ class DriveLoginFragment : MvvmEventsFragment<FragmentDriveLoginBinding, DriveLo
     private fun getClientRegistrationState(state: AuthClientRegistrationState) {
         when (state) {
             is SuccessAuthClientRegistration -> {
-                //TODO: hide in progress
                 binding.driveConnectButton.visibility = View.INVISIBLE
                 binding.connectProgressBar.visibility = View.VISIBLE
                 val response = state.response as Response.Success
                 onClientRegistrationSuccess(registrationInfo = response.data)
             }
             is InProgressAuthClientRegistration -> {
-                //TODO: show in progress
                 binding.activityHerdrRegistrationTv.text = "In progress..."
                 binding.driveConnectButton.visibility = View.INVISIBLE
                 binding.connectProgressBar.visibility = View.VISIBLE
                 binding.activityHerdrButtonLogout.visibility = View.INVISIBLE
             }
             is ErrorAuthClientRegistration -> {
-                //TODO: hide loading
                 binding.driveConnectButton.visibility = View.VISIBLE
                 binding.connectProgressBar.visibility = View.INVISIBLE
                 binding.activityHerdrButtonLogout.visibility = View.INVISIBLE

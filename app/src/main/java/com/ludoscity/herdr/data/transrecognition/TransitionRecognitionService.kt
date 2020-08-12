@@ -21,6 +21,7 @@ import com.ludoscity.herdr.common.utils.launchSilent
 import com.ludoscity.herdr.ui.main.HerdrActivity
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
+import org.jetbrains.anko.intentFor
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import kotlin.coroutines.CoroutineContext

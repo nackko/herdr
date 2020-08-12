@@ -1,3 +1,5 @@
+@file:Suppress("UnusedImport")
+
 package com.ludoscity.herdr.data.transrecognition
 
 import android.app.*
@@ -38,7 +40,7 @@ class TransitionRecognitionService : Service(), KoinComponent {
         var isTrackingActivityTransition = false
         private const val CHANNEL_ID = "hdr_channel_00"
         private const val PACKAGE_NAME =
-                "com.ludoscity.herdr.data.transrecognition"
+            "com.ludoscity.herdr.data.transrecognition"
         private const val EXTRA_STARTED_FROM_NOTIFICATION = "$PACKAGE_NAME.started_from_notification"
         const val FOREGROUND_SERVICE_NOTIFICATION_ID = 696
 
@@ -93,24 +95,28 @@ class TransitionRecognitionService : Service(), KoinComponent {
         //intent.putExtra(EXTRA_STARTED_FROM_NOTIFICATION, true)
         //val servicePendingIntent = PendingIntent.getService(this, 0, intent,
         //        PendingIntent.FLAG_UPDATE_CURRENT)
-        val activityPendingIntent = PendingIntent.getActivity(this, 0,
-                Intent(this, HerdrActivity::class.java), 0)
+        val activityPendingIntent = PendingIntent.getActivity(
+            this, 0,
+            Intent(this, HerdrActivity::class.java), 0
+        )
 
         notifBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
-                .addAction(R.drawable.ic_launch_black_24dp, getString(R.string.open_app),
-                        activityPendingIntent)
-                //.addAction(R.drawable.ic_cancel_black_24dp, getString(R.string.cancel_tracing),
-                //        servicePendingIntent)
-                .setContentText(text)
-                .setContentTitle("Content Title")
-                .setOngoing(true)
-                .setPriority(NotificationCompat.PRIORITY_LOW)
-                //TODO: launcher icon
-                //.setSmallIcon(R.mipmap.ic_launcher)
-                .setSmallIcon(R.drawable.ic_cancel_black_24dp)
-                .setTicker(text)
-                .setOnlyAlertOnce(true)
-                .setWhen(System.currentTimeMillis())
+            .addAction(
+                R.drawable.ic_launch_black_24dp, getString(R.string.open_app),
+                activityPendingIntent
+            )
+            //.addAction(R.drawable.ic_cancel_black_24dp, getString(R.string.cancel_tracing),
+            //        servicePendingIntent)
+            .setContentText(text)
+            .setContentTitle("Content Title")
+            .setOngoing(true)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
+            //TODO: launcher icon
+            //.setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(R.drawable.ic_cancel_black_24dp)
+            .setTicker(text)
+            .setOnlyAlertOnce(true)
+            .setWhen(System.currentTimeMillis())
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notifBuilder.setChannelId(CHANNEL_ID)
         }
@@ -142,20 +148,20 @@ class TransitionRecognitionService : Service(), KoinComponent {
                     // it shall also insert the geopoint if tracking is in progress (which it also maintains)
                     it.locations.getOrNull(0)?.let { userLocAsLocation ->
                         updateUserLocGeoTrackingDatapointUseCaseSync.execute(
-                                SaveGeoTrackingDatapointUseCaseInput(
-                                        GeoTrackingDatapoint(
-                                                -1,
-                                                -1,
-                                                userLocAsLocation.altitude,
-                                                userLocAsLocation.accuracy.toDouble(),
-                                                //userLocAsLocation.verticalAccuracyMeters, //TODO: requires API LEVEL 26
-                                                0.0f.toDouble(),
-                                                userLocAsLocation.latitude,
-                                                userLocAsLocation.longitude,
-                                                0L,
-                                                ""
-                                        )
+                            SaveGeoTrackingDatapointUseCaseInput(
+                                GeoTrackingDatapoint(
+                                    -1,
+                                    -1,
+                                    userLocAsLocation.altitude,
+                                    userLocAsLocation.accuracy.toDouble(),
+                                    //userLocAsLocation.verticalAccuracyMeters, //TODO: requires API LEVEL 26
+                                    0.0f.toDouble(),
+                                    userLocAsLocation.latitude,
+                                    userLocAsLocation.longitude,
+                                    0L,
+                                    ""
                                 )
+                            )
                         )
                     }
                 }
@@ -177,14 +183,16 @@ class TransitionRecognitionService : Service(), KoinComponent {
                 Log.d(TAG, "Requesting location updates for geolocation trac(k)ing")
                 //Utils.setRequestingLocationUpdates(this, true)
                 try {
-                    fusedLocationClient.requestLocationUpdates(locationRequest,
-                            locationCallback, Looper.myLooper())
+                    fusedLocationClient.requestLocationUpdates(
+                        locationRequest,
+                        locationCallback, Looper.myLooper()
+                    )
                     notifBuilder.setContentTitle("Tracing your movements")
                     notifManager.notify(FOREGROUND_SERVICE_NOTIFICATION_ID, notifBuilder.build())
 
                     saveAnalytics(
-                            null,
-                            "TransitionRecognitionService--requestLocationUpdates-success"
+                        null,
+                        "TransitionRecognitionService--requestLocationUpdates-success"
                     )
                 } catch (unlikely: SecurityException) {
                     Log.e(TAG, "Lost location permission. Could not request updates. $unlikely")
@@ -201,8 +209,8 @@ class TransitionRecognitionService : Service(), KoinComponent {
                     notifManager.notify(FOREGROUND_SERVICE_NOTIFICATION_ID, notifBuilder.build())
 
                     saveAnalytics(
-                            null,
-                            "TransitionRecognitionService--removeLocationUpdates-success"
+                        null,
+                        "TransitionRecognitionService--removeLocationUpdates-success"
                     )
                 } catch (unlikely: SecurityException) {
                     Log.e(TAG, "Lost location permission. Could not remove updates. $unlikely")
@@ -216,58 +224,60 @@ class TransitionRecognitionService : Service(), KoinComponent {
         val transitions = mutableListOf<ActivityTransition>()
 
         transitions +=
-                ActivityTransition.Builder()
-                        .setActivityType(DetectedActivity.STILL)
-                        //.setActivityType(DetectedActivity.WALKING)
-                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
-                        .build()
+            ActivityTransition.Builder()
+                .setActivityType(DetectedActivity.STILL)
+                //.setActivityType(DetectedActivity.WALKING)
+                .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
+                .build()
 
         transitions +=
-                ActivityTransition.Builder()
-                        .setActivityType(DetectedActivity.STILL)
-                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
-                        .build()
+            ActivityTransition.Builder()
+                .setActivityType(DetectedActivity.STILL)
+                .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
+                .build()
         transitions +=
-                ActivityTransition.Builder()
-                        .setActivityType(DetectedActivity.WALKING)
-                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
-                        .build()
+            ActivityTransition.Builder()
+                .setActivityType(DetectedActivity.WALKING)
+                .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
+                .build()
 
         transitions +=
-                ActivityTransition.Builder()
-                        .setActivityType(DetectedActivity.WALKING)
-                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
-                        .build()
+            ActivityTransition.Builder()
+                .setActivityType(DetectedActivity.WALKING)
+                .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
+                .build()
 
         transitions +=
-                ActivityTransition.Builder()
-                        .setActivityType(DetectedActivity.RUNNING)
-                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
-                        .build()
+            ActivityTransition.Builder()
+                .setActivityType(DetectedActivity.RUNNING)
+                .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
+                .build()
 
         transitions +=
-                ActivityTransition.Builder()
-                        .setActivityType(DetectedActivity.RUNNING)
-                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
-                        .build()
+            ActivityTransition.Builder()
+                .setActivityType(DetectedActivity.RUNNING)
+                .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
+                .build()
 
         transitions +=
-                ActivityTransition.Builder()
-                        .setActivityType(DetectedActivity.ON_BICYCLE)
-                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
-                        .build()
+            ActivityTransition.Builder()
+                .setActivityType(DetectedActivity.ON_BICYCLE)
+                .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
+                .build()
 
         transitions +=
-                ActivityTransition.Builder()
-                        .setActivityType(DetectedActivity.ON_BICYCLE)
-                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
-                        .build()
+            ActivityTransition.Builder()
+                .setActivityType(DetectedActivity.ON_BICYCLE)
+                .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
+                .build()
 
         transitionRecognitionReq = ActivityTransitionRequest(transitions)
 
         val intent = applicationContext.intentFor<TransitionRecognitionIntentService>()
-        pendingIntent = PendingIntent.getService(applicationContext,
-                999, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        pendingIntent = PendingIntent.getService(
+            applicationContext,
+            999, intent, PendingIntent.FLAG_UPDATE_CURRENT
+        )
 
         super.onCreate()
     }
@@ -282,30 +292,30 @@ class TransitionRecognitionService : Service(), KoinComponent {
     private fun getLastLocation() {
         try {
             fusedLocationClient.lastLocation
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful && task.result != null) {
-                            task.result?.let {
-                                updateUserLocGeoTrackingDatapointUseCaseSync.execute(
-                                        SaveGeoTrackingDatapointUseCaseInput(
-                                                GeoTrackingDatapoint(
-                                                        -1,
-                                                        -1,
-                                                        it.altitude,
-                                                        it.accuracy.toDouble(),
-                                                        //userLocAsLocation.verticalAccuracyMeters, //TODO: requires API LEVEL 26
-                                                        0.0f.toDouble(),
-                                                        it.latitude,
-                                                        it.longitude,
-                                                        0L,
-                                                        ""
-                                                )
-                                        )
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful && task.result != null) {
+                        task.result?.let {
+                            updateUserLocGeoTrackingDatapointUseCaseSync.execute(
+                                SaveGeoTrackingDatapointUseCaseInput(
+                                    GeoTrackingDatapoint(
+                                        -1,
+                                        -1,
+                                        it.altitude,
+                                        it.accuracy.toDouble(),
+                                        //userLocAsLocation.verticalAccuracyMeters, //TODO: requires API LEVEL 26
+                                        0.0f.toDouble(),
+                                        it.latitude,
+                                        it.longitude,
+                                        0L,
+                                        ""
+                                    )
                                 )
-                            }
-                        } else {
-                            Log.w(TAG, "Failed to get location.")
+                            )
                         }
+                    } else {
+                        Log.w(TAG, "Failed to get location.")
                     }
+                }
         } catch (unlikely: SecurityException) {
             Log.e(TAG, "Lost location permission.$unlikely")
         }
@@ -315,11 +325,11 @@ class TransitionRecognitionService : Service(), KoinComponent {
     // https://github.com/f8full/findmybikes/blob/be3e9504d2441e0c0a661bee88bf6ca7276d2c14/app/src/main/java/com/ludoscity/findmybikes/data/database/tracking/AnalTrackingDatapoint.kt#L47
     private fun saveAnalytics(batteryChargePercentage: Long? = null,
                               description: String) = launchSilent(
-            coroutineContext,
-            exceptionHandler, job
+        coroutineContext,
+        exceptionHandler, job
     ) {
         val response = saveAnaltrackingDatapointUseCaseAsync.execute(
-                SaveAnalyticsDatapointUseCaseInput(batteryChargePercentage, description)
+            SaveAnalyticsDatapointUseCaseInput(batteryChargePercentage, description)
         )
     }
 
@@ -351,22 +361,22 @@ class TransitionRecognitionService : Service(), KoinComponent {
     private fun startTransitionUpdate() {
         // Start updates
         val task = ActivityRecognition
-                .getClient(this)
-                .requestActivityTransitionUpdates(transitionRecognitionReq, pendingIntent)
+            .getClient(this)
+            .requestActivityTransitionUpdates(transitionRecognitionReq, pendingIntent)
 
         task.addOnSuccessListener {
             isTrackingActivityTransition = true //TODO: whys insn't that in repo?
 
             saveAnalytics(
-                    null,
-                    "TransitionRecognitionService--startTransitionUpdate-success"
+                null,
+                "TransitionRecognitionService--startTransitionUpdate-success"
             )
         }
 
         task.addOnFailureListener { e ->
             saveAnalytics(
-                    null,
-                    "TransitionRecognitionService--startTransitionUpdate-failure"
+                null,
+                "TransitionRecognitionService--startTransitionUpdate-failure"
             )
             //stopSelf()
         }
@@ -376,23 +386,23 @@ class TransitionRecognitionService : Service(), KoinComponent {
         Log.e("prout", "Stopping updates")
         // Stop updates
         val task = ActivityRecognition
-                .getClient(this)
-                .removeActivityTransitionUpdates(pendingIntent)
+            .getClient(this)
+            .removeActivityTransitionUpdates(pendingIntent)
 
         task.addOnSuccessListener {
             pendingIntent.cancel()
             isTrackingActivityTransition = false
 
             saveAnalytics(
-                    null,
-                    "TransitionRecognitionService--removeActivityTransitionUpdates-success"
+                null,
+                "TransitionRecognitionService--removeActivityTransitionUpdates-success"
             )
         }
 
         task.addOnFailureListener { e ->
             saveAnalytics(
-                    null,
-                    "TransitionRecognitionService--removeActivityTransitionUpdates-failure"
+                null,
+                "TransitionRecognitionService--removeActivityTransitionUpdates-failure"
             )
         }
     }

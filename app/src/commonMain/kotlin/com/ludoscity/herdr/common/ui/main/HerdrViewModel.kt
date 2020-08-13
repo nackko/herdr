@@ -46,10 +46,10 @@ class HerdrViewModel : KoinComponent, ViewModel() {
 
         if (granted) {
             log.d { "Location permission granted" }
-            saveAnalytics(null, "Location permission granted")
+            //saveAnalytics(null, "Location permission granted")
         } else {
             log.d { "Location permission denied" }
-            saveAnalytics(null, "Location permission denied")
+            //saveAnalytics(null, "Location permission denied")
         }
     }
 
@@ -88,19 +88,5 @@ class HerdrViewModel : KoinComponent, ViewModel() {
     ) {
         val useCaseInput = RetrieveAccessAndRefreshTokenUseCaseInput(true)
         retrieveAccessAndRefreshTokenUseCase.execute(useCaseInput)
-    }
-
-    //FIXME: actual value always being null see
-    // https://github.com/f8full/findmybikes/blob/be3e9504d2441e0c0a661bee88bf6ca7276d2c14/app/src/main/java/com/ludoscity/findmybikes/data/database/tracking/AnalTrackingDatapoint.kt#L47
-    private fun saveAnalytics(
-        batteryChargePercentage: Long? = null,
-        description: String
-    ) = launchSilent(
-        coroutineContext,
-        exceptionHandler, job
-    ) {
-        saveAnaltrackingDatapointUseCaseAsync.execute(
-            SaveAnalyticsDatapointUseCaseInput(batteryChargePercentage, description)
-        )
     }
 }

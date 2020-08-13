@@ -20,11 +20,13 @@ package com.ludoscity.herdr.common.ui.main
 
 import co.touchlab.kermit.Kermit
 import com.ludoscity.herdr.common.base.Response
+import com.ludoscity.herdr.common.domain.usecase.analytics.*
 import com.ludoscity.herdr.common.domain.usecase.login.ObserveLoggedInUseCaseInput
 import com.ludoscity.herdr.common.domain.usecase.login.ObserveLoggedInUseCaseSync
 import com.ludoscity.herdr.common.domain.usecase.login.RetrieveAccessAndRefreshTokenUseCaseAsync
 import com.ludoscity.herdr.common.domain.usecase.login.RetrieveAccessAndRefreshTokenUseCaseInput
 import com.ludoscity.herdr.common.utils.launchSilent
+import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
@@ -39,12 +41,35 @@ class HerdrViewModel : KoinComponent, ViewModel() {
         return observeLoggedInUseCaseSync.execute(ObserveLoggedInUseCaseInput(observer))
     }
 
+    fun setLocationPermissionGranted(granted: Boolean) {
+        updatePermissionGrantedUseCaseSync.execute(UpdateLocationPermissionGrantedUseCaseInput(granted))
+
+        if (granted) {
+            log.d { "Location permission granted" }
+            saveAnalytics(null, "Location permission granted")
+        } else {
+            log.d { "Location permission denied" }
+            saveAnalytics(null, "Location permission denied")
+        }
+    }
+
+    fun hasLocationPermission(): LiveData<Boolean> {
+        return (getPermissionGrantedUseCaseSync.execute() as Response.Success).data
+
+    }
+
     private val log: Kermit by inject { parametersOf("HerdrViewModel") }
 
     private val retrieveAccessAndRefreshTokenUseCase: RetrieveAccessAndRefreshTokenUseCaseAsync
             by inject()
 
+    private val saveAnaltrackingDatapointUseCaseAsync:
+            SaveAnalyticsDatapointUseCaseAsync by inject()
+
     private val observeLoggedInUseCaseSync: ObserveLoggedInUseCaseSync by inject()
+
+    private val updatePermissionGrantedUseCaseSync: UpdatePermissionGrantedUseCaseSync by inject()
+    private val getPermissionGrantedUseCaseSync: GetPermissionGrantedUseCaseSync by inject()
 
     // ASYNC - COROUTINES
     private val coroutineContext: CoroutineContext by inject()
@@ -63,5 +88,19 @@ class HerdrViewModel : KoinComponent, ViewModel() {
     ) {
         val useCaseInput = RetrieveAccessAndRefreshTokenUseCaseInput(true)
         retrieveAccessAndRefreshTokenUseCase.execute(useCaseInput)
+    }
+
+    //FIXME: actual value always being null see
+    // https://github.com/f8full/findmybikes/blob/be3e9504d2441e0c0a661bee88bf6ca7276d2c14/app/src/main/java/com/ludoscity/findmybikes/data/database/tracking/AnalTrackingDatapoint.kt#L47
+    private fun saveAnalytics(
+        batteryChargePercentage: Long? = null,
+        description: String
+    ) = launchSilent(
+        coroutineContext,
+        exceptionHandler, job
+    ) {
+        saveAnaltrackingDatapointUseCaseAsync.execute(
+            SaveAnalyticsDatapointUseCaseInput(batteryChargePercentage, description)
+        )
     }
 }

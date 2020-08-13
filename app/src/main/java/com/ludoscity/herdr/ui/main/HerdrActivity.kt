@@ -18,8 +18,13 @@
 
 package com.ludoscity.herdr.ui.main
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import com.fondesa.kpermissions.extension.listeners
+import com.fondesa.kpermissions.extension.permissionsBuilder
 import com.ludoscity.herdr.R
 import com.ludoscity.herdr.common.ui.main.HerdrViewModel
 import com.ludoscity.herdr.data.transrecognition.TransitionRecognitionService
@@ -55,5 +60,33 @@ class HerdrActivity : MvvmActivity<ActivityHerdrBinding, HerdrViewModel>() {
                 }
             }
         }
+
+        viewModel.setLocationPermissionGranted(
+            ContextCompat.checkSelfPermission(
+                application,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        )
+    }
+
+    override fun onResume() {
+        if (!viewModel.hasLocationPermission().value) {
+            val request = permissionsBuilder(android.Manifest.permission.ACCESS_FINE_LOCATION).build()
+
+            //log.i(TAG, "Sending location permission request")
+            request.send()
+
+            request.listeners {
+                onAccepted { viewModel.setLocationPermissionGranted(true) }
+                onDenied { viewModel.setLocationPermissionGranted(false) }
+                onPermanentlyDenied { viewModel.setLocationPermissionGranted(false) }
+                //onShouldShowRationale { perms, nonce ->
+                //}
+            }
+        } /*else {
+            Log.i(TAG, "Activity was resumed and already have location permission, carrying on...")
+        }*/
+
+        super.onResume()
     }
 }

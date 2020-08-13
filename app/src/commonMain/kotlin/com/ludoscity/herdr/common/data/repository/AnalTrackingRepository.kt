@@ -22,12 +22,32 @@ import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.data.AnalTrackingDatapoint
 import com.ludoscity.herdr.common.data.database.HerdrDatabase
 import com.ludoscity.herdr.common.data.database.dao.AnalTrackingDatapointDao
+import dev.icerock.moko.mvvm.livedata.LiveData
+import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
 class AnalTrackingRepository : KoinComponent {
 
     private val herdrDb: HerdrDatabase by inject()
+
+    private val _hasLocationPermission = MutableLiveData(false)
+    val hasLocationPermission: LiveData<Boolean> = _hasLocationPermission
+
+    fun onLocationPermissionAccepted(): Response<Unit> {
+        _hasLocationPermission.value = true
+        return Response.Success(Unit)
+    }
+
+    fun onLocationPermissionDenied(): Response<Unit> {
+        _hasLocationPermission.value = false
+        return Response.Success(Unit)
+    }
+
+    fun onLocationPermissionPermanentlyDenied(): Response<Unit> {
+        _hasLocationPermission.value = false
+        return Response.Success(Unit)
+    }
 
     suspend fun insertAnalTrackingDatapoint(record: AnalTrackingDatapoint): Response<List<AnalTrackingDatapoint>> {
         val analTrackingDao = AnalTrackingDatapointDao(herdrDb)

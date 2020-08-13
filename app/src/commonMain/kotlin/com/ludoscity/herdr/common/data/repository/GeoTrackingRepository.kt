@@ -22,6 +22,7 @@ import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.data.GeoTrackingDatapoint
 import com.ludoscity.herdr.common.data.database.HerdrDatabase
 import com.ludoscity.herdr.common.data.database.dao.GeoTrackingDatapointDao
+import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -29,8 +30,40 @@ class GeoTrackingRepository : KoinComponent {
 
     private val herdrDb: HerdrDatabase by inject()
 
-    suspend fun insertGeoTrackingDatapoint(record: GeoTrackingDatapoint): Response<List<GeoTrackingDatapoint>> {
+
+    private val _userLoc = MutableLiveData<GeoTrackingDatapoint?>(null)
+    /*val userLocation: LiveData<GeoTrackingDatapoint?>
+        get() = _userLoc*/
+
+    private val _isTrackingGeolocation = MutableLiveData(false)
+    //val isTrackingGeolocation: LiveData<Boolean> = _isTrackingGeolocation
+
+    fun addGeoTrackingObserver(observer: (Boolean) -> Unit): Response<Unit> {
+        _isTrackingGeolocation.addObserver(observer)
+        return Response.Success(Unit)
+    }
+
+    fun updateGeoTracking(newState: Boolean): Response<Unit> {
+        _isTrackingGeolocation.postValue(newState)
+        return Response.Success(Unit)
+    }
+
+    fun onNewUserLocation(userLoc: GeoTrackingDatapoint): Response<GeoTrackingDatapoint> {
+
+        //if geolocation tracking, also put in database
+        if (_isTrackingGeolocation.value) {
+            insertGeoTrackingDatapoint(userLoc)
+        }
+
+        // update local cache
+        _userLoc.postValue(userLoc)
+
+        return Response.Success(userLoc)
+    }
+
+    fun insertGeoTrackingDatapoint(record: GeoTrackingDatapoint): Response<List<GeoTrackingDatapoint>> {
         val geoTrackingDao = GeoTrackingDatapointDao(herdrDb)
+        //TODO: retrieve timestamp epoch here for both platforms at once
         geoTrackingDao.insert(record)
         return Response.Success(geoTrackingDao.select())
     }

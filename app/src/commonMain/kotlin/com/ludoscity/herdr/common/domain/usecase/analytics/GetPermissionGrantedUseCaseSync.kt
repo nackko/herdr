@@ -18,31 +18,17 @@
 
 package com.ludoscity.herdr.common.domain.usecase.analytics
 
-import com.ludoscity.herdr.common.Platform
-import com.ludoscity.herdr.common.data.AnalTrackingDatapoint
-import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseInput
+import com.ludoscity.herdr.common.base.Response
+import com.ludoscity.herdr.common.data.repository.AnalTrackingRepository
+import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseSync
+import dev.icerock.moko.mvvm.livedata.LiveData
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-class SaveAnalyticsDatapointUseCaseInput(
-        batteryChargePercentage: Long? = null,
-        description: String
-
-) :
-    BaseUseCaseInput {
-    val toSave: AnalTrackingDatapoint = AnalTrackingDatapoint(
-            -1,
-            Platform.now,
-            Platform.app_version,
-            Platform.api_level,
-            Platform.device_model,
-            Platform.language,
-            Platform.country,
-            batteryChargePercentage,
-            description,
-            0L,
-            Platform.nowString
-    )
-
-    override fun validate(): Boolean {
-        return true
+class GetPermissionGrantedUseCaseSync : KoinComponent,
+    BaseUseCaseSync<Nothing, LiveData<Boolean>>() {
+    private val repo: AnalTrackingRepository by inject()
+    override fun run(): Response<LiveData<Boolean>> {
+        return Response.Success(repo.hasLocationPermission)
     }
 }

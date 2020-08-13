@@ -7,8 +7,13 @@ import com.ludoscity.herdr.common.data.network.cozy.CozyCloupApi
 import com.ludoscity.herdr.common.data.repository.AnalTrackingRepository
 import com.ludoscity.herdr.common.data.repository.GeoTrackingRepository
 import com.ludoscity.herdr.common.data.repository.LoginRepository
+import com.ludoscity.herdr.common.domain.usecase.analytics.GetPermissionGrantedUseCaseSync
 import com.ludoscity.herdr.common.domain.usecase.analytics.SaveAnalyticsDatapointUseCaseAsync
-import com.ludoscity.herdr.common.domain.usecase.geotracking.SaveGeotrackingDatapointUseCaseAsync
+import com.ludoscity.herdr.common.domain.usecase.analytics.UpdatePermissionGrantedUseCaseSync
+import com.ludoscity.herdr.common.domain.usecase.geotracking.ObserveGeoTrackingUseCaseSync
+import com.ludoscity.herdr.common.domain.usecase.geotracking.SaveGeoTrackingDatapointUseCaseAsync
+import com.ludoscity.herdr.common.domain.usecase.geotracking.UpdateGeoTrackingUseCaseSync
+import com.ludoscity.herdr.common.domain.usecase.geotracking.UpdateUserLocGeoTrackingDatapointUseCaseSync
 import com.ludoscity.herdr.common.domain.usecase.login.*
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
@@ -39,8 +44,14 @@ private val coreModule = module {
     single { RetrieveAccessAndRefreshTokenUseCaseAsync() }
     single { RefreshAccessAndRefreshTokenUseCaseAsync() }
     single { CreateDirectoryUseCaseAsync() }
-    single { SaveGeotrackingDatapointUseCaseAsync() }
+    single { SaveGeoTrackingDatapointUseCaseAsync() }
     single { SaveAnalyticsDatapointUseCaseAsync() }
+    single { UpdateUserLocGeoTrackingDatapointUseCaseSync() }
+    single { ObserveGeoTrackingUseCaseSync() }
+    single { ObserveLoggedInUseCaseSync() }
+    single { UpdatePermissionGrantedUseCaseSync() }
+    single { GetPermissionGrantedUseCaseSync() }
+    single { UpdateGeoTrackingUseCaseSync() }
 }
 
 internal inline fun <reified T> Scope.getWith(vararg params: Any?): T {

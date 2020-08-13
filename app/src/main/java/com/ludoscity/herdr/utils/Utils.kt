@@ -18,9 +18,35 @@
 
 package com.ludoscity.herdr.utils
 
+import android.content.Context
+import android.content.Intent
+import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
+
+object Utils {
+    fun getSimpleDateFormatPattern(): String {
+        //see: https://developer.android.com/reference/java/text/SimpleDateFormat
+        //https://stackoverflow.com/questions/28373610/android-parse-string-to-date-unknown-pattern-character-x
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
+        else
+            "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
+    }
+}
+/**
+ * Extension function to start foreground services
+ *
+ * @param service   the intent of service to be started
+ */
+fun Context.startServiceForeground(service: Intent) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        startForegroundService(service)
+    } else {
+        startService(service)
+    }
+}
 
 /**
  * Extension function to simplify setting an afterTextChanged action to EditText components.

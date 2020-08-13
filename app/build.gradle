@@ -131,6 +131,13 @@ kotlin {
                 implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
                 implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
                 implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
+                implementation "com.google.android.gms:play-services-location:$playServicesVersion"
+                // Kotlin Anko
+                implementation "org.jetbrains.anko:anko-commons:$ankoVersion"
+
+                implementation "com.jaredrummler:android-device-names:$deviceNamesVersion"
+
+                implementation "com.github.fondesa:kpermissions:$kpermissionsVersion"
 
                 //Failed attempt at fixing `Kotlin plugin is applied to the project :app but we
                 // cannot find the KaptTask. Make sure you apply the kotlin-kapt plugin because it

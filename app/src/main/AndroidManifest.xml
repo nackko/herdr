@@ -21,6 +21,10 @@
           package="com.ludoscity.herdr">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
 
     <application
             android:allowBackup="true"
@@ -47,6 +51,15 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <service
+            android:name=".data.transrecognition.TransitionRecognitionIntentService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <service
+            android:name=".data.transrecognition.TransitionRecognitionService"
+            android:enabled="true"
+            android:exported="false" />
     </application>
 
 </manifest>

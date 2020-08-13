@@ -18,15 +18,75 @@
 
 package com.ludoscity.herdr.ui.main
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
+import com.fondesa.kpermissions.extension.listeners
+import com.fondesa.kpermissions.extension.permissionsBuilder
 import com.ludoscity.herdr.R
+import com.ludoscity.herdr.common.ui.main.HerdrViewModel
+import com.ludoscity.herdr.data.transrecognition.TransitionRecognitionService
+import com.ludoscity.herdr.databinding.ActivityHerdrBinding
+import com.ludoscity.herdr.utils.startServiceForeground
+import dev.icerock.moko.mvvm.MvvmActivity
+import dev.icerock.moko.mvvm.createViewModelFactory
+import org.jetbrains.anko.intentFor
 
-class HerdrActivity : AppCompatActivity() {
+class HerdrActivity : MvvmActivity<ActivityHerdrBinding, HerdrViewModel>() {
+
+    override val layoutId: Int = R.layout.activity_herdr
+    override val viewModelVariableId: Int = com.ludoscity.herdr.BR.herdrViewModel
+    override val viewModelClass: Class<HerdrViewModel> = HerdrViewModel::class.java
+
+    override fun viewModelFactory(): ViewModelProvider.Factory {
+        return createViewModelFactory { HerdrViewModel() }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_herdr)
+        //TODO: loggedIn signal is only really useful for data upload
+        // app already can trac(k)e user activity changes (bike <--> walk <--> ...) and trac(k)e geolocation (GPS)
+        // and persist in local db.
+        // For now, logging out disconnects both tracking, nothing gets persisted to db
+        viewModel.addLoggedInObserver {
+            it?.let { loggedIn ->
+                if (loggedIn) {
+                    startServiceForeground(intentFor<TransitionRecognitionService>())
+                } else {
+                    stopService(intentFor<TransitionRecognitionService>())
+                }
+            }
+        }
+
+        viewModel.setLocationPermissionGranted(
+            ContextCompat.checkSelfPermission(
+                application,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        )
+    }
+
+    override fun onResume() {
+        if (!viewModel.hasLocationPermission().value) {
+            val request = permissionsBuilder(android.Manifest.permission.ACCESS_FINE_LOCATION).build()
+
+            //log.i(TAG, "Sending location permission request")
+            request.send()
+
+            request.listeners {
+                onAccepted { viewModel.setLocationPermissionGranted(true) }
+                onDenied { viewModel.setLocationPermissionGranted(false) }
+                onPermanentlyDenied { viewModel.setLocationPermissionGranted(false) }
+                //onShouldShowRationale { perms, nonce ->
+                //}
+            }
+        } /*else {
+            Log.i(TAG, "Activity was resumed and already have location permission, carrying on...")
+        }*/
+
+        super.onResume()
     }
 }

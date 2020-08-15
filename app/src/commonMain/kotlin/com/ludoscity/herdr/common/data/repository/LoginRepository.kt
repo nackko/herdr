@@ -23,6 +23,7 @@ import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.data.SecureDataStore
 import com.ludoscity.herdr.common.data.network.INetworkDataPipe
 import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
+import com.ludoscity.herdr.common.domain.entity.RawDataCloudFolderConfiguration
 import com.ludoscity.herdr.common.domain.entity.UserCredentials
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import io.ktor.utils.io.errors.IOException
@@ -39,6 +40,11 @@ class LoginRepository : KoinComponent {
 
     private val _loggedIn =
         MutableLiveData<Boolean?>(
+            null
+        )
+
+    private val _cloudDirectoryConfiguration =
+        MutableLiveData<RawDataCloudFolderConfiguration?>(
             null
         )
 
@@ -172,8 +178,40 @@ class LoginRepository : KoinComponent {
         }
     }
 
-    suspend fun createDirectory(): Response<String> {
-        return networkDataPipe.postDirectory(authClientRegistration?.stackBaseUrl ?: "", "niceDirectory")
+    //TODO: persist configuration in secureDataStore? For now loading will happen if network connection is available
+    //due to tokens being loaded from cache. See DriveLoginViewModel::processRetrieveAccessAndRefreshTokenResponse
+    suspend fun setupDirectory(name: String, tags: List<String>): Response<RawDataCloudFolderConfiguration> {
+
+        log.d { "Attempting directory setup for name: $name" }
+        val createResult = networkDataPipe.postDirectory(authClientRegistration?.stackBaseUrl ?: "", name, tags)
+
+        return if (createResult is Response.Success) {
+            _cloudDirectoryConfiguration.postValue(createResult.data)
+            log.d { "Remote directory setup success. Id saved in loginRepository" }
+            createResult
+        } else if (createResult is Response.Error && createResult.code == 409) {
+
+            log.d { "Trying to recover from 409-Conflict for directory with name: $name" }
+
+            val getMetadataResult = networkDataPipe.getFileMetadata(
+                authClientRegistration?.stackBaseUrl ?: "",
+                "/$name"
+            )
+
+            if (getMetadataResult is Response.Success) {
+                _cloudDirectoryConfiguration.postValue(getMetadataResult.data)
+                log.d {
+                    "Raw data cloud folder setup recovery success. " +
+                            "Id saved in loginRepository as ${getMetadataResult.data.id}"
+                }
+
+                Response.Success(getMetadataResult.data)
+            } else {
+                Response.Error(IOException("Could not setup directory with name: $name"))
+            }
+        } else {
+            Response.Error(IOException("Could not setup directory with name: $name"))
+        }
     }
 
     suspend fun refreshAccessToken(): Response<UserCredentials> {
@@ -182,17 +220,16 @@ class LoginRepository : KoinComponent {
 
         val result = networkDataPipe.refreshAccessToken(authClientRegistration!!, userCredentials!!)
 
-        if (result is Response.Success) {
+        return if (result is Response.Success) {
             //log.d { "Updating credentials in repository with access token: ${result.data.accessToken}" }
             userCredentials = result.data
             secureDataStore.apply {
                 storeString(userCredentialAccessTokenStoreKey, userCredentials!!.accessToken)
                 storeString(userCredentialRefreshTokenStoreKey, userCredentials!!.refreshToken)
             }
+            result
         } else {
             Response.Error(IOException("Could not refresh token"))
         }
-
-        return result
     }
 }

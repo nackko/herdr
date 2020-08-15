@@ -19,14 +19,15 @@ package com.ludoscity.herdr.common.domain.usecase.login
 
 import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.data.repository.LoginRepository
+import com.ludoscity.herdr.common.domain.entity.RawDataCloudFolderConfiguration
 import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseAsync
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
-class CreateDirectoryUseCaseAsync : KoinComponent,
-    BaseUseCaseAsync<Nothing, String>() {
+class SetupDirectoryUseCaseAsync : KoinComponent,
+    BaseUseCaseAsync<SetupDirectoryUseCaseInput, RawDataCloudFolderConfiguration>() {
     private val repo: LoginRepository by inject()
-    override suspend fun run(): Response<String> {
-        return repo.createDirectory()
+    override suspend fun run(): Response<RawDataCloudFolderConfiguration> {
+        return repo.setupDirectory(input!!.name, input!!.tags)
     }
 }

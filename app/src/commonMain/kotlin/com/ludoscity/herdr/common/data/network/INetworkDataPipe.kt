@@ -20,6 +20,7 @@ package com.ludoscity.herdr.common.data.network
 
 import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
+import com.ludoscity.herdr.common.domain.entity.RawDataCloudFolderConfiguration
 import com.ludoscity.herdr.common.domain.entity.UserCredentials
 
 interface INetworkDataPipe {
@@ -36,5 +37,11 @@ interface INetworkDataPipe {
 
     suspend fun unregisterAuthClient(authRegistrationInfo: AuthClientRegistration): Response<Unit>
 
-    suspend fun postDirectory(stackBase: String, dirName: String): Response<String>
+    suspend fun postDirectory(stackBase: String, dirName: String, tagList: List<String>):
+            Response<RawDataCloudFolderConfiguration>
+
+    suspend fun getFileMetadata(
+        stackBase: String,
+        fullPathWithSlashes: String
+    ): Response<RawDataCloudFolderConfiguration>
 }

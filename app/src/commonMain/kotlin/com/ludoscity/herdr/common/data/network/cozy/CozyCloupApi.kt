@@ -21,13 +21,13 @@ package com.ludoscity.herdr.common.data.network.cozy
 import co.touchlab.kermit.Kermit
 import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.data.network.INetworkDataPipe
-import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
-import com.ludoscity.herdr.common.domain.entity.UserCredentials
+import com.ludoscity.herdr.common.domain.entity.*
 import com.ludoscity.herdr.common.domain.usecase.login.RefreshAccessAndRefreshTokenUseCaseAsync
 import com.ludoscity.herdr.common.domain.usecase.login.RetrieveAccessAndRefreshTokenUseCaseAsync
 import com.ludoscity.herdr.common.domain.usecase.login.RetrieveAccessAndRefreshTokenUseCaseInput
 import io.ktor.client.HttpClient
 import io.ktor.client.call.HttpClientCall
+import io.ktor.client.features.ClientRequestException
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.features.logging.LogLevel
@@ -37,6 +37,7 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.HttpReceivePipeline
 import io.ktor.client.statement.readBytes
 import io.ktor.client.utils.EmptyContent
+import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.utils.io.core.toByteArray
 import kotlinx.serialization.json.Json
@@ -62,6 +63,9 @@ class CozyCloupApi(private val log: Kermit) : KoinComponent, INetworkDataPipe {
                     JsonConfiguration.Stable.copy(ignoreUnknownKeys = true)
                 )
             )
+            // Cozy replies with this somewhat strange vendor api json content type
+            //solution found via https://github.com/ktorio/ktor/issues/812
+            accept(ContentType.Application.Json, ContentType("application", "vnd.api+json"))
         }
         install("intercept") {
 
@@ -119,6 +123,7 @@ class CozyCloupApi(private val log: Kermit) : KoinComponent, INetworkDataPipe {
         }
     }
 
+    // could be split in a common login part
     override suspend fun registerAuthClient(stackBase: String): Response<AuthClientRegistration> {
         log.d { "About to register auth client" }
         try {
@@ -149,6 +154,7 @@ class CozyCloupApi(private val log: Kermit) : KoinComponent, INetworkDataPipe {
         }
     }
 
+    // could be split in a common login part
     override suspend fun unregisterAuthClient(authRegistrationInfo: AuthClientRegistration): Response<Unit> {
         return try {
             //https://docs.cozy.io/en/cozy-stack/auth/#delete-authregisterclient-id
@@ -165,22 +171,62 @@ class CozyCloupApi(private val log: Kermit) : KoinComponent, INetworkDataPipe {
         }
     }
 
-    override suspend fun postDirectory(stackBase: String, dirName: String): Response<String> {
+    // Cozy specific
+    override suspend fun postDirectory(stackBase: String, dirName: String, tagList: List<String>):
+            Response<RawDataCloudFolderConfiguration> {
         return try {
             //https://github.com/cozy/cozy-stack/blob/master/docs/files.md#post-filesdir-id
             val jsonServerReply =
-                httpClient.post<String>("$stackBase/files/") {
+                httpClient.post<CozyFileDescAnswerRoot>("$stackBase/files/") {
                     parameter("Type", "directory")
                     parameter("Name", dirName)
-                    parameter("Tags", "[tag0]")
+                    parameter("Tags", tagList.toString())
                 }
-            Response.Success(jsonServerReply)
+
+            Response.Success(
+                RawDataCloudFolderConfiguration(
+                    jsonServerReply.data.id,
+                    jsonServerReply.data.attributes.name,
+                    jsonServerReply.data.attributes.path
+                )
+            )
+        } catch (e: ClientRequestException) {
+            //log.d(e) { "caught exception" }
+            if (e.response.status == HttpStatusCode.Conflict) {
+                log.w { "caught ClientRequestException for HttpStatusCode.Conflict(409). This is recoverable" }
+                Response.Error(e, HttpStatusCode.Conflict.value)
+            } else {
+                Response.Error(e)
+            }
         } catch (e: Exception) {
-            log.d(e) { "caught exception" }
             Response.Error(e)
         }
     }
 
+    // Cozy specific
+    override suspend fun getFileMetadata(stackBase: String, fullPathWithSlashes: String):
+            Response<RawDataCloudFolderConfiguration> {
+        return try {
+            //https://github.com/cozy/cozy-stack/blob/master/docs/files.md#get-filesmetadata
+            val jsonServerReply =
+                httpClient.get<CozyFileDescAnswerRoot>("$stackBase/files/metadata") {
+                    parameter("Path", fullPathWithSlashes)
+                }
+
+            Response.Success(
+                RawDataCloudFolderConfiguration(
+                    jsonServerReply.data.id,
+                    jsonServerReply.data.attributes.name,
+                    jsonServerReply.data.attributes.path
+                )
+            )
+        } catch (e: Exception) {
+            log.d { "caught exception-message: ${e.message}, e: $e" }
+            Response.Error(e)
+        }
+    }
+
+    // could be split in a common login part
     override suspend fun exchangeCodeForAccessAndRefreshToken(
         authCode: String,
         authRegistrationInfo: AuthClientRegistration
@@ -211,6 +257,7 @@ class CozyCloupApi(private val log: Kermit) : KoinComponent, INetworkDataPipe {
         }
     }
 
+    // could be split in a common login part
     override suspend fun refreshAccessToken(
         authRegistrationInfo: AuthClientRegistration,
         expiredCred: UserCredentials

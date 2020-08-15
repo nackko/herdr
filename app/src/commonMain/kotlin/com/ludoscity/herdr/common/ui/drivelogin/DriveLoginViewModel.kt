@@ -21,6 +21,7 @@ package com.ludoscity.herdr.common.ui.drivelogin
 import co.touchlab.kermit.Kermit
 import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
+import com.ludoscity.herdr.common.domain.entity.RawDataCloudFolderConfiguration
 import com.ludoscity.herdr.common.domain.entity.UserCredentials
 import com.ludoscity.herdr.common.domain.usecase.login.*
 import com.ludoscity.herdr.common.utils.launchSilent
@@ -49,12 +50,14 @@ class DriveLoginViewModel(override val eventsDispatcher: EventsDispatcher<DriveL
         MutableLiveData<AuthClientRegistrationState>(
             InProgressAuthClientRegistration()
         )
+
+    //TODO: remove this as it exposes somewhat private data
     val authClientRegistrationResult: LiveData<AuthClientRegistrationState>
         get() = _authClientRegistrationResult
 
     private val registerAuthClientUseCase: RegisterAuthClientUseCaseAsync by inject()
     private val unregisterAuthClientUseCase: UnregisterAuthClientUseCaseAsync by inject()
-    private val createDirectoryUseCase: CreateDirectoryUseCaseAsync by inject()
+    private val setupDirectoryUseCase: SetupDirectoryUseCaseAsync by inject()
 
     private val _userCredentials =
         MutableLiveData<UserCredentialsState>(
@@ -218,10 +221,35 @@ class DriveLoginViewModel(override val eventsDispatcher: EventsDispatcher<DriveL
 
     private fun processRetrieveAccessAndRefreshTokenResponse(response: Response<UserCredentials>) {
         when (response) {
-            is Response.Success ->
+            is Response.Success -> {
                 _userCredentials.postValue(SuccessUserCredentials(response))
+                // TODO: temporary. In the future this will probably happen in a non login related model,
+                // on a click of a button or something
+                setupRemoteDirectory("herdr_raw", listOf("tag0"))
+            }
             is Response.Error ->
                 _userCredentials.postValue(ErrorUserCredentials(response))
+        }
+    }
+
+    private fun setupRemoteDirectory(name: String, tags: List<String>) = launchSilent(
+        coroutineContext,
+        exceptionHandler, job
+    ) {
+        val useCaseInput = SetupDirectoryUseCaseInput(name, tags)
+        val response = setupDirectoryUseCase.execute(useCaseInput)
+
+        processSetupDirectoryResponse(response)
+    }
+
+    private fun processSetupDirectoryResponse(response: Response<RawDataCloudFolderConfiguration>) {
+        when (response) {
+            is Response.Success -> {
+                log.d { "Raw data cloud folder setup response in DriveLoginViewModel: ${response.data}" }
+            }
+            is Response.Error -> {
+                log.e { "Remote directory setup FAILURE with ${response.exception}. This is bad. Consider auto logout" }
+            }
         }
     }
 
@@ -231,7 +259,7 @@ class DriveLoginViewModel(override val eventsDispatcher: EventsDispatcher<DriveL
     ) {
 
         //val useCaseInput = RetrieveAccessAndRefreshTokenUseCaseInput(authCode)
-        createDirectoryUseCase.execute()
+        //createDirectoryUseCase.execute()
 
         //processRetrieveAccessAndRefreshTokenResponse(response)
     }

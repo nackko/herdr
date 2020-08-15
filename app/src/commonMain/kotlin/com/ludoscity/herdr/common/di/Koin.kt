@@ -43,7 +43,7 @@ private val coreModule = module {
     single { UnregisterAuthClientUseCaseAsync() }
     single { RetrieveAccessAndRefreshTokenUseCaseAsync() }
     single { RefreshAccessAndRefreshTokenUseCaseAsync() }
-    single { CreateDirectoryUseCaseAsync() }
+    single { SetupDirectoryUseCaseAsync() }
     single { SaveGeoTrackingDatapointUseCaseAsync() }
     single { SaveAnalyticsDatapointUseCaseAsync() }
     single { UpdateUserLocGeoTrackingDatapointUseCaseSync() }

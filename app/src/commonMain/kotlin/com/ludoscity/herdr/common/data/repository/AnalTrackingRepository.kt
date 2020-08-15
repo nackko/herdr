@@ -55,6 +55,37 @@ class AnalTrackingRepository : KoinComponent {
         return Response.Success(analTrackingDao.select())
     }
 
+    suspend fun uploadAllAnalTrackingDatapointReadyForUpload(): Response<Unit> {
+
+        val analTrackingDao = AnalTrackingDatapointDao(herdrDb)
+        analTrackingDao.selectReadyForUploadAll().forEach {
+            //networkDataPipe.uploadFile
+            //if network reply is success
+            analTrackingDao.updateUploadCompleted(it.id)
+            //else we could maybe gather the list of everyone concerned by failure
+        }
+
+        return Response.Success(Unit)
+
+
+        /*getAuthClientRegistration("", true)
+        getUserCredentials("", true)
+
+        val result = networkDataPipe.refreshAccessToken(authClientRegistration!!, userCredentials!!)
+
+        return if (result is Response.Success) {
+            //log.d { "Updating credentials in repository with access token: ${result.data.accessToken}" }
+            userCredentials = result.data
+            secureDataStore.apply {
+                storeString(userCredentialAccessTokenStoreKey, userCredentials!!.accessToken)
+                storeString(userCredentialRefreshTokenStoreKey, userCredentials!!.refreshToken)
+            }
+            result
+        } else {
+            Response.Error(IOException("Could not refresh token"))
+        }*/
+    }
+
 //    @Update
 //    fun update(record: AnalTrackingDatapoint)
 //

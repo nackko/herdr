@@ -18,6 +18,7 @@
 
 package com.ludoscity.herdr.common.data.repository
 
+import co.touchlab.kermit.Kermit
 import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.data.AnalTrackingDatapoint
 import com.ludoscity.herdr.common.data.database.HerdrDatabase
@@ -26,8 +27,15 @@ import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import org.koin.core.parameter.parametersOf
 
 class AnalTrackingRepository : KoinComponent {
+
+    companion object {
+        const val UPLOAD_ANAL_PERIODIC_WORKER_UNIQUE_NAME = "herdr-upload-anal-worker"
+    }
+
+    private val log: Kermit by inject { parametersOf("AnalTrackingRepository") }
 
     private val herdrDb: HerdrDatabase by inject()
 
@@ -61,7 +69,7 @@ class AnalTrackingRepository : KoinComponent {
         analTrackingDao.selectReadyForUploadAll().forEach {
             //networkDataPipe.uploadFile
             //if network reply is success
-            analTrackingDao.updateUploadCompleted(it.id)
+            //analTrackingDao.updateUploadCompleted(it.id)
             //else we could maybe gather the list of everyone concerned by failure
         }
 

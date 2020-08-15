@@ -24,7 +24,7 @@ import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseAsync
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
-class UploadAnalyticsDatapointUseCaseAsync : KoinComponent,
+class UploadAllAnalyticsDatapointUseCaseAsync : KoinComponent,
     BaseUseCaseAsync<Nothing, Unit>() {
     private val repo: AnalTrackingRepository by inject()
     override suspend fun run(): Response<Unit> {

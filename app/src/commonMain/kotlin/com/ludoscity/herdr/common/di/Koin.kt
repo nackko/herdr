@@ -10,6 +10,7 @@ import com.ludoscity.herdr.common.data.repository.LoginRepository
 import com.ludoscity.herdr.common.domain.usecase.analytics.GetPermissionGrantedUseCaseSync
 import com.ludoscity.herdr.common.domain.usecase.analytics.SaveAnalyticsDatapointUseCaseAsync
 import com.ludoscity.herdr.common.domain.usecase.analytics.UpdatePermissionGrantedUseCaseSync
+import com.ludoscity.herdr.common.domain.usecase.analytics.UploadAllAnalyticsDatapointUseCaseAsync
 import com.ludoscity.herdr.common.domain.usecase.geotracking.ObserveGeoTrackingUseCaseSync
 import com.ludoscity.herdr.common.domain.usecase.geotracking.SaveGeoTrackingDatapointUseCaseAsync
 import com.ludoscity.herdr.common.domain.usecase.geotracking.UpdateGeoTrackingUseCaseSync
@@ -46,6 +47,7 @@ private val coreModule = module {
     single { SetupDirectoryUseCaseAsync() }
     single { SaveGeoTrackingDatapointUseCaseAsync() }
     single { SaveAnalyticsDatapointUseCaseAsync() }
+    single { UploadAllAnalyticsDatapointUseCaseAsync() }
     single { UpdateUserLocGeoTrackingDatapointUseCaseSync() }
     single { ObserveGeoTrackingUseCaseSync() }
     single { ObserveLoggedInUseCaseSync() }

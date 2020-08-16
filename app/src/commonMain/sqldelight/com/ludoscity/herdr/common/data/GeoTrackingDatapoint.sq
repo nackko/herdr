@@ -30,6 +30,9 @@ SELECT * FROM geoTrackingDatapoint WHERE id = ?;
 selectAll:
 SELECT * FROM geoTrackingDatapoint;
 
+selectReadyForUploadAll:
+SELECT * FROM geoTrackingDatapoint WHERE upload_completed = 0;
+
 deleteById:
 DELETE FROM geoTrackingDatapoint WHERE id = ?;
 

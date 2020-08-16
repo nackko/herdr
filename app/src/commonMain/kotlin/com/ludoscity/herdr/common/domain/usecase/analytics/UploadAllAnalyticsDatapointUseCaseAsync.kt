@@ -15,18 +15,19 @@
  *     You should have received a copy of the GNU Lesser General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+package com.ludoscity.herdr.common.domain.usecase.analytics
 
-package com.ludoscity.herdr.common
+import com.ludoscity.herdr.common.base.Response
+import com.ludoscity.herdr.common.data.AnalTrackingDatapoint
+import com.ludoscity.herdr.common.data.repository.AnalTrackingRepository
+import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseAsync
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-expect object Platform {
-    val now: Long
-    val nowString: String
-
-    fun toISO8601UTC(timestampString: String): String
-    fun hashBase64MD5(toHash: ByteArray): String
-    val app_version: String
-    val api_level: Long
-    val device_model: String
-    val language: String
-    val country: String
+class UploadAllAnalyticsDatapointUseCaseAsync : KoinComponent,
+    BaseUseCaseAsync<Nothing, Unit>() {
+    private val repo: AnalTrackingRepository by inject()
+    override suspend fun run(): Response<Unit> {
+        return repo.uploadAllAnalTrackingDatapointReadyForUpload()
+    }
 }

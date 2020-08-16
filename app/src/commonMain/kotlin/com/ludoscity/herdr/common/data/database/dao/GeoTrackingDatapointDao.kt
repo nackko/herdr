@@ -20,5 +20,8 @@ class GeoTrackingDatapointDao(database: HerdrDatabase) {
         db.deleteById(geoTrackingDatapoint.id)
     }
 
+    //TODO: check latest versions of KamMPKit to use Coroutine flow
+    internal fun selectReadyForUploadAll(): List<GeoTrackingDatapoint> = db.selectReadyForUploadAll().executeAsList()
+
     internal fun select(): List<GeoTrackingDatapoint> = db.selectAll().executeAsList()
 }

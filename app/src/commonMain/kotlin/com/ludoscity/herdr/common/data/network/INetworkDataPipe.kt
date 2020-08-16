@@ -44,4 +44,13 @@ interface INetworkDataPipe {
         stackBase: String,
         fullPathWithSlashes: String
     ): Response<RawDataCloudFolderConfiguration>
+
+    suspend fun postFile(
+        stackBase: String,
+        directoryId: String,
+        filename: String,
+        tagList: List<String>,
+        contentJsonString: String,
+        createdAt: String
+    ): Response<Unit>
 }

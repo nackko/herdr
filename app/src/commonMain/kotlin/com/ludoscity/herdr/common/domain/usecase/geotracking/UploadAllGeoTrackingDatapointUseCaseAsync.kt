@@ -15,18 +15,18 @@
  *     You should have received a copy of the GNU Lesser General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+package com.ludoscity.herdr.common.domain.usecase.geotracking
 
-package com.ludoscity.herdr.common
+import com.ludoscity.herdr.common.base.Response
+import com.ludoscity.herdr.common.data.repository.GeoTrackingRepository
+import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseAsync
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-expect object Platform {
-    val now: Long
-    val nowString: String
-
-    fun toISO8601UTC(timestampString: String): String
-    fun hashBase64MD5(toHash: ByteArray): String
-    val app_version: String
-    val api_level: Long
-    val device_model: String
-    val language: String
-    val country: String
+class UploadAllGeoTrackingDatapointUseCaseAsync : KoinComponent,
+    BaseUseCaseAsync<Nothing, Unit>() {
+    private val repo: GeoTrackingRepository by inject()
+    override suspend fun run(): Response<Unit> {
+        return repo.uploadAllGeoTrackingDatapointReadyForUpload()
+    }
 }

@@ -19,6 +19,7 @@
 package com.ludoscity.herdr.common.data.network.cozy
 
 import co.touchlab.kermit.Kermit
+import com.ludoscity.herdr.common.Platform
 import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.data.network.INetworkDataPipe
 import com.ludoscity.herdr.common.domain.entity.*
@@ -39,6 +40,7 @@ import io.ktor.client.statement.readBytes
 import io.ktor.client.utils.EmptyContent
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.content.TextContent
 import io.ktor.utils.io.core.toByteArray
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
@@ -199,6 +201,47 @@ class CozyCloupApi(private val log: Kermit) : KoinComponent, INetworkDataPipe {
                 Response.Error(e)
             }
         } catch (e: Exception) {
+            Response.Error(e)
+        }
+    }
+
+    // Cozy specific
+    override suspend fun postFile(
+        stackBase: String,
+        directoryId: String,
+        filename: String,
+        tagList: List<String>,
+        contentJsonString: String,
+        createdAt: String
+    ): Response<Unit> {
+        return try {
+            val jsonServerReply =
+                httpClient.post<String>("$stackBase/files/$directoryId") {
+                    // Following gives ktor error `Header Content-Type is controlled by the engine and cannot be set explicitly`
+                    //workaround (using body) was found there: https://github.com/ktorio/ktor/issues/1127
+                    //header("Content-Type", "text/plain")
+                    header("Content-MD5", Platform.hashBase64MD5(contentJsonString.toByteArray()).replace("\n", ""))
+
+                    parameter("Type", "file")
+                    parameter("Name", filename)
+                    parameter("Tags", tagList.toString())
+                    parameter("CreatedAt", Platform.toISO8601UTC(createdAt))
+
+                    body = TextContent(contentJsonString, ContentType("text", "plain"))
+                }
+
+            log.i { "1 file uploaded of name: $filename" }
+            Response.Success(Unit)
+        } catch (e: ClientRequestException) {
+            //log.d(e) { "caught exception" }
+            if (e.response.status == HttpStatusCode.Conflict) {
+                log.w { "caught ClientRequestException for HttpStatusCode.Conflict(409). This is recoverable" }
+                Response.Error(e, HttpStatusCode.Conflict.value)
+            } else {
+                Response.Error(e)
+            }
+        } catch (e: Exception) {
+            log.d { "Caught exception: ${e.message}" }
             Response.Error(e)
         }
     }

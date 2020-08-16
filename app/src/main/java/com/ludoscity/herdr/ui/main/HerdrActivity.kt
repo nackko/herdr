@@ -21,18 +21,25 @@ package com.ludoscity.herdr.ui.main
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.work.*
 import com.fondesa.kpermissions.extension.listeners
 import com.fondesa.kpermissions.extension.permissionsBuilder
 import com.ludoscity.herdr.R
+import com.ludoscity.herdr.common.data.repository.AnalTrackingRepository.Companion.UPLOAD_ANAL_PERIODIC_WORKER_UNIQUE_NAME
+import com.ludoscity.herdr.common.data.repository.GeoTrackingRepository.Companion.UPLOAD_GEO_PERIODIC_WORKER_UNIQUE_NAME
 import com.ludoscity.herdr.common.ui.main.HerdrViewModel
+import com.ludoscity.herdr.data.AnalTrackingUploadWorker
+import com.ludoscity.herdr.data.GeoTrackingUploadWorker
 import com.ludoscity.herdr.data.transrecognition.TransitionRecognitionService
 import com.ludoscity.herdr.databinding.ActivityHerdrBinding
 import com.ludoscity.herdr.utils.startServiceForeground
 import dev.icerock.moko.mvvm.MvvmActivity
 import dev.icerock.moko.mvvm.createViewModelFactory
 import org.jetbrains.anko.intentFor
+import java.util.concurrent.TimeUnit
 
 class HerdrActivity : MvvmActivity<ActivityHerdrBinding, HerdrViewModel>() {
 
@@ -51,13 +58,51 @@ class HerdrActivity : MvvmActivity<ActivityHerdrBinding, HerdrViewModel>() {
         // app already can trac(k)e user activity changes (bike <--> walk <--> ...) and trac(k)e geolocation (GPS)
         // and persist in local db.
         // For now, logging out disconnects both tracking, nothing gets persisted to db
-        viewModel.addLoggedInObserver {
-            it?.let { loggedIn ->
-                if (loggedIn) {
-                    startServiceForeground(intentFor<TransitionRecognitionService>())
-                } else {
-                    stopService(intentFor<TransitionRecognitionService>())
-                }
+        viewModel.addLoggedInObserver { loggedIn ->
+            val workManager = WorkManager.getInstance(applicationContext)
+
+            if (loggedIn == true) {
+                startServiceForeground(intentFor<TransitionRecognitionService>())
+
+                Log.d("TAG", "Setting up upload and purge tasks")
+                //WorkManager task for periodic db upload
+                //https://medium.com/androiddevelopers/workmanager-periodicity-ff35185ff006
+                val constraints = Constraints.Builder()
+                    .setRequiredNetworkType(NetworkType.CONNECTED)
+                    .build()
+
+                //TODO: intervals should be different in debug and release builds.
+                // Debug upload and purge more frequently
+                val uploadAnalRequest =
+                    PeriodicWorkRequestBuilder<AnalTrackingUploadWorker>(1, TimeUnit.HOURS)
+                        .setConstraints(constraints)
+                        .setInitialDelay(5, TimeUnit.SECONDS)
+                        .build()
+
+                val uploadGeoRequest =
+                    PeriodicWorkRequestBuilder<GeoTrackingUploadWorker>(15, TimeUnit.MINUTES)
+                        .setConstraints(constraints)
+                        .setInitialDelay(10, TimeUnit.SECONDS)
+                        .build()
+
+                workManager.enqueueUniquePeriodicWork(
+                    UPLOAD_ANAL_PERIODIC_WORKER_UNIQUE_NAME,
+                    ExistingPeriodicWorkPolicy.KEEP,
+                    uploadAnalRequest
+                )
+
+                workManager.enqueueUniquePeriodicWork(
+                    UPLOAD_GEO_PERIODIC_WORKER_UNIQUE_NAME,
+                    ExistingPeriodicWorkPolicy.KEEP,
+                    uploadGeoRequest
+                )
+            } else {
+                stopService(intentFor<TransitionRecognitionService>())
+
+                Log.d("TAG", "Cancelling analytics uploading recurring task")
+                workManager.cancelUniqueWork(UPLOAD_ANAL_PERIODIC_WORKER_UNIQUE_NAME)
+                Log.d("TAG", "Cancelling geolocation uploading recurring task")
+                workManager.cancelUniqueWork(UPLOAD_GEO_PERIODIC_WORKER_UNIQUE_NAME)
             }
         }
 

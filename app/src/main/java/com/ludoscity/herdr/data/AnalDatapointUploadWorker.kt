@@ -41,7 +41,6 @@ class AnalTrackingUploadWorker(appContext: Context, workerParams: WorkerParamete
     private val uploadAllAnalyticsDatapointUseCaseAsync: UploadAllAnalyticsDatapointUseCaseAsync
             by inject()
 
-
     // ASYNC - COROUTINES
     private val coroutineContextTruc: CoroutineContext by inject()
 
@@ -55,21 +54,4 @@ class AnalTrackingUploadWorker(appContext: Context, workerParams: WorkerParamete
             Result.failure()
         }
     }
-
-
-    /*override suspend fun doWork(): Result {
-        // Do the work here--in this case, upload the data
-        Log.i(AnalTrackingUploadWorker::class.java.simpleName, "About to upload analytic table")
-
-        withContext(coroutineContextTruc {
-
-        })
-
-
-        uploadAllAnalyticsDatapointUseCaseAsync.execute()
-
-
-        // Indicate whether the task finished successfully with the Result
-        return Result.success()
-    }*/
 }

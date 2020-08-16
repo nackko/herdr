@@ -225,7 +225,7 @@ class DriveLoginViewModel(override val eventsDispatcher: EventsDispatcher<DriveL
                 _userCredentials.postValue(SuccessUserCredentials(response))
                 // TODO: temporary. In the future this will probably happen in a non login related model,
                 // on a click of a button or something
-                setupRemoteDirectory("herdr_raw", listOf("tag0"))
+                setupRemoteDirectory("herdr_raw", listOf("herdr"))
             }
             is Response.Error ->
                 _userCredentials.postValue(ErrorUserCredentials(response))

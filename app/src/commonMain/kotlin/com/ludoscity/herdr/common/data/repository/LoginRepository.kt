@@ -33,6 +33,11 @@ import org.koin.core.parameter.parametersOf
 
 class LoginRepository : KoinComponent {
 
+    companion object {
+        const val authClientRegistrationBaseUrlStoreKey = "base_url"
+        const val cloudDirectoryId = "dir_id"
+    }
+
     fun addLoggedInObserver(observer: (Boolean?) -> Unit): Response<Unit> {
         _loggedIn.addObserver(observer)
         return Response.Success(Unit)
@@ -58,13 +63,15 @@ class LoginRepository : KoinComponent {
     private var userCredentials: UserCredentials? = null
 
     private val authClientRegistrationTokenStoreKey = "token"
-    private val authClientRegistrationBaseUrlStoreKey = "base_url"
     private val authClientRegistrationRedirectUriStoreKey = "redirect_uri"
     private val authClientRegistrationClientIdStoreKey = "client_id"
     private val authClientRegistrationClientSecretStoreKey = "client_secret"
 
     private val userCredentialAccessTokenStoreKey = "access_token"
     private val userCredentialRefreshTokenStoreKey = "refresh_token"
+
+    private val cloudDirectoryName = "dir_name"
+    private val cloudDirectoryPath = "dir_path"
 
 
     suspend fun getAuthClientRegistration(baseUrl: String, localOnly: Boolean): Response<AuthClientRegistration> {
@@ -183,11 +190,25 @@ class LoginRepository : KoinComponent {
     suspend fun setupDirectory(name: String, tags: List<String>): Response<RawDataCloudFolderConfiguration> {
 
         log.d { "Attempting directory setup for name: $name" }
+        // check for memory cache
+        _cloudDirectoryConfiguration.value?.let {
+            return Response.Success(it)
+        }
+
+        // we don't check for local storage here because weird stuff could happen if folder is deleted out of the app
+        // other interested parties will always go to local storage, gracefully handling having no folder
+        // setup data available - certainly
+
         val createResult = networkDataPipe.postDirectory(authClientRegistration?.stackBaseUrl ?: "", name, tags)
 
         return if (createResult is Response.Success) {
             _cloudDirectoryConfiguration.postValue(createResult.data)
-            log.d { "Remote directory setup success. Id saved in loginRepository" }
+            log.d { "Remote directory setup success. Id saved in loginRepository and secureDataStore" }
+            secureDataStore.apply {
+                storeString(cloudDirectoryId, createResult.data.id)
+                storeString(cloudDirectoryName, createResult.data.name)
+                storeString(cloudDirectoryPath, createResult.data.path)
+            }
             createResult
         } else if (createResult is Response.Error && createResult.code == 409) {
 
@@ -200,9 +221,14 @@ class LoginRepository : KoinComponent {
 
             if (getMetadataResult is Response.Success) {
                 _cloudDirectoryConfiguration.postValue(getMetadataResult.data)
+                secureDataStore.apply {
+                    storeString(cloudDirectoryId, getMetadataResult.data.id)
+                    storeString(cloudDirectoryName, getMetadataResult.data.name)
+                    storeString(cloudDirectoryPath, getMetadataResult.data.path)
+                }
                 log.d {
                     "Raw data cloud folder setup recovery success. " +
-                            "Id saved in loginRepository as ${getMetadataResult.data.id}"
+                            "Id saved in loginRepository and secureDataStore as ${getMetadataResult.data.id}"
                 }
 
                 Response.Success(getMetadataResult.data)

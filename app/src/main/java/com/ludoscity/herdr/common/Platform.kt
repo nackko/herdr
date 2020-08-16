@@ -19,9 +19,11 @@
 package com.ludoscity.herdr.common
 
 import android.os.Build
+import android.util.Base64
 import com.jaredrummler.android.device.DeviceName
 import com.ludoscity.herdr.BuildConfig
 import com.ludoscity.herdr.utils.Utils
+import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -30,7 +32,8 @@ actual object Platform {
         get() = System.currentTimeMillis()
     actual val nowString: String
         get() = SimpleDateFormat(Utils.getSimpleDateFormatPattern(), Locale.US)
-                .format(Date(System.currentTimeMillis()))
+            .format(Date(System.currentTimeMillis()))
+    //TODO: timestamping of datapoints might show discrepancy between Long epoch and String one?
 
     actual val app_version: String = "Android:${BuildConfig.VERSION_NAME}"
     actual val api_level: Long = Build.VERSION.SDK_INT.toLong()
@@ -39,4 +42,26 @@ actual object Platform {
         get() = Locale.getDefault().language
     actual val country: String
         get() = Locale.getDefault().country
+
+    actual fun toISO8601UTC(timestampString: String): String {
+        val createdAtOriginal = SimpleDateFormat(Utils.getSimpleDateFormatPattern(), Locale.US)
+            .parse(timestampString)
+        return convertToISO8601UTC(createdAtOriginal) ?: ""
+    }
+
+
+    actual fun hashBase64MD5(toHash: ByteArray): String {
+        return Base64.encodeToString(
+            MessageDigest.getInstance("MD5")
+                .digest(toHash),
+            Base64.DEFAULT
+        )
+    }
+
+    private fun convertToISO8601UTC(date: Date?): String? {
+        val tz = TimeZone.getTimeZone("UTC")
+        val df = SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'", Locale.US)
+        df.timeZone = tz
+        return if (date != null) df.format(date) else null
+    }
 }

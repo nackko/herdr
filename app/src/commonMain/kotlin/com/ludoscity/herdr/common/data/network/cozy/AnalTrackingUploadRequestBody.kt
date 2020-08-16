@@ -16,17 +16,19 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.herdr.common
+package com.ludoscity.herdr.common.data.network.cozy
 
-expect object Platform {
-    val now: Long
-    val nowString: String
+import kotlinx.serialization.Serializable
 
-    fun toISO8601UTC(timestampString: String): String
-    fun hashBase64MD5(toHash: ByteArray): String
-    val app_version: String
-    val api_level: Long
-    val device_model: String
-    val language: String
-    val country: String
-}
+@Serializable
+data class AnalTrackingUploadRequestBody(
+    val timestampEpoch: Long,
+    val appVersion: String,
+    val apiLevel: Long,
+    val deviceModel: String,
+    val language: String,
+    val country: String,
+    val batteryChargePercentage: Long?,
+    val description: String,
+    val timestamp: String
+)

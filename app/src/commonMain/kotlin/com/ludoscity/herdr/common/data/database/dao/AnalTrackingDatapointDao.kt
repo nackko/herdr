@@ -20,6 +20,10 @@ class AnalTrackingDatapointDao(database: HerdrDatabase) {
         db.deleteById(analTrackingDatapoint.id)
     }
 
+    internal fun deleteUploadedAll() {
+        db.deleteUploadedAll()
+    }
+
     //TODO: check latest versions of KamMPKit to use Coroutine flow
     internal fun selectReadyForUploadAll(): List<AnalTrackingDatapoint> = db.selectReadyForUploadAll().executeAsList()
 

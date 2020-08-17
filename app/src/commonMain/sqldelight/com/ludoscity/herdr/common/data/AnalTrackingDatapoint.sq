@@ -41,7 +41,7 @@ deleteById:
 DELETE FROM analTrackingDatapoint WHERE id = ?;
 
 deleteUploadedAll:
-DELETE FROM analTrackingDatapoint WHERE upload_completed = 1;
+DELETE FROM analTrackingDatapoint WHERE upload_completed != 0;
 
 updateUploadCompleted:
 UPDATE analTrackingDatapoint SET upload_completed = 1 WHERE id = ?;

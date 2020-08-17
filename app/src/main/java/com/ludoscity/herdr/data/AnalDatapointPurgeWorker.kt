@@ -24,7 +24,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.ludoscity.herdr.common.base.Response
-import com.ludoscity.herdr.common.domain.usecase.geotracking.UploadAllGeoTrackingDatapointUseCaseAsync
+import com.ludoscity.herdr.common.domain.usecase.analytics.PurgeAllAnalyticsDatapointUseCaseAsync
 import kotlinx.coroutines.*
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -33,23 +33,22 @@ import kotlin.coroutines.CoroutineContext
 /**
  * Created by F8Full on 2019-06-28.
  *
- * Modified by F8Full on 2020-08-15. This file is part of herdr
+ * Modified by F8Full on 2020-08-16. This file is part of herdr
  */
-class GeoTrackingUploadWorker(appContext: Context, workerParams: WorkerParameters) :
+class AnalTrackingPurgeWorker(appContext: Context, workerParams: WorkerParameters) :
     CoroutineWorker(appContext, workerParams), KoinComponent {
 
-    private val uploadAllGeoTrackingDatapointUseCaseAsync: UploadAllGeoTrackingDatapointUseCaseAsync
+    private val purgeAllAnalyticsDatapointUseCaseAsync: PurgeAllAnalyticsDatapointUseCaseAsync
             by inject()
-
 
     // ASYNC - COROUTINES
     private val coroutineContextTruc: CoroutineContext by inject()
 
     override suspend fun doWork(): Result = withContext(coroutineContextTruc) {
-        // Do the work here--in this case, upload the data
-        Log.i(GeoTrackingUploadWorker::class.java.simpleName, "About to upload geolocation table")
+        // Do the work here--in this case, purge the data
+        Log.i(AnalTrackingPurgeWorker::class.java.simpleName, "About to purge analytic table")
 
-        if (uploadAllGeoTrackingDatapointUseCaseAsync.execute() is Response.Success) {
+        if (purgeAllAnalyticsDatapointUseCaseAsync.execute() is Response.Success) {
             Result.success()
         } else {
             Result.failure()

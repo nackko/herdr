@@ -37,7 +37,7 @@ deleteById:
 DELETE FROM geoTrackingDatapoint WHERE id = ?;
 
 deleteUploadedAll:
-DELETE FROM geoTrackingDatapoint WHERE upload_completed = 1;
+DELETE FROM geoTrackingDatapoint WHERE upload_completed != 0;
 
 updateUploadCompleted:
 UPDATE geoTrackingDatapoint SET upload_completed = 1 WHERE id = ?;

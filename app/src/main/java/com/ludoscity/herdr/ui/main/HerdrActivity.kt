@@ -28,10 +28,14 @@ import androidx.work.*
 import com.fondesa.kpermissions.extension.listeners
 import com.fondesa.kpermissions.extension.permissionsBuilder
 import com.ludoscity.herdr.R
+import com.ludoscity.herdr.common.data.repository.AnalTrackingRepository.Companion.PURGE_ANAL_PERIODIC_WORKER_UNIQUE_NAME
 import com.ludoscity.herdr.common.data.repository.AnalTrackingRepository.Companion.UPLOAD_ANAL_PERIODIC_WORKER_UNIQUE_NAME
+import com.ludoscity.herdr.common.data.repository.GeoTrackingRepository.Companion.PURGE_GEO_PERIODIC_WORKER_UNIQUE_NAME
 import com.ludoscity.herdr.common.data.repository.GeoTrackingRepository.Companion.UPLOAD_GEO_PERIODIC_WORKER_UNIQUE_NAME
 import com.ludoscity.herdr.common.ui.main.HerdrViewModel
+import com.ludoscity.herdr.data.AnalTrackingPurgeWorker
 import com.ludoscity.herdr.data.AnalTrackingUploadWorker
+import com.ludoscity.herdr.data.GeoTrackingPurgeWorker
 import com.ludoscity.herdr.data.GeoTrackingUploadWorker
 import com.ludoscity.herdr.data.transrecognition.TransitionRecognitionService
 import com.ludoscity.herdr.databinding.ActivityHerdrBinding
@@ -78,11 +82,21 @@ class HerdrActivity : MvvmActivity<ActivityHerdrBinding, HerdrViewModel>() {
                         .setConstraints(constraints)
                         .setInitialDelay(5, TimeUnit.SECONDS)
                         .build()
+                val purgeAnalRequest =
+                    PeriodicWorkRequestBuilder<AnalTrackingPurgeWorker>(1, TimeUnit.DAYS)
+                        //.setConstraints(constraints)
+                        .setInitialDelay(1, TimeUnit.HOURS)
+                        .build()
 
                 val uploadGeoRequest =
                     PeriodicWorkRequestBuilder<GeoTrackingUploadWorker>(15, TimeUnit.MINUTES)
                         .setConstraints(constraints)
                         .setInitialDelay(10, TimeUnit.SECONDS)
+                        .build()
+                val purgeGeoRequest =
+                    PeriodicWorkRequestBuilder<GeoTrackingPurgeWorker>(1, TimeUnit.DAYS)
+                        //.setConstraints(constraints)
+                        .setInitialDelay(1, TimeUnit.HOURS)
                         .build()
 
                 workManager.enqueueUniquePeriodicWork(
@@ -90,12 +104,23 @@ class HerdrActivity : MvvmActivity<ActivityHerdrBinding, HerdrViewModel>() {
                     ExistingPeriodicWorkPolicy.KEEP,
                     uploadAnalRequest
                 )
+                workManager.enqueueUniquePeriodicWork(
+                    PURGE_ANAL_PERIODIC_WORKER_UNIQUE_NAME,
+                    ExistingPeriodicWorkPolicy.REPLACE,
+                    purgeAnalRequest
+                )
 
                 workManager.enqueueUniquePeriodicWork(
                     UPLOAD_GEO_PERIODIC_WORKER_UNIQUE_NAME,
                     ExistingPeriodicWorkPolicy.KEEP,
                     uploadGeoRequest
                 )
+                workManager.enqueueUniquePeriodicWork(
+                    PURGE_GEO_PERIODIC_WORKER_UNIQUE_NAME,
+                    ExistingPeriodicWorkPolicy.REPLACE,
+                    purgeGeoRequest
+                )
+
             } else {
                 stopService(intentFor<TransitionRecognitionService>())
 
@@ -103,6 +128,11 @@ class HerdrActivity : MvvmActivity<ActivityHerdrBinding, HerdrViewModel>() {
                 workManager.cancelUniqueWork(UPLOAD_ANAL_PERIODIC_WORKER_UNIQUE_NAME)
                 Log.d("TAG", "Cancelling geolocation uploading recurring task")
                 workManager.cancelUniqueWork(UPLOAD_GEO_PERIODIC_WORKER_UNIQUE_NAME)
+
+                // we don't do this as database purging can and should happen regurlarly
+                // when logged out, nothing gets purged (it has to be uploaded first).
+                //workManager.cancelUniqueWork(PURGE_ANAL_PERIODIC_WORKER_UNIQUE_NAME)
+                //workManager.cancelUniqueWork(PURGE_GEO_PERIODIC_WORKER_UNIQUE_NAME)
             }
         }
 

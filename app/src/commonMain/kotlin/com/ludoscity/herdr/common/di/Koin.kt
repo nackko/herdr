@@ -7,10 +7,7 @@ import com.ludoscity.herdr.common.data.network.cozy.CozyCloupApi
 import com.ludoscity.herdr.common.data.repository.AnalTrackingRepository
 import com.ludoscity.herdr.common.data.repository.GeoTrackingRepository
 import com.ludoscity.herdr.common.data.repository.LoginRepository
-import com.ludoscity.herdr.common.domain.usecase.analytics.GetPermissionGrantedUseCaseSync
-import com.ludoscity.herdr.common.domain.usecase.analytics.SaveAnalyticsDatapointUseCaseAsync
-import com.ludoscity.herdr.common.domain.usecase.analytics.UpdatePermissionGrantedUseCaseSync
-import com.ludoscity.herdr.common.domain.usecase.analytics.UploadAllAnalyticsDatapointUseCaseAsync
+import com.ludoscity.herdr.common.domain.usecase.analytics.*
 import com.ludoscity.herdr.common.domain.usecase.geotracking.*
 import com.ludoscity.herdr.common.domain.usecase.login.*
 import org.koin.core.context.startKoin
@@ -45,6 +42,8 @@ private val coreModule = module {
     single { SaveGeoTrackingDatapointUseCaseAsync() }
     single { SaveAnalyticsDatapointUseCaseAsync() }
     single { UploadAllAnalyticsDatapointUseCaseAsync() }
+    single { PurgeAllAnalyticsDatapointUseCaseAsync() }
+    single { PurgeAllGeoTrackingDatapointUseCaseAsync() }
     single { UploadAllGeoTrackingDatapointUseCaseAsync() }
     single { UpdateUserLocGeoTrackingDatapointUseCaseSync() }
     single { ObserveGeoTrackingUseCaseSync() }

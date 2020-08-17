@@ -38,6 +38,7 @@ class GeoTrackingRepository : KoinComponent {
 
     companion object {
         const val UPLOAD_GEO_PERIODIC_WORKER_UNIQUE_NAME = "herdr-upload-geo-worker"
+        const val PURGE_GEO_PERIODIC_WORKER_UNIQUE_NAME = "herdr-purge-geo-worker"
     }
 
     private val log: Kermit by inject { parametersOf("GeoTrackingRepository") }
@@ -141,6 +142,12 @@ class GeoTrackingRepository : KoinComponent {
         } else {
             Response.Success(Unit)
         }
+    }
+
+    suspend fun purgeAllGeoTrackingDatapointAlreadyUploaded(): Response<Unit> {
+        GeoTrackingDatapointDao(herdrDb).deleteUploadedAll()
+        log.i { "Geolocation table was purged with success" }
+        return Response.Success(Unit)
     }
 
 //    @Update

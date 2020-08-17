@@ -39,6 +39,7 @@ class AnalTrackingRepository : KoinComponent {
 
     companion object {
         const val UPLOAD_ANAL_PERIODIC_WORKER_UNIQUE_NAME = "herdr-upload-anal-worker"
+        const val PURGE_ANAL_PERIODIC_WORKER_UNIQUE_NAME = "herdr-purge-anal-worker"
     }
 
     private val log: Kermit by inject { parametersOf("AnalTrackingRepository") }
@@ -131,6 +132,12 @@ class AnalTrackingRepository : KoinComponent {
         } else {
             Response.Success(Unit)
         }
+    }
+
+    suspend fun purgeAllAnalTrackingDatapointAlreadyUploaded(): Response<Unit> {
+        AnalTrackingDatapointDao(herdrDb).deleteUploadedAll()
+        log.i { "Analytics table was purged with success" }
+        return Response.Success(Unit)
     }
 
 //    @Update

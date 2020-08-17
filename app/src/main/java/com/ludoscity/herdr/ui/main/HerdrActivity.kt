@@ -28,10 +28,10 @@ import androidx.work.*
 import com.fondesa.kpermissions.extension.listeners
 import com.fondesa.kpermissions.extension.permissionsBuilder
 import com.ludoscity.herdr.R
-import com.ludoscity.herdr.common.data.repository.AnalTrackingRepository.Companion.PURGE_ANAL_PERIODIC_WORKER_UNIQUE_NAME
-import com.ludoscity.herdr.common.data.repository.AnalTrackingRepository.Companion.UPLOAD_ANAL_PERIODIC_WORKER_UNIQUE_NAME
-import com.ludoscity.herdr.common.data.repository.GeoTrackingRepository.Companion.PURGE_GEO_PERIODIC_WORKER_UNIQUE_NAME
-import com.ludoscity.herdr.common.data.repository.GeoTrackingRepository.Companion.UPLOAD_GEO_PERIODIC_WORKER_UNIQUE_NAME
+import com.ludoscity.herdr.common.data.repository.HeadlessRepository.Companion.PURGE_ANAL_PERIODIC_WORKER_UNIQUE_NAME
+import com.ludoscity.herdr.common.data.repository.HeadlessRepository.Companion.PURGE_GEO_PERIODIC_WORKER_UNIQUE_NAME
+import com.ludoscity.herdr.common.data.repository.HeadlessRepository.Companion.UPLOAD_ANAL_PERIODIC_WORKER_UNIQUE_NAME
+import com.ludoscity.herdr.common.data.repository.HeadlessRepository.Companion.UPLOAD_GEO_PERIODIC_WORKER_UNIQUE_NAME
 import com.ludoscity.herdr.common.ui.main.HerdrViewModel
 import com.ludoscity.herdr.data.AnalTrackingPurgeWorker
 import com.ludoscity.herdr.data.AnalTrackingUploadWorker

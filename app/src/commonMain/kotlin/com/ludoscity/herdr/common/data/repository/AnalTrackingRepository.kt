@@ -37,11 +37,6 @@ import org.koin.core.parameter.parametersOf
 
 class AnalTrackingRepository : KoinComponent {
 
-    companion object {
-        const val UPLOAD_ANAL_PERIODIC_WORKER_UNIQUE_NAME = "herdr-upload-anal-worker"
-        const val PURGE_ANAL_PERIODIC_WORKER_UNIQUE_NAME = "herdr-purge-anal-worker"
-    }
-
     private val log: Kermit by inject { parametersOf("AnalTrackingRepository") }
 
     private val herdrDb: HerdrDatabase by inject()
@@ -71,75 +66,6 @@ class AnalTrackingRepository : KoinComponent {
         analTrackingDao.insert(record)
         return Response.Success(analTrackingDao.select())
     }
-
-    suspend fun uploadAllAnalTrackingDatapointReadyForUpload(): Response<Unit> {
-
-        val analTrackingDao = AnalTrackingDatapointDao(herdrDb)
-        var atLeastOneError = true
-        analTrackingDao.selectReadyForUploadAll().forEach {
-            secureDataStore.retrieveString(
-                LoginRepository.authClientRegistrationBaseUrlStoreKey
-            )?.let { stackBase ->
-                log.d { "We have a stack address" }
-                secureDataStore.retrieveString(
-                    LoginRepository.cloudDirectoryId
-                )?.let { cloudDirectoryId ->
-                    log.d { "We have a directory id" }
-                    val networkReply = networkDataPipe.postFile(
-                        stackBase,
-                        cloudDirectoryId,
-                        "${it.timestamp}_ANALYTICS.json",
-                        listOf("herdr", "analytics"),
-                        Json(JsonConfiguration.Stable).stringify(
-                            AnalTrackingUploadRequestBody.serializer(),
-                            AnalTrackingUploadRequestBody(
-                                it.timestamp_epoch,
-                                it.app_version,
-                                it.api_level,
-                                it.device_model,
-                                it.language,
-                                it.country,
-                                it.battery_charge_percentage,
-                                it.description,
-                                it.timestamp
-                            )
-                        ),
-                        it.timestamp
-                    )
-
-                    when (networkReply) {
-                        is Response.Success -> {
-                            log.d { "Upload success, flagged record of name: ${it.timestamp}_ANALYTICS.json for deletion" }
-                            analTrackingDao.updateUploadCompleted(it.id)
-                            atLeastOneError = false
-                        }
-                        is Response.Error -> {
-                            if (networkReply.code == 409) {
-                                log.i { "Recovered from 409, flagged record: ${it.timestamp}_ANALYTICS.json for deletion" }
-                                analTrackingDao.updateUploadCompleted(it.id)
-                                atLeastOneError = false
-                            } /*else { //default is true
-                                atLeastOneError = true
-                            }*/
-                        }
-                    }
-                }
-            }
-        }
-
-        return if (atLeastOneError) {
-            Response.Error(IOException("Some error happened during the upload process"))
-        } else {
-            Response.Success(Unit)
-        }
-    }
-
-    suspend fun purgeAllAnalTrackingDatapointAlreadyUploaded(): Response<Unit> {
-        AnalTrackingDatapointDao(herdrDb).deleteUploadedAll()
-        log.i { "Analytics table was purged with success" }
-        return Response.Success(Unit)
-    }
-
 //    @Update
 //    fun update(record: AnalTrackingDatapoint)
 //

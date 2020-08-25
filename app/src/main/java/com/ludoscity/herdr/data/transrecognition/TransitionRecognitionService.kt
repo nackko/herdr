@@ -272,6 +272,18 @@ class TransitionRecognitionService : Service(), KoinComponent {
                 .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
                 .build()
 
+        transitions +=
+                ActivityTransition.Builder()
+                        .setActivityType(DetectedActivity.IN_VEHICLE)
+                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
+                        .build()
+
+        transitions +=
+                ActivityTransition.Builder()
+                        .setActivityType(DetectedActivity.IN_VEHICLE)
+                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
+                        .build()
+
         transitionRecognitionReq = ActivityTransitionRequest(transitions)
 
         val intent = applicationContext.intentFor<TransitionRecognitionIntentService>()
@@ -329,7 +341,7 @@ class TransitionRecognitionService : Service(), KoinComponent {
         coroutineContext,
         exceptionHandler, job
     ) {
-        val response = saveAnaltrackingDatapointUseCaseAsync.execute(
+        /*val response = */saveAnaltrackingDatapointUseCaseAsync.execute(
             SaveAnalyticsDatapointUseCaseInput(batteryChargePercentage, description)
         )
     }

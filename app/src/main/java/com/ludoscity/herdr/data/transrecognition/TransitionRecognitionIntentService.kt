@@ -124,7 +124,7 @@ class TransitionRecognitionIntentService :
                                 )
                                 runOnUiThread {
                                     updateGeoTrackingUseCaseSync.execute(
-                                            UpdateGeoTrackingUseCaseInput(false)
+                                            UpdateGeoTrackingUseCaseInput(true)
                                     )
                                 }
                             } else {
@@ -155,11 +155,27 @@ class TransitionRecognitionIntentService :
                                         null,
                                         "$TAG::onHandleIntent--ON_BICYCLE-ACTIVITY_TRANSITION_EXIT"
                                 )
+                            }
+                        }
+                        DetectedActivity.IN_VEHICLE -> {
+                            Log.d("TransitionsIntentServic", "IN_VEHICLE")
+                            if (event.transitionType == ActivityTransition.ACTIVITY_TRANSITION_ENTER) {
+                                Log.d("TransitionsIntentServic", "ACTIVITY_TRANSITION_ENTER")
+                                saveAnalytics(
+                                        null,
+                                        "$TAG::onHandleIntent--IN_VEHICLE-ACTIVITY_TRANSITION_ENTER"
+                                )
                                 runOnUiThread {
                                     updateGeoTrackingUseCaseSync.execute(
-                                            UpdateGeoTrackingUseCaseInput(false)
+                                            UpdateGeoTrackingUseCaseInput(true)
                                     )
                                 }
+                            } else {
+                                Log.d("TransitionsIntentServic", "ACTIVITY_TRANSITION_EXIT")
+                                saveAnalytics(
+                                        null,
+                                        "$TAG::onHandleIntent--IN_VEHICLE-ACTIVITY_TRANSITION_EXIT"
+                                )
                             }
                         }
                     }
@@ -175,7 +191,7 @@ class TransitionRecognitionIntentService :
             coroutineContext,
             exceptionHandler, job
     ) {
-        val response = saveAnaltrackingDatapointUseCaseAsync.execute(
+        /*val response = */saveAnaltrackingDatapointUseCaseAsync.execute(
                 SaveAnalyticsDatapointUseCaseInput(batteryChargePercentage, description)
         )
     }

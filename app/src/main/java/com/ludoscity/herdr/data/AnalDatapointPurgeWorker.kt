@@ -41,10 +41,7 @@ class AnalTrackingPurgeWorker(appContext: Context, workerParams: WorkerParameter
     private val purgeAllAnalyticsDatapointUseCaseAsync: PurgeAllAnalyticsDatapointUseCaseAsync
             by inject()
 
-    // ASYNC - COROUTINES
-    private val coroutineContextTruc: CoroutineContext by inject()
-
-    override suspend fun doWork(): Result = withContext(coroutineContextTruc) {
+    override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         // Do the work here--in this case, purge the data
         Log.i(AnalTrackingPurgeWorker::class.java.simpleName, "About to purge analytic table")
 

@@ -18,15 +18,14 @@
 package com.ludoscity.herdr.common.domain.usecase.analytics
 
 import com.ludoscity.herdr.common.base.Response
-import com.ludoscity.herdr.common.data.AnalTrackingDatapoint
-import com.ludoscity.herdr.common.data.repository.AnalTrackingRepository
+import com.ludoscity.herdr.common.data.repository.HeadlessRepository
 import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseAsync
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
 class UploadAllAnalyticsDatapointUseCaseAsync : KoinComponent,
     BaseUseCaseAsync<Nothing, Unit>() {
-    private val repo: AnalTrackingRepository by inject()
+    private val repo: HeadlessRepository by inject()
     override suspend fun run(): Response<Unit> {
         return repo.uploadAllAnalTrackingDatapointReadyForUpload()
     }

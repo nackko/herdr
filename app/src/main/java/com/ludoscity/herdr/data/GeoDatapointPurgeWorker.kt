@@ -41,10 +41,7 @@ class GeoTrackingPurgeWorker(appContext: Context, workerParams: WorkerParameters
     private val purgeAllGeoTrackingDatapointUseCaseAsync: PurgeAllGeoTrackingDatapointUseCaseAsync
             by inject()
 
-    // ASYNC - COROUTINES
-    private val coroutineContextTruc: CoroutineContext by inject()
-
-    override suspend fun doWork(): Result = withContext(coroutineContextTruc) {
+    override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         // Do the work here--in this case, purge the data
         Log.i(GeoTrackingPurgeWorker::class.java.simpleName, "About to purge geolocation table")
 

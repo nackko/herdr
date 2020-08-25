@@ -41,11 +41,7 @@ class GeoTrackingUploadWorker(appContext: Context, workerParams: WorkerParameter
     private val uploadAllGeoTrackingDatapointUseCaseAsync: UploadAllGeoTrackingDatapointUseCaseAsync
             by inject()
 
-
-    // ASYNC - COROUTINES
-    private val coroutineContextTruc: CoroutineContext by inject()
-
-    override suspend fun doWork(): Result = withContext(coroutineContextTruc) {
+    override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         // Do the work here--in this case, upload the data
         Log.i(GeoTrackingUploadWorker::class.java.simpleName, "About to upload geolocation table")
 

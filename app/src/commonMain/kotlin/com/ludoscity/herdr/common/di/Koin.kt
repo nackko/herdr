@@ -6,6 +6,7 @@ import com.ludoscity.herdr.common.data.network.INetworkDataPipe
 import com.ludoscity.herdr.common.data.network.cozy.CozyCloupApi
 import com.ludoscity.herdr.common.data.repository.AnalTrackingRepository
 import com.ludoscity.herdr.common.data.repository.GeoTrackingRepository
+import com.ludoscity.herdr.common.data.repository.HeadlessRepository
 import com.ludoscity.herdr.common.data.repository.LoginRepository
 import com.ludoscity.herdr.common.domain.usecase.analytics.*
 import com.ludoscity.herdr.common.domain.usecase.geotracking.*
@@ -32,6 +33,7 @@ private val coreModule = module {
     single { LoginRepository() }
     single { GeoTrackingRepository() }
     single { AnalTrackingRepository() }
+    single { HeadlessRepository() }
 
     //use case
     single { RegisterAuthClientUseCaseAsync() }

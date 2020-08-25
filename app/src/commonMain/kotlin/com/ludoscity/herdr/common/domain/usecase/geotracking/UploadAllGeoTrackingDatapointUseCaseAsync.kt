@@ -18,14 +18,14 @@
 package com.ludoscity.herdr.common.domain.usecase.geotracking
 
 import com.ludoscity.herdr.common.base.Response
-import com.ludoscity.herdr.common.data.repository.GeoTrackingRepository
+import com.ludoscity.herdr.common.data.repository.HeadlessRepository
 import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseAsync
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
 class UploadAllGeoTrackingDatapointUseCaseAsync : KoinComponent,
     BaseUseCaseAsync<Nothing, Unit>() {
-    private val repo: GeoTrackingRepository by inject()
+    private val repo: HeadlessRepository by inject()
     override suspend fun run(): Response<Unit> {
         return repo.uploadAllGeoTrackingDatapointReadyForUpload()
     }

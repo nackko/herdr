@@ -21,14 +21,15 @@ package com.ludoscity.herdr.ui.drivelogin
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
 import com.ludoscity.herdr.R
 import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
@@ -36,7 +37,6 @@ import com.ludoscity.herdr.common.domain.entity.UserCredentials
 import com.ludoscity.herdr.common.ui.drivelogin.*
 import com.ludoscity.herdr.databinding.FragmentDriveLoginBinding
 import com.ludoscity.herdr.ui.CustomTabsNavigator
-import com.ludoscity.herdr.utils.afterTextChanged
 import dev.icerock.moko.mvvm.MvvmEventsFragment
 import dev.icerock.moko.mvvm.createViewModelFactory
 import dev.icerock.moko.mvvm.dispatcher.eventsDispatcherOnMain
@@ -94,7 +94,7 @@ class DriveLoginFragment : MvvmEventsFragment<FragmentDriveLoginBinding, DriveLo
 
         binding.usernameOrCustomDomain.apply {
             //define what happens when user press <enter< opn virtual keyboard
-            setOnEditorActionListener { _, actionId, _ ->
+           this.editText?.setOnEditorActionListener { _, actionId, _ ->
                 when (actionId) {
                     EditorInfo.IME_ACTION_DONE ->
                         viewModel.registerAuthClient()
@@ -103,11 +103,13 @@ class DriveLoginFragment : MvvmEventsFragment<FragmentDriveLoginBinding, DriveLo
             }
 
             //define what happens when TextView content is edited
-            afterTextChanged {
+            this.editText?.doOnTextChanged { text, _, _, _ ->
+
+                if(text.toString().contains("\n")) {
+                    Log.d("TAG", "enter character detected")
+                }
                 viewModel.urlChanged(text.toString())
             }
-
-
         }
         return binding.root
     }

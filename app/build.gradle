@@ -131,6 +131,7 @@ kotlin {
                 implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
                 implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
                 implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
+                implementation "com.google.android.material:material:$materialDesignVersion"
                 implementation "com.google.android.gms:play-services-location:$playServicesVersion"
                 implementation "androidx.work:work-runtime-ktx:$workVersion"
                 // Kotlin Anko

@@ -18,7 +18,8 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.ludoscity.herdr">
+        xmlns:tools="http://schemas.android.com/tools"
+        package="com.ludoscity.herdr">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -34,7 +35,9 @@
             android:theme="@style/HerdrTheme">
         <activity
             android:name="com.ludoscity.herdr.ui.main.HerdrActivity"
-                android:launchMode="singleTop">
+                android:launchMode="singleTop"
+                android:screenOrientation="portrait"
+                tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -60,6 +63,10 @@
             android:name=".data.transrecognition.TransitionRecognitionService"
             android:enabled="true"
             android:exported="false" />
+
+        <meta-data
+                android:name="preloaded_fonts"
+                android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

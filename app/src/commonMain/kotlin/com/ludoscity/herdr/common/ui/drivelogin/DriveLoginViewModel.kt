@@ -225,31 +225,9 @@ class DriveLoginViewModel(override val eventsDispatcher: EventsDispatcher<DriveL
                 _userCredentials.postValue(SuccessUserCredentials(response))
                 // TODO: temporary. In the future this will probably happen in a non login related model,
                 // on a click of a button or something
-                setupRemoteDirectory("herdr_raw", listOf("herdr"))
             }
             is Response.Error ->
                 _userCredentials.postValue(ErrorUserCredentials(response))
-        }
-    }
-
-    private fun setupRemoteDirectory(name: String, tags: List<String>) = launchSilent(
-        coroutineContext,
-        exceptionHandler, job
-    ) {
-        val useCaseInput = SetupDirectoryUseCaseInput(name, tags)
-        val response = setupDirectoryUseCase.execute(useCaseInput)
-
-        processSetupDirectoryResponse(response)
-    }
-
-    private fun processSetupDirectoryResponse(response: Response<RawDataCloudFolderConfiguration>) {
-        when (response) {
-            is Response.Success -> {
-                log.d { "Raw data cloud folder setup response in DriveLoginViewModel: ${response.data}" }
-            }
-            is Response.Error -> {
-                log.e { "Remote directory setup FAILURE with ${response.exception}. This is bad. Consider auto logout" }
-            }
         }
     }
 
@@ -275,6 +253,7 @@ class DriveLoginViewModel(override val eventsDispatcher: EventsDispatcher<DriveL
 
     interface DriveLoginFragmentEventListener {
         fun routeToCreateAccount()
+        fun routeToHerdr()
     }
 
     companion object {

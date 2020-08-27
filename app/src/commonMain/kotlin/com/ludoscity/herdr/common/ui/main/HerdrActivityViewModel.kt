@@ -35,7 +35,7 @@ import org.koin.core.inject
 import org.koin.core.parameter.parametersOf
 import kotlin.coroutines.CoroutineContext
 
-class HerdrViewModel : KoinComponent, ViewModel() {
+class HerdrActivityViewModel : KoinComponent, ViewModel() {
 
     fun addLoggedInObserver(observer: (Boolean?) -> Unit): Response<Unit> {
         return observeLoggedInUseCaseSync.execute(ObserveLoggedInUseCaseInput(observer))
@@ -58,7 +58,7 @@ class HerdrViewModel : KoinComponent, ViewModel() {
 
     }
 
-    private val log: Kermit by inject { parametersOf("HerdrViewModel") }
+    private val log: Kermit by inject { parametersOf("HerdrActivityViewModel") }
 
     private val retrieveAccessAndRefreshTokenUseCase: RetrieveAccessAndRefreshTokenUseCaseAsync
             by inject()

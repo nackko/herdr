@@ -32,7 +32,7 @@ import com.ludoscity.herdr.common.data.repository.HeadlessRepository.Companion.P
 import com.ludoscity.herdr.common.data.repository.HeadlessRepository.Companion.PURGE_GEO_PERIODIC_WORKER_UNIQUE_NAME
 import com.ludoscity.herdr.common.data.repository.HeadlessRepository.Companion.UPLOAD_ANAL_PERIODIC_WORKER_UNIQUE_NAME
 import com.ludoscity.herdr.common.data.repository.HeadlessRepository.Companion.UPLOAD_GEO_PERIODIC_WORKER_UNIQUE_NAME
-import com.ludoscity.herdr.common.ui.main.HerdrViewModel
+import com.ludoscity.herdr.common.ui.main.HerdrActivityViewModel
 import com.ludoscity.herdr.data.AnalTrackingPurgeWorker
 import com.ludoscity.herdr.data.AnalTrackingUploadWorker
 import com.ludoscity.herdr.data.GeoTrackingPurgeWorker
@@ -45,14 +45,14 @@ import dev.icerock.moko.mvvm.createViewModelFactory
 import org.jetbrains.anko.intentFor
 import java.util.concurrent.TimeUnit
 
-class HerdrActivity : MvvmActivity<ActivityHerdrBinding, HerdrViewModel>() {
+class HerdrActivity : MvvmActivity<ActivityHerdrBinding, HerdrActivityViewModel>() {
 
     override val layoutId: Int = R.layout.activity_herdr
     override val viewModelVariableId: Int = com.ludoscity.herdr.BR.herdrViewModel
-    override val viewModelClass: Class<HerdrViewModel> = HerdrViewModel::class.java
+    override val viewModelClass: Class<HerdrActivityViewModel> = HerdrActivityViewModel::class.java
 
     override fun viewModelFactory(): ViewModelProvider.Factory {
-        return createViewModelFactory { HerdrViewModel() }
+        return createViewModelFactory { HerdrActivityViewModel() }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

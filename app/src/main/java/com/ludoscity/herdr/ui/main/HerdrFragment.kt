@@ -16,37 +16,29 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.herdr.ui.start
+package com.ludoscity.herdr.ui.main
 
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.ludoscity.herdr.BR
 import com.ludoscity.herdr.R
-import com.ludoscity.herdr.common.ui.start.StartViewModel
-import com.ludoscity.herdr.databinding.FragmentStartBinding
+import com.ludoscity.herdr.common.ui.main.HerdrFragmentViewModel
+import com.ludoscity.herdr.databinding.FragmentHerdrBinding
 import dev.icerock.moko.mvvm.MvvmEventsFragment
 import dev.icerock.moko.mvvm.createViewModelFactory
 import dev.icerock.moko.mvvm.dispatcher.eventsDispatcherOnMain
 
-class StartFragment : MvvmEventsFragment<FragmentStartBinding, StartViewModel,
-        StartViewModel.StartFragmentEventListener>(), StartViewModel.StartFragmentEventListener {
-    override val layoutId: Int = R.layout.fragment_start
-    override val viewModelVariableId: Int = BR.startViewModel
-    override val viewModelClass: Class<StartViewModel> = StartViewModel::class.java
+class HerdrFragment : MvvmEventsFragment<FragmentHerdrBinding, HerdrFragmentViewModel,
+        HerdrFragmentViewModel.HerdrFragmentEventListener>(), HerdrFragmentViewModel.HerdrFragmentEventListener {
+    override val layoutId: Int = R.layout.fragment_herdr
+    override val viewModelVariableId: Int = BR.herdrFragmentViewModel
+    override val viewModelClass: Class<HerdrFragmentViewModel> = HerdrFragmentViewModel::class.java
 
     override fun viewModelFactory(): ViewModelProvider.Factory {
-        return createViewModelFactory {
-            StartViewModel(
-                eventsDispatcher = eventsDispatcherOnMain()
-            )
-        }
+        return createViewModelFactory { HerdrFragmentViewModel(eventsDispatcherOnMain()) }
     }
 
-    override fun routeToDriveSetup() {
-        this.findNavController().navigate(R.id.action_startFragment_to_driveSetupFragment)
-    }
-
-    override fun routeToHerdr() {
-        this.findNavController().navigate(R.id.action_startFragment_to_herdrFragment)
+    override fun routeToDriveLogin() {
+        this.findNavController().navigate(R.id.action_herdrFragment_to_driveLoginFragment)
     }
 }

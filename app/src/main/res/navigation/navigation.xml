@@ -31,6 +31,9 @@
         <action
             android:id="@+id/action_startFragment_to_driveSetupFragment"
             app:destination="@id/driveSetupFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_herdrFragment"
+            app:destination="@id/herdrFragment" />
     </fragment>
 
     <fragment
@@ -62,5 +65,16 @@
         <action
             android:id="@+id/action_driveLoginFragment_to_create_account"
             app:destination="@id/create_account" />
+        <action
+            android:id="@+id/action_driveLoginFragment_to_herdrFragment"
+            app:destination="@id/herdrFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/herdrFragment"
+        android:name="com.ludoscity.herdr.ui.main.HerdrFragment"
+        android:label="HerdrFragment" >
+        <action
+            android:id="@+id/action_herdrFragment_to_driveLoginFragment"
+            app:destination="@id/driveLoginFragment" />
     </fragment>
 </navigation>

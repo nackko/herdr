@@ -70,6 +70,10 @@ class DriveLoginFragment : MvvmEventsFragment<FragmentDriveLoginBinding, DriveLo
         )
     }
 
+    override fun routeToHerdr() {
+        this.findNavController().navigate(R.id.action_driveLoginFragment_to_herdrFragment)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 

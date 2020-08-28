@@ -24,11 +24,14 @@ import android.util.Log
 import com.google.android.gms.location.ActivityTransition
 import com.google.android.gms.location.ActivityTransitionResult
 import com.google.android.gms.location.DetectedActivity
+import com.ludoscity.herdr.common.data.repository.UserActivityTrackingRepository
 
 import com.ludoscity.herdr.common.domain.usecase.analytics.SaveAnalyticsDatapointUseCaseAsync
 import com.ludoscity.herdr.common.domain.usecase.analytics.SaveAnalyticsDatapointUseCaseInput
 import com.ludoscity.herdr.common.domain.usecase.geotracking.UpdateGeoTrackingUseCaseInput
 import com.ludoscity.herdr.common.domain.usecase.geotracking.UpdateGeoTrackingUseCaseSync
+import com.ludoscity.herdr.common.domain.usecase.useractivity.UpdateUserActivityUseCaseInput
+import com.ludoscity.herdr.common.domain.usecase.useractivity.UpdateUserActivityUseCaseSync
 import com.ludoscity.herdr.common.utils.launchSilent
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
@@ -61,6 +64,8 @@ class TransitionRecognitionIntentService :
             SaveAnalyticsDatapointUseCaseAsync by inject()
     private val updateGeoTrackingUseCaseSync:
             UpdateGeoTrackingUseCaseSync by inject()
+    private val updateUserActivityUseCaseSync:
+            UpdateUserActivityUseCaseSync by inject()
 
 
     override fun onHandleIntent(p0: Intent?) {
@@ -84,6 +89,9 @@ class TransitionRecognitionIntentService :
                                     updateGeoTrackingUseCaseSync.execute(
                                             UpdateGeoTrackingUseCaseInput(false)
                                     )
+                                    updateUserActivityUseCaseSync.execute(
+                                            UpdateUserActivityUseCaseInput(UserActivityTrackingRepository.UserActivity.STILL)
+                                    )
                                 }
                             } else {
                                 Log.d("TransitionsIntentServic", "ACTIVITY_TRANSITION_EXIT")
@@ -105,6 +113,9 @@ class TransitionRecognitionIntentService :
                                     updateGeoTrackingUseCaseSync.execute(
                                             UpdateGeoTrackingUseCaseInput(true)
                                     )
+                                    updateUserActivityUseCaseSync.execute(
+                                            UpdateUserActivityUseCaseInput(UserActivityTrackingRepository.UserActivity.WALK)
+                                    )
                                 }
                             } else {
                                 Log.d("TransitionsIntentServic", "ACTIVITY_TRANSITION_EXIT")
@@ -125,6 +136,9 @@ class TransitionRecognitionIntentService :
                                 runOnUiThread {
                                     updateGeoTrackingUseCaseSync.execute(
                                             UpdateGeoTrackingUseCaseInput(true)
+                                    )
+                                    updateUserActivityUseCaseSync.execute(
+                                            UpdateUserActivityUseCaseInput(UserActivityTrackingRepository.UserActivity.RUN)
                                     )
                                 }
                             } else {
@@ -148,6 +162,9 @@ class TransitionRecognitionIntentService :
                                             //UpdateGeoTrackingUseCaseInput(true)
                                             UpdateGeoTrackingUseCaseInput(false)
                                     )
+                                    updateUserActivityUseCaseSync.execute(
+                                            UpdateUserActivityUseCaseInput(UserActivityTrackingRepository.UserActivity.BIKE)
+                                    )
                                 }
                             } else {
                                 Log.d("TransitionsIntentServic", "ACTIVITY_TRANSITION_EXIT")
@@ -168,6 +185,9 @@ class TransitionRecognitionIntentService :
                                 runOnUiThread {
                                     updateGeoTrackingUseCaseSync.execute(
                                             UpdateGeoTrackingUseCaseInput(true)
+                                    )
+                                    updateUserActivityUseCaseSync.execute(
+                                            UpdateUserActivityUseCaseInput(UserActivityTrackingRepository.UserActivity.VEHICLE)
                                     )
                                 }
                             } else {

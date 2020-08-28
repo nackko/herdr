@@ -28,9 +28,9 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context="com.ludoscity.herdr.ui.main.HerdrFragment">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.ludoscity.herdr.ui.main.HerdrFragment">
 
         <Button
             android:id="@+id/fragment_herdr_button_logout"
@@ -41,6 +41,58 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/still_image_view"
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:adjustViewBounds="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_activity_still_24px" />
+
+        <ImageView
+            android:id="@+id/walkImageView"
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            app:layout_constraintEnd_toEndOf="@+id/still_image_view"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/still_image_view"
+            app:layout_constraintTop_toBottomOf="@+id/still_image_view"
+            app:srcCompat="@drawable/ic_activity_walk_24px" />
+
+        <ImageView
+            android:id="@+id/runImageView"
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            app:layout_constraintEnd_toEndOf="@+id/walkImageView"
+            app:layout_constraintStart_toStartOf="@+id/walkImageView"
+            app:layout_constraintTop_toBottomOf="@+id/walkImageView"
+            app:srcCompat="@drawable/ic_activity_run_24px" />
+
+        <ImageView
+            android:id="@+id/bikeImageView"
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            app:layout_constraintEnd_toEndOf="@+id/runImageView"
+            app:layout_constraintStart_toStartOf="@+id/runImageView"
+            app:layout_constraintTop_toBottomOf="@+id/runImageView"
+            app:srcCompat="@drawable/ic_activity_bike_24px" />
+
+        <ImageView
+            android:id="@+id/vehicleImageView"
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            app:layout_constraintEnd_toEndOf="@+id/bikeImageView"
+            app:layout_constraintStart_toStartOf="@+id/bikeImageView"
+            app:layout_constraintTop_toBottomOf="@+id/bikeImageView"
+            app:srcCompat="@drawable/ic_activity_vehicle_24px" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

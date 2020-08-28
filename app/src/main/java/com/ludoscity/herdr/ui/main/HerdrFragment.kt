@@ -18,12 +18,18 @@
 
 package com.ludoscity.herdr.ui.main
 
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.ludoscity.herdr.BR
 import com.ludoscity.herdr.R
+import com.ludoscity.herdr.common.data.repository.UserActivityTrackingRepository
 import com.ludoscity.herdr.common.ui.main.HerdrFragmentViewModel
 import com.ludoscity.herdr.databinding.FragmentHerdrBinding
+import com.ludoscity.herdr.utils.setSvgColor
 import dev.icerock.moko.mvvm.MvvmEventsFragment
 import dev.icerock.moko.mvvm.createViewModelFactory
 import dev.icerock.moko.mvvm.dispatcher.eventsDispatcherOnMain
@@ -40,5 +46,30 @@ class HerdrFragment : MvvmEventsFragment<FragmentHerdrBinding, HerdrFragmentView
 
     override fun routeToDriveLogin() {
         this.findNavController().navigate(R.id.action_herdrFragment_to_driveLoginFragment)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+
+        super.onCreateView(inflater, container, savedInstanceState)
+
+        viewModel.addUserActivityObserver { newUserActivity ->
+            // reset all tints
+            binding.stillImageView.setSvgColor(R.color.black)
+            binding.walkImageView.setSvgColor(R.color.black)
+            binding.runImageView.setSvgColor(R.color.black)
+            binding.bikeImageView.setSvgColor(R.color.black)
+            binding.vehicleImageView.setSvgColor(R.color.black)
+
+            when(newUserActivity) {
+                UserActivityTrackingRepository.UserActivity.STILL -> binding.stillImageView.setSvgColor(R.color.theme_accent)
+                UserActivityTrackingRepository.UserActivity.WALK -> binding.walkImageView.setSvgColor(R.color.theme_accent)
+                UserActivityTrackingRepository.UserActivity.RUN -> binding.runImageView.setSvgColor(R.color.theme_accent)
+                UserActivityTrackingRepository.UserActivity.BIKE -> binding.bikeImageView.setSvgColor(R.color.theme_accent)
+                UserActivityTrackingRepository.UserActivity.VEHICLE -> binding.vehicleImageView.setSvgColor(R.color.theme_accent)
+            }
+        }
+
+        return binding.root
     }
 }

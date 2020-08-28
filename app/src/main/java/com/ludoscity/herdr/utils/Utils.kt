@@ -20,10 +20,14 @@ package com.ludoscity.herdr.utils
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.PorterDuff
 import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
+import android.widget.ImageView
+import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
 
 object Utils {
     fun getSimpleDateFormatPattern(): String {
@@ -47,3 +51,6 @@ fun Context.startServiceForeground(service: Intent) {
         startService(service)
     }
 }
+
+fun ImageView.setSvgColor(@ColorRes color: Int) =
+        setColorFilter(ContextCompat.getColor(context, color), PorterDuff.Mode.SRC_IN)

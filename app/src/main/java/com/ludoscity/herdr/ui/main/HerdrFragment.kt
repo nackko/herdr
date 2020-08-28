@@ -44,8 +44,8 @@ class HerdrFragment : MvvmEventsFragment<FragmentHerdrBinding, HerdrFragmentView
         return createViewModelFactory { HerdrFragmentViewModel(eventsDispatcherOnMain()) }
     }
 
-    override fun routeToDriveLogin() {
-        this.findNavController().navigate(R.id.action_herdrFragment_to_driveLoginFragment)
+    override fun routeToDriveEdit() {
+        this.findNavController().navigate(R.id.action_herdrFragment_to_driveEditFragment)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

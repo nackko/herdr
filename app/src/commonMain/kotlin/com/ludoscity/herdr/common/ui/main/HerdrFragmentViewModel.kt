@@ -94,12 +94,11 @@ class HerdrFragmentViewModel(override val eventsDispatcher: EventsDispatcher<Her
         }
     }
 
-    fun onLogoutButtonPressed() {
-        eventsDispatcher.dispatchEvent { routeToDriveLogin() }
+    fun onDriveEditButtonPressed() {
+        eventsDispatcher.dispatchEvent { routeToDriveEdit() }
     }
 
     interface HerdrFragmentEventListener {
-        fun routeToDriveLogin()
-        //fun routeToCreateAccount()
+        fun routeToDriveEdit()
     }
 }

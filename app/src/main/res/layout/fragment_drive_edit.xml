@@ -1,0 +1,128 @@
+<!--
+  ~     Copyright (c) 2020. f8full https://github.com/f8full
+  ~     Herdr is a privacy conscious multiplatform mobile data collector
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Lesser General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Lesser General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU Lesser General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+                name="driveEditFragmentViewModel"
+                type="com.ludoscity.herdr.common.ui.driveedit.DriveEditFragmentViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="com.ludoscity.herdr.ui.driveedit.DriveEditFragment">
+
+        <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="179dp">
+
+                <ImageView
+                        android:id="@+id/folder_outline_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_yellow_folder_76dp" />
+
+                <ImageView
+                        android:id="@+id/cozy_in_folder_image"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:paddingStart="8dp"
+                        android:paddingTop="8dp"
+                        android:paddingEnd="8dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/folder_outline_image"
+                        app:layout_constraintEnd_toEndOf="@+id/folder_outline_image"
+                        app:layout_constraintStart_toStartOf="@+id/folder_outline_image"
+                        app:layout_constraintTop_toTopOf="@+id/folder_outline_image"
+                        app:srcCompat="@drawable/ic_cozy_logo" />
+
+                <TextView
+                        android:id="@+id/folder_name_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:fontFamily="@font/roboto"
+                        android:text="Cozy Drive 1"
+                        android:textSize="24sp"
+                        app:layout_constraintStart_toEndOf="@+id/folder_outline_image"
+                        app:layout_constraintTop_toTopOf="@+id/folder_outline_image" />
+
+                <TextView
+                        android:id="@+id/drive_url_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:fontFamily="@font/roboto"
+                        android:text="https://ross.mycozy.cloud"
+                        app:layout_constraintStart_toEndOf="@+id/folder_outline_image"
+                        app:layout_constraintTop_toBottomOf="@+id/folder_name_text" />
+
+                <TextView
+                        android:id="@+id/date_created_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:fontFamily="@font/roboto"
+                        android:text="02-May-2020"
+                        app:layout_constraintStart_toEndOf="@+id/folder_outline_image"
+                        app:layout_constraintTop_toBottomOf="@+id/drive_url_text" />
+
+                <View
+                        android:id="@+id/divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="8dp"
+                        android:background="?android:attr/listDivider"
+                        app:layout_constraintTop_toBottomOf="@+id/folder_outline_image" />
+
+                <Button
+                        android:id="@+id/log_out_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:onClick="@{() -> driveEditFragmentViewModel.onLogoutButtonPressed()}"
+                        android:text="Log Out"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

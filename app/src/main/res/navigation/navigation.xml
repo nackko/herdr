@@ -74,7 +74,19 @@
         android:name="com.ludoscity.herdr.ui.main.HerdrFragment"
         android:label="HerdrFragment" >
         <action
-            android:id="@+id/action_herdrFragment_to_driveLoginFragment"
-            app:destination="@id/driveLoginFragment" />
+            android:id="@+id/action_herdrFragment_to_driveEditFragment"
+            app:destination="@id/driveEditFragment" />
+    </fragment>
+
+    <fragment
+            android:id="@+id/driveEditFragment"
+            android:name="com.ludoscity.herdr.ui.driveedit.DriveEditFragment"
+            android:label="DriveEditFragment" >
+        <action
+                android:id="@+id/action_driveEditFragment_to_herdrFragment"
+                app:destination="@id/herdrFragment" />
+        <action
+                android:id="@+id/action_driveEditFragment_to_startFragment"
+                app:destination="@id/startFragment" />
     </fragment>
 </navigation>

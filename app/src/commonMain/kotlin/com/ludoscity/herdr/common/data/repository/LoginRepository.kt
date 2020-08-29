@@ -119,6 +119,11 @@ class LoginRepository : KoinComponent {
     }
 
     suspend fun clearAuthClientRegistration(): Response<Unit> {
+
+        if (authClientRegistration == null) { //cache was never loaded
+            getAuthClientRegistration("null", true)
+        }
+
         authClientRegistration?.let {
             val networkReply = networkDataPipe.unregisterAuthClient(it)
 

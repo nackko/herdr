@@ -23,7 +23,7 @@
     <data>
 
         <variable
-                name="driveEditFragmentViewModel"
+                name="driveEditViewModel"
                 type="com.ludoscity.herdr.common.ui.driveedit.DriveEditFragmentViewModel" />
     </data>
 
@@ -115,7 +115,7 @@
                         android:layout_marginTop="16dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="16dp"
-                        android:onClick="@{() -> driveEditFragmentViewModel.onLogoutButtonPressed()}"
+                        android:onClick="@{() -> driveEditViewModel.onLogoutButtonPressed()}"
                         android:text="Log Out"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"

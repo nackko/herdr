@@ -83,9 +83,6 @@
             android:name="com.ludoscity.herdr.ui.driveedit.DriveEditFragment"
             android:label="DriveEditFragment" >
         <action
-                android:id="@+id/action_driveEditFragment_to_herdrFragment"
-                app:destination="@id/herdrFragment" />
-        <action
                 android:id="@+id/action_driveEditFragment_to_startFragment"
                 app:destination="@id/startFragment" />
     </fragment>

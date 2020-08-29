@@ -74,6 +74,14 @@ class DriveLoginFragment : MvvmEventsFragment<FragmentDriveLoginBinding, DriveLo
         this.findNavController().navigate(R.id.action_driveLoginFragment_to_herdrFragment)
     }
 
+    override fun routeToAuthFlow() {
+        val authInfo = ((viewModel.authClientRegistrationResult.value as SuccessAuthClientRegistration)
+                .response as Response.Success)
+                .data
+
+        launchAuthorizationFlow(authInfo)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
@@ -83,18 +91,6 @@ class DriveLoginFragment : MvvmEventsFragment<FragmentDriveLoginBinding, DriveLo
         viewModel.authClientRegistrationResult.addObserver { getClientRegistrationState(it) }
 
         viewModel.userCredentialsResult.addObserver { getUserCredentialsState(it) }
-
-        viewModel.requestAuthFlowEvent.addObserver {
-
-            if (it) {
-                val authInfo = ((viewModel.authClientRegistrationResult.value as SuccessAuthClientRegistration)
-                        .response as Response.Success)
-                        .data
-
-                launchAuthorizationFlow(authInfo)
-                viewModel.authFlowRequestProcessed()
-            }
-        }
 
         binding.usernameOrCustomDomain.apply {
             //define what happens when user press <enter< opn virtual keyboard
@@ -108,27 +104,24 @@ class DriveLoginFragment : MvvmEventsFragment<FragmentDriveLoginBinding, DriveLo
 
             //define what happens when TextView content is edited
             this.editText?.doOnTextChanged { text, _, _, _ ->
-
-                if(text.toString().contains("\n")) {
-                    Log.d("TAG", "enter character detected")
-                }
                 viewModel.urlChanged(text.toString())
             }
         }
         return binding.root
     }
 
-    private fun getUserCredentialsState(state: UserCredentialsState) {
+    private fun getUserCredentialsState(state: UserCredentialsState?) {
+
+        if(state == null) {
+            return
+        }
+
         when (state) {
             is SuccessUserCredentials -> {
-                val response = state.response as Response.Success
-                binding.activityHerdrButtonLogout.visibility = View.VISIBLE
                 binding.connectProgressBar.visibility = View.INVISIBLE
-                onUserCredentialsSuccess(userCredentials = response.data)
             }
             is InProgressUserCredentials -> {
                 binding.connectProgressBar.visibility = View.VISIBLE
-                binding.activityHerdrCredentialsTv.text = "In progress..."
             }
             is ErrorUserCredentials -> {
                 binding.connectProgressBar.visibility = View.INVISIBLE
@@ -136,49 +129,36 @@ class DriveLoginFragment : MvvmEventsFragment<FragmentDriveLoginBinding, DriveLo
                 val response = state.response as Response.Error
                 showError(
                         "message: ${response.message}|e.message:${response.exception.message ?: ""}",
-                        binding.activityHerdrCredentialsTv
+                        binding.finalDomainText
                 )
             }
         }
     }
 
-    private fun getClientRegistrationState(state: AuthClientRegistrationState) {
-        when (state) {
+    private fun getClientRegistrationState(state: AuthClientRegistrationState?) {
+
+        if(state == null) {
+            binding.driveConnectButton.visibility = View.VISIBLE
+            binding.connectProgressBar.visibility = View.INVISIBLE
+        } else when (state) {
             is SuccessAuthClientRegistration -> {
                 binding.driveConnectButton.visibility = View.INVISIBLE
-                binding.connectProgressBar.visibility = View.VISIBLE
-                val response = state.response as Response.Success
-                onClientRegistrationSuccess(registrationInfo = response.data)
+                binding.connectProgressBar.visibility = View.INVISIBLE
             }
             is InProgressAuthClientRegistration -> {
-                binding.activityHerdrRegistrationTv.text = "In progress..."
                 binding.driveConnectButton.visibility = View.INVISIBLE
                 binding.connectProgressBar.visibility = View.VISIBLE
-                binding.activityHerdrButtonLogout.visibility = View.INVISIBLE
             }
             is ErrorAuthClientRegistration -> {
                 binding.driveConnectButton.visibility = View.VISIBLE
                 binding.connectProgressBar.visibility = View.INVISIBLE
-                binding.activityHerdrButtonLogout.visibility = View.INVISIBLE
                 val response = state.response as Response.Error
                 showError(
                         "message: ${response.message}|e.message:${response.exception.message ?: ""}",
-                        binding.activityHerdrCredentialsTv
+                        binding.finalDomainText
                 )
             }
         }
-    }
-
-    private fun onClientRegistrationSuccess(registrationInfo: AuthClientRegistration) {
-
-        //debug
-        binding.activityHerdrCredentialsTv.text = "Registration = $registrationInfo"
-    }
-
-    private fun onUserCredentialsSuccess(userCredentials: UserCredentials) {
-
-        //debug -- We are fully logged in
-        binding.activityHerdrCredentialsTv.text = "Credentials = $userCredentials"
     }
 
     private fun launchAuthorizationFlow(registrationInfo: AuthClientRegistration) {
@@ -203,7 +183,6 @@ class DriveLoginFragment : MvvmEventsFragment<FragmentDriveLoginBinding, DriveLo
 
     private fun showError(message: String?, tv: TextView) {
         tv.text = message
-        //Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -217,11 +196,9 @@ class DriveLoginFragment : MvvmEventsFragment<FragmentDriveLoginBinding, DriveLo
                 if (resp != null) {
                     viewModel.exchangeCodeForAccessAndRefreshToken(resp.authorizationCode!!)
                 } else {
-                    ex?.let { authException ->
-                        viewModel.setErrorUserCredentials(authException.cause
-                                ?: IOException("Login error"))
-                        viewModel.unregisterAuthClient()
-                    }
+                    Log.e(DriveLoginFragment::class.java.name, "Auth process is not going well")
+                    binding.driveConnectButton.visibility = View.VISIBLE
+                    binding.connectProgressBar.visibility = View.INVISIBLE
                 }
             }
         }

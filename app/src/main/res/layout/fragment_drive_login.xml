@@ -112,36 +112,5 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/username_or_custom_domain" />
 
-        <Button
-                android:id="@+id/activity_herdr_button_logout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="@{() -> driveLoginViewModel.unregisterAuthClient()}"
-                android:text="Logout (unregister+clear authorization)"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-                android:id="@+id/activity_herdr_registration_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="[AuthClientRegistration]"
-                android:visibility="gone"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:ignore="MissingConstraints"
-                tools:layout_editor_absoluteY="393dp" />
-
-        <TextView
-                android:id="@+id/activity_herdr_credentials_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="[UserCredentials]"
-                android:visibility="gone"
-                tools:ignore="MissingConstraints"
-                tools:layout_editor_absoluteX="196dp"
-                tools:layout_editor_absoluteY="393dp" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

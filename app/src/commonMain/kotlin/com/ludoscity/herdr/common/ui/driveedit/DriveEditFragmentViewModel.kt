@@ -18,21 +18,57 @@
 
 package com.ludoscity.herdr.common.ui.driveedit
 
+import co.touchlab.kermit.Kermit
+import com.ludoscity.herdr.common.base.Response
+import com.ludoscity.herdr.common.domain.usecase.login.UnregisterAuthClientUseCaseAsync
+import com.ludoscity.herdr.common.utils.launchSilent
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcher
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcherOwner
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Job
 import org.koin.core.KoinComponent
+import org.koin.core.inject
+import org.koin.core.parameter.parametersOf
+import kotlin.coroutines.CoroutineContext
 
 class DriveEditFragmentViewModel(override val eventsDispatcher: EventsDispatcher<DriveEditFragmentEventListener>) :
     KoinComponent,
     ViewModel(),
     EventsDispatcherOwner<DriveEditFragmentViewModel.DriveEditFragmentEventListener> {
 
-    fun onLogoutButtonPressed() {
-        eventsDispatcher.dispatchEvent { routeToDriveLogin() }
+    private val log: Kermit by inject { parametersOf("DriveEditFragmentViewModel") }
+
+    private val unregisterAuthClientUseCase: UnregisterAuthClientUseCaseAsync by inject()
+
+    // ASYNC - COROUTINES
+    private val coroutineContext: CoroutineContext by inject()
+    private var job: Job = Job()
+    private val exceptionHandler = CoroutineExceptionHandler { _, _ -> }
+
+    fun onLogoutButtonPressed() = launchSilent(
+            coroutineContext,
+            exceptionHandler, job
+    ) {
+        //_authClientRegistrationResult.postValue(InProgressAuthClientRegistration())
+        val response = unregisterAuthClientUseCase.execute()
+        processUnregisterResponse(response)
+    }
+
+    private fun processUnregisterResponse(response: Response<Unit>) {
+        log.d { "About to process logout response" }
+        when (response) {
+            is Response.Success -> {
+                log.d { "Success -- routing to startFragment" }
+                eventsDispatcher.dispatchEvent { routeToStart() }
+            }
+            else -> {
+                log.e { "Something is wrong. No changes were made (still logged in)" }
+            }
+        }
     }
 
     interface DriveEditFragmentEventListener {
-        fun routeToDriveLogin()
+        fun routeToStart()
     }
 }

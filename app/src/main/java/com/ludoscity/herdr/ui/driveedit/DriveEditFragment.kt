@@ -31,7 +31,7 @@ import dev.icerock.moko.mvvm.dispatcher.eventsDispatcherOnMain
 class DriveEditFragment : MvvmEventsFragment<FragmentDriveEditBinding, DriveEditFragmentViewModel,
         DriveEditFragmentViewModel.DriveEditFragmentEventListener>(), DriveEditFragmentViewModel.DriveEditFragmentEventListener {
     override val layoutId: Int = R.layout.fragment_drive_edit
-    override val viewModelVariableId: Int = BR.driveSetupViewModel
+    override val viewModelVariableId: Int = BR.driveEditViewModel
     override val viewModelClass: Class<DriveEditFragmentViewModel> = DriveEditFragmentViewModel::class.java
 
     override fun viewModelFactory(): ViewModelProvider.Factory {
@@ -42,7 +42,7 @@ class DriveEditFragment : MvvmEventsFragment<FragmentDriveEditBinding, DriveEdit
         }
     }
 
-    override fun routeToDriveLogin() {
-        this.findNavController().navigate(R.id.action_driveEditFragment_to_herdrFragment)
+    override fun routeToStart() {
+        this.findNavController().navigate(R.id.action_driveEditFragment_to_startFragment)
     }
 }

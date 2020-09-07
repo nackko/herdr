@@ -61,17 +61,32 @@ class HerdrFragment : MvvmEventsFragment<FragmentHerdrBinding, HerdrFragmentView
             binding.bikeImageView.setSvgColor(R.color.black)
             binding.vehicleImageView.setSvgColor(R.color.black)
 
+            // reset all switches
+            binding.recWalkSwitch.isEnabled = true
+            binding.recRunSwitch.isEnabled = true
+            binding.recBikeSwitch.isEnabled = true
+            binding.recVehicleSwitch.isEnabled = true
+
             when(newUserActivity) {
                 UserActivityTrackingRepository.UserActivity.STILL ->
                     binding.stillImageView.setSvgColor(R.color.theme_accent)
-                UserActivityTrackingRepository.UserActivity.WALK ->
+
+                UserActivityTrackingRepository.UserActivity.WALK -> {
                     binding.walkImageView.setSvgColor(R.color.theme_accent)
-                UserActivityTrackingRepository.UserActivity.RUN ->
+                    binding.recWalkSwitch.isEnabled = false
+                }
+                UserActivityTrackingRepository.UserActivity.RUN -> {
                     binding.runImageView.setSvgColor(R.color.theme_accent)
-                UserActivityTrackingRepository.UserActivity.BIKE ->
+                    binding.recRunSwitch.isEnabled = false
+                }
+                UserActivityTrackingRepository.UserActivity.BIKE -> {
                     binding.bikeImageView.setSvgColor(R.color.theme_accent)
-                UserActivityTrackingRepository.UserActivity.VEHICLE ->
+                    binding.recBikeSwitch.isEnabled = false
+                }
+                UserActivityTrackingRepository.UserActivity.VEHICLE -> {
                     binding.vehicleImageView.setSvgColor(R.color.theme_accent)
+                    binding.recVehicleSwitch.isEnabled = false
+                }
             }
         }
 

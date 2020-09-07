@@ -53,6 +53,38 @@ class HeadlessRepository : KoinComponent {
     private val networkDataPipe: INetworkDataPipe by inject()
     private val secureDataStore: SecureDataStore by inject()
 
+    suspend fun retrieveWillGeoTrackUserActivity(usrActivity: UserActivityTrackingRepository.UserActivity):
+            Response<Boolean> {
+
+        when(usrActivity) {
+            UserActivityTrackingRepository.UserActivity.STILL -> return Response.Error(IllegalArgumentException())
+            UserActivityTrackingRepository.UserActivity.WALK -> return Response.Success(
+                secureDataStore.retrieveString(
+                    UserActivityTrackingRepository.willGeoTrackWalkStoreKey
+                )?.toBoolean()
+                    ?: false
+            )
+            UserActivityTrackingRepository.UserActivity.RUN -> return Response.Success(
+                secureDataStore.retrieveString(
+                    UserActivityTrackingRepository.willGeoTrackRunStoreKey
+                )?.toBoolean()
+                    ?: false
+            )
+            UserActivityTrackingRepository.UserActivity.BIKE -> return Response.Success(
+                secureDataStore.retrieveString(
+                    UserActivityTrackingRepository.willGeoTrackBikeStoreKey
+                )?.toBoolean()
+                    ?: false
+            )
+            UserActivityTrackingRepository.UserActivity.VEHICLE -> return Response.Success(
+                secureDataStore.retrieveString(
+                    UserActivityTrackingRepository.willGeoTrackVehicleStoreKey
+                )?.toBoolean()
+                    ?: false
+            )
+        }
+    }
+
 
     suspend fun uploadAllGeoTrackingDatapointReadyForUpload(): Response<Unit> {
         val geoTrackingDao = GeoTrackingDatapointDao(herdrDb)

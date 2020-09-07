@@ -32,15 +32,19 @@ import kotlin.coroutines.CoroutineContext
 
 class UserActivityTrackingRepository : KoinComponent {
 
+    companion object {
+        val willGeoTrackWalkStoreKey = "geotrackwalk"
+        val willGeoTrackRunStoreKey = "geotrackrun"
+        val willGeoTrackBikeStoreKey = "geotrackbike"
+        val willGeoTrackVehicleStoreKey = "geotrackvehicle"
+    }
+
     enum class UserActivity {
         STILL, WALK, RUN, BIKE, VEHICLE
     }
 
     private val secureDataStore: SecureDataStore by inject()
-    private val willGeoTrackWalkStoreKey = "geotrackwalk"
-    private val willGeoTrackRunStoreKey = "geotrackrun"
-    private val willGeoTrackBikeStoreKey = "geotrackbike"
-    private val willGeoTrackVehicleStoreKey = "geotrackvehicle"
+
 
     private val log: Kermit by inject { parametersOf("ActivityTrackingRepository") }
 

@@ -56,6 +56,7 @@ private val coreModule = module {
     single { ObserveUserActivityUseCaseSync() }
     single { ObserveGeoTrackUserActivityUseCaseSync() }
     single { UpdateWillGeoTrackUserActivityUseCaseAsync() }
+    single { RetrieveWillGeoTrackUserActivityUseCaseAsync() }
 }
 
 internal inline fun <reified T> Scope.getWith(vararg params: Any?): T {

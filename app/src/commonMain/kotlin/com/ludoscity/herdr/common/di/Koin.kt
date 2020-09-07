@@ -8,8 +8,7 @@ import com.ludoscity.herdr.common.data.repository.*
 import com.ludoscity.herdr.common.domain.usecase.analytics.*
 import com.ludoscity.herdr.common.domain.usecase.geotracking.*
 import com.ludoscity.herdr.common.domain.usecase.login.*
-import com.ludoscity.herdr.common.domain.usecase.useractivity.ObserveUserActivityUseCaseSync
-import com.ludoscity.herdr.common.domain.usecase.useractivity.UpdateUserActivityUseCaseSync
+import com.ludoscity.herdr.common.domain.usecase.useractivity.*
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.core.parameter.parametersOf
@@ -55,6 +54,8 @@ private val coreModule = module {
     single { UpdateGeoTrackingUseCaseSync() }
     single { UpdateUserActivityUseCaseSync() }
     single { ObserveUserActivityUseCaseSync() }
+    single { ObserveGeoTrackUserActivityUseCaseSync() }
+    single { UpdateWillGeoTrackUserActivityUseCaseAsync() }
 }
 
 internal inline fun <reified T> Scope.getWith(vararg params: Any?): T {

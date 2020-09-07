@@ -24,8 +24,7 @@ import com.ludoscity.herdr.common.data.repository.UserActivityTrackingRepository
 import com.ludoscity.herdr.common.domain.entity.RawDataCloudFolderConfiguration
 import com.ludoscity.herdr.common.domain.usecase.analytics.*
 import com.ludoscity.herdr.common.domain.usecase.login.*
-import com.ludoscity.herdr.common.domain.usecase.useractivity.ObserveUserActivityUseCaseInput
-import com.ludoscity.herdr.common.domain.usecase.useractivity.ObserveUserActivityUseCaseSync
+import com.ludoscity.herdr.common.domain.usecase.useractivity.*
 import com.ludoscity.herdr.common.utils.launchSilent
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcher
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcherOwner
@@ -48,7 +47,17 @@ class HerdrFragmentViewModel(override val eventsDispatcher: EventsDispatcher<Her
 
     fun addUserActivityObserver(observer: (UserActivityTrackingRepository.UserActivity?) -> Unit):
             Response<Unit> {
+        //log.d { "adding user activity observer" }
         return observeUserActivityUseCaseSync.execute(ObserveUserActivityUseCaseInput(observer))
+    }
+
+    fun addWillGeoTrackWalkObserver(observer: (Boolean) -> Unit): Response<Unit> {
+        return observeGeoTrackUserActivityUseCaseSync.execute(
+                ObserveGeoTrackUserActivityUseCaseInput(
+                        UserActivityTrackingRepository.UserActivity.WALK,
+                        observer
+                )
+        )
     }
 
     private val log: Kermit by inject { parametersOf("HerdrFragmentViewModel") }
@@ -65,6 +74,8 @@ class HerdrFragmentViewModel(override val eventsDispatcher: EventsDispatcher<Her
 
     private val observeLoggedInUseCaseSync: ObserveLoggedInUseCaseSync by inject()
     private val observeUserActivityUseCaseSync: ObserveUserActivityUseCaseSync by inject()
+    private val observeGeoTrackUserActivityUseCaseSync: ObserveGeoTrackUserActivityUseCaseSync by inject()
+    private val updateWillGeoTrackUserActivityUseCaseAsync: UpdateWillGeoTrackUserActivityUseCaseAsync by inject()
 
     private val retrieveAccessAndRefreshTokenUseCase: RetrieveAccessAndRefreshTokenUseCaseAsync
             by inject()
@@ -96,6 +107,19 @@ class HerdrFragmentViewModel(override val eventsDispatcher: EventsDispatcher<Her
 
     fun onDriveEditButtonPressed() {
         eventsDispatcher.dispatchEvent { routeToDriveEdit() }
+    }
+
+    fun onWalkGeoTrackingSwitched(newState: Boolean) = launchSilent(
+            coroutineContext,
+            exceptionHandler, job
+    ) {
+        //log.d { "switch tapped" }
+        updateWillGeoTrackUserActivityUseCaseAsync.execute(
+                UpdateWillGeoTrackUserActivityUseCaseInput(
+                        UserActivityTrackingRepository.UserActivity.WALK,
+                        newState
+                )
+        )
     }
 
     interface HerdrFragmentEventListener {

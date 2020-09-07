@@ -70,6 +70,15 @@ class HerdrFragment : MvvmEventsFragment<FragmentHerdrBinding, HerdrFragmentView
             }
         }
 
+        viewModel.addWillGeoTrackWalkObserver { willTrack ->
+            binding.recWalkingSwitch.isChecked = willTrack
+        }
+
+        binding.recWalkingSwitch.setOnCheckedChangeListener{ _, newState ->
+            //Log.d("HerdrFragment", "calling on model")
+            viewModel.onWalkGeoTrackingSwitched(newState)
+        }
+
         return binding.root
     }
 }

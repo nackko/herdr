@@ -20,20 +20,15 @@ package com.ludoscity.herdr.common.data.repository
 
 import co.touchlab.kermit.Kermit
 import com.ludoscity.herdr.common.base.Response
-import com.ludoscity.herdr.common.data.GeoTrackingDatapoint
 import com.ludoscity.herdr.common.data.SecureDataStore
-import com.ludoscity.herdr.common.data.database.HerdrDatabase
-import com.ludoscity.herdr.common.data.database.dao.GeoTrackingDatapointDao
-import com.ludoscity.herdr.common.data.network.INetworkDataPipe
-import com.ludoscity.herdr.common.data.network.cozy.GeoTrackingUploadRequestBody
-import dev.icerock.moko.mvvm.livedata.LiveData
+import com.ludoscity.herdr.common.utils.launchSilent
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
-import io.ktor.utils.io.errors.IOException
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Job
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import org.koin.core.parameter.parametersOf
+import kotlin.coroutines.CoroutineContext
 
 class UserActivityTrackingRepository : KoinComponent {
 
@@ -41,10 +36,19 @@ class UserActivityTrackingRepository : KoinComponent {
         STILL, WALK, RUN, BIKE, VEHICLE
     }
 
+    private val secureDataStore: SecureDataStore by inject()
+    private val willGeoTrackWalkStoreKey = "geotrackwalk"
+
     private val log: Kermit by inject { parametersOf("ActivityTrackingRepository") }
 
     //private val herdrDb: HerdrDatabase by inject()
 
+    private val _willGeoTrackWalkingActivity = MutableLiveData(false)
+
+    // ASYNC - COROUTINES
+    private val coroutineContext: CoroutineContext by inject()
+    private var job: Job = Job()
+    private val exceptionHandler = CoroutineExceptionHandler { _, _ -> }
 
     private val _userActivity = MutableLiveData<UserActivity?>(null)
     //val userActivity: LiveData<UserActivity?>
@@ -61,5 +65,39 @@ class UserActivityTrackingRepository : KoinComponent {
         _userActivity.postValue(userAct)
 
         return Response.Success(Unit)
+    }
+
+    suspend fun onWillGeoTrackUserActivity(userActivity: UserActivity, newWillTrack: Boolean): Response<Unit>{
+        log.d { "updating geo tracking wishes" }
+        when(userActivity) {
+            UserActivity.WALK -> {
+                _willGeoTrackWalkingActivity.postValue(newWillTrack)
+                secureDataStore.storeString(willGeoTrackWalkStoreKey, newWillTrack.toString())
+            }
+        }
+
+        return Response.Success(Unit)
+    }
+
+    fun addGeoTrackActivityObserver(activity: UserActivity, observer: (Boolean) -> Unit): Response<Unit> {
+        when(activity) {
+            UserActivity.WALK -> { _willGeoTrackWalkingActivity.addObserver(observer)}
+        }
+
+        return Response.Success(Unit)
+    }
+
+    init {
+        // async load of initial status taken from keystore if available
+        loadWillGeoTrackUserActivity()
+    }
+
+    private fun loadWillGeoTrackUserActivity() = launchSilent(
+            coroutineContext,
+            exceptionHandler, job
+    ) {
+        _willGeoTrackWalkingActivity.postValue(
+                secureDataStore.retrieveString(willGeoTrackWalkStoreKey)?.toBoolean() ?: false
+        )
     }
 }

@@ -62,21 +62,55 @@ class HerdrFragment : MvvmEventsFragment<FragmentHerdrBinding, HerdrFragmentView
             binding.vehicleImageView.setSvgColor(R.color.black)
 
             when(newUserActivity) {
-                UserActivityTrackingRepository.UserActivity.STILL -> binding.stillImageView.setSvgColor(R.color.theme_accent)
-                UserActivityTrackingRepository.UserActivity.WALK -> binding.walkImageView.setSvgColor(R.color.theme_accent)
-                UserActivityTrackingRepository.UserActivity.RUN -> binding.runImageView.setSvgColor(R.color.theme_accent)
-                UserActivityTrackingRepository.UserActivity.BIKE -> binding.bikeImageView.setSvgColor(R.color.theme_accent)
-                UserActivityTrackingRepository.UserActivity.VEHICLE -> binding.vehicleImageView.setSvgColor(R.color.theme_accent)
+                UserActivityTrackingRepository.UserActivity.STILL ->
+                    binding.stillImageView.setSvgColor(R.color.theme_accent)
+                UserActivityTrackingRepository.UserActivity.WALK ->
+                    binding.walkImageView.setSvgColor(R.color.theme_accent)
+                UserActivityTrackingRepository.UserActivity.RUN ->
+                    binding.runImageView.setSvgColor(R.color.theme_accent)
+                UserActivityTrackingRepository.UserActivity.BIKE ->
+                    binding.bikeImageView.setSvgColor(R.color.theme_accent)
+                UserActivityTrackingRepository.UserActivity.VEHICLE ->
+                    binding.vehicleImageView.setSvgColor(R.color.theme_accent)
             }
         }
 
-        viewModel.addWillGeoTrackWalkObserver { willTrack ->
-            binding.recWalkingSwitch.isChecked = willTrack
+        viewModel.apply {
+            addWillGeoTrackWalkObserver { willTrack ->
+                binding.recWalkSwitch.isChecked = willTrack
+            }
+            addWillGeoTrackRunObserver { willTrack ->
+                binding.recRunSwitch.isChecked = willTrack
+            }
+            addWillGeoTrackBikeObserver { willTrack ->
+                binding.recBikeSwitch.isChecked = willTrack
+            }
+            addWillGeoTrackVehicleObserver { willTrack ->
+                binding.recVehicleSwitch.isChecked = willTrack
+            }
         }
 
-        binding.recWalkingSwitch.setOnCheckedChangeListener{ _, newState ->
-            //Log.d("HerdrFragment", "calling on model")
-            viewModel.onWalkGeoTrackingSwitched(newState)
+         binding.apply {
+            recWalkSwitch.setOnCheckedChangeListener{ _, newState ->
+                viewModel.onUserActivityGeoTrackingSwitched(
+                    UserActivityTrackingRepository.UserActivity.WALK, newState
+                )
+            }
+            recRunSwitch.setOnCheckedChangeListener{ _, newState ->
+                viewModel.onUserActivityGeoTrackingSwitched(
+                    UserActivityTrackingRepository.UserActivity.RUN, newState
+                )
+            }
+            recBikeSwitch.setOnCheckedChangeListener{ _, newState ->
+                viewModel.onUserActivityGeoTrackingSwitched(
+                    UserActivityTrackingRepository.UserActivity.BIKE, newState
+                )
+            }
+            recVehicleSwitch.setOnCheckedChangeListener{ _, newState ->
+                viewModel.onUserActivityGeoTrackingSwitched(
+                    UserActivityTrackingRepository.UserActivity.VEHICLE, newState
+                )
+            }
         }
 
         return binding.root

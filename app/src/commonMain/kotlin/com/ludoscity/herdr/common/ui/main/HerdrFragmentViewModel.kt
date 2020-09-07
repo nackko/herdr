@@ -60,6 +60,33 @@ class HerdrFragmentViewModel(override val eventsDispatcher: EventsDispatcher<Her
         )
     }
 
+    fun addWillGeoTrackRunObserver(observer: (Boolean) -> Unit): Response<Unit> {
+        return observeGeoTrackUserActivityUseCaseSync.execute(
+            ObserveGeoTrackUserActivityUseCaseInput(
+                UserActivityTrackingRepository.UserActivity.RUN,
+                observer
+            )
+        )
+    }
+
+    fun addWillGeoTrackBikeObserver(observer: (Boolean) -> Unit): Response<Unit> {
+        return observeGeoTrackUserActivityUseCaseSync.execute(
+            ObserveGeoTrackUserActivityUseCaseInput(
+                UserActivityTrackingRepository.UserActivity.BIKE,
+                observer
+            )
+        )
+    }
+
+    fun addWillGeoTrackVehicleObserver(observer: (Boolean) -> Unit): Response<Unit> {
+        return observeGeoTrackUserActivityUseCaseSync.execute(
+            ObserveGeoTrackUserActivityUseCaseInput(
+                UserActivityTrackingRepository.UserActivity.VEHICLE,
+                observer
+            )
+        )
+    }
+
     private val log: Kermit by inject { parametersOf("HerdrFragmentViewModel") }
 
     // ASYNC - COROUTINES
@@ -109,14 +136,14 @@ class HerdrFragmentViewModel(override val eventsDispatcher: EventsDispatcher<Her
         eventsDispatcher.dispatchEvent { routeToDriveEdit() }
     }
 
-    fun onWalkGeoTrackingSwitched(newState: Boolean) = launchSilent(
+    fun onUserActivityGeoTrackingSwitched(userActivity: UserActivityTrackingRepository.UserActivity,
+                                  newState: Boolean) = launchSilent(
             coroutineContext,
             exceptionHandler, job
     ) {
-        //log.d { "switch tapped" }
         updateWillGeoTrackUserActivityUseCaseAsync.execute(
                 UpdateWillGeoTrackUserActivityUseCaseInput(
-                        UserActivityTrackingRepository.UserActivity.WALK,
+                        userActivity,
                         newState
                 )
         )

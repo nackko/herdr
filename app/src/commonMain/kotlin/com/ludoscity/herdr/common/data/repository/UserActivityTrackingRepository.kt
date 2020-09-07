@@ -38,12 +38,18 @@ class UserActivityTrackingRepository : KoinComponent {
 
     private val secureDataStore: SecureDataStore by inject()
     private val willGeoTrackWalkStoreKey = "geotrackwalk"
+    private val willGeoTrackRunStoreKey = "geotrackrun"
+    private val willGeoTrackBikeStoreKey = "geotrackbike"
+    private val willGeoTrackVehicleStoreKey = "geotrackvehicle"
 
     private val log: Kermit by inject { parametersOf("ActivityTrackingRepository") }
 
     //private val herdrDb: HerdrDatabase by inject()
 
-    private val _willGeoTrackWalkingActivity = MutableLiveData(false)
+    private val _willGeoTrackWalkActivity = MutableLiveData(false)
+    private val _willGeoTrackRunActivity = MutableLiveData(false)
+    private val _willGeoTrackBikeActivity = MutableLiveData(false)
+    private val _willGeoTrackVehicleActivity = MutableLiveData(false)
 
     // ASYNC - COROUTINES
     private val coroutineContext: CoroutineContext by inject()
@@ -70,9 +76,22 @@ class UserActivityTrackingRepository : KoinComponent {
     suspend fun onWillGeoTrackUserActivity(userActivity: UserActivity, newWillTrack: Boolean): Response<Unit>{
         log.d { "updating geo tracking wishes" }
         when(userActivity) {
+            UserActivity.STILL -> return Response.Error(IllegalArgumentException())
             UserActivity.WALK -> {
-                _willGeoTrackWalkingActivity.postValue(newWillTrack)
+                _willGeoTrackWalkActivity.postValue(newWillTrack)
                 secureDataStore.storeString(willGeoTrackWalkStoreKey, newWillTrack.toString())
+            }
+            UserActivity.RUN ->  {
+                _willGeoTrackRunActivity.postValue(newWillTrack)
+                secureDataStore.storeString(willGeoTrackRunStoreKey, newWillTrack.toString())
+            }
+            UserActivity.BIKE ->  {
+                _willGeoTrackBikeActivity.postValue(newWillTrack)
+                secureDataStore.storeString(willGeoTrackBikeStoreKey, newWillTrack.toString())
+            }
+            UserActivity.VEHICLE -> {
+                _willGeoTrackVehicleActivity.postValue(newWillTrack)
+                secureDataStore.storeString(willGeoTrackVehicleStoreKey, newWillTrack.toString())
             }
         }
 
@@ -81,7 +100,11 @@ class UserActivityTrackingRepository : KoinComponent {
 
     fun addGeoTrackActivityObserver(activity: UserActivity, observer: (Boolean) -> Unit): Response<Unit> {
         when(activity) {
-            UserActivity.WALK -> { _willGeoTrackWalkingActivity.addObserver(observer)}
+            UserActivity.STILL -> return Response.Error(IllegalArgumentException())
+            UserActivity.WALK -> { _willGeoTrackWalkActivity.addObserver(observer)}
+            UserActivity.RUN -> { _willGeoTrackRunActivity.addObserver(observer)}
+            UserActivity.BIKE -> { _willGeoTrackBikeActivity.addObserver(observer)}
+            UserActivity.VEHICLE -> { _willGeoTrackVehicleActivity.addObserver(observer)}
         }
 
         return Response.Success(Unit)
@@ -96,8 +119,17 @@ class UserActivityTrackingRepository : KoinComponent {
             coroutineContext,
             exceptionHandler, job
     ) {
-        _willGeoTrackWalkingActivity.postValue(
+        _willGeoTrackWalkActivity.postValue(
                 secureDataStore.retrieveString(willGeoTrackWalkStoreKey)?.toBoolean() ?: false
+        )
+        _willGeoTrackRunActivity.postValue(
+                secureDataStore.retrieveString(willGeoTrackRunStoreKey)?.toBoolean() ?: false
+        )
+        _willGeoTrackBikeActivity.postValue(
+            secureDataStore.retrieveString(willGeoTrackBikeStoreKey)?.toBoolean() ?: false
+        )
+        _willGeoTrackVehicleActivity.postValue(
+            secureDataStore.retrieveString(willGeoTrackVehicleStoreKey)?.toBoolean() ?: false
         )
     }
 }

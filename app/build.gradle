@@ -91,7 +91,7 @@ kotlin {
                 api 'org.jetbrains.kotlin:kotlin-stdlib-common'
 
                 // COROUTINES
-                implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$coroutineVersion"
+                implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
 
                 // MOKO - MVVM
                 implementation "dev.icerock.moko:mvvm:$mokoMvvmVersion"
@@ -100,7 +100,8 @@ kotlin {
                 implementation "org.koin:koin-core:$koinVersion"
 
                 // SERIALIZATION
-                implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serializerVersion"
+                implementation "org.jetbrains.kotlinx:kotlinx-serialization-core:$serializerVersion"
+                implementation "org.jetbrains.kotlinx:kotlinx-serialization-protobuf:$serializerVersion"
 
                 // KTOR
                 implementation "io.ktor:ktor-client-core:$ktorVersion"
@@ -123,8 +124,8 @@ kotlin {
         }
         androidMain {
             dependencies {
-                implementation "org.jetbrains.kotlin:kotlin-stdlib:1.3.72"
-                implementation "org.jetbrains.kotlin:kotlin-stdlib-common:1.3.72"
+                implementation "org.jetbrains.kotlin:kotlin-stdlib:1.4.0"
+                implementation "org.jetbrains.kotlin:kotlin-stdlib-common:1.4.0"
                 implementation fileTree(dir: 'libs', include: ['*.jar'])
                 implementation "androidx.appcompat:appcompat:$appCompatVersion"
                 implementation "androidx.fragment:fragment:$fragmentVersion"
@@ -183,13 +184,13 @@ kotlin {
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-native:$coroutineVersion")
 
             // SERIALIZATION
-            implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-native:$serializerVersion")
+            //implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-native:$serializerVersion")
 
             //KTOR
             implementation("io.ktor:ktor-client-ios:$ktorVersion")
-            implementation("io.ktor:ktor-client-core-native:$ktorVersion")
-            implementation("io.ktor:ktor-client-logging-native:$ktorVersion")
-            implementation("io.ktor:ktor-client-json-native:$ktorVersion")
+            //implementation("io.ktor:ktor-client-core-native:$ktorVersion")
+            //implementation("io.ktor:ktor-client-logging-native:$ktorVersion")
+            //implementation("io.ktor:ktor-client-json-native:$ktorVersion")
             implementation("io.ktor:ktor-client-serialization-native:$ktorVersion")
 
             // SQL Delight

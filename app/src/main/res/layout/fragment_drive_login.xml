@@ -80,14 +80,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto"
-                android:text="@{driveLoginViewModel.finalUrl.ld}"
                 app:layout_constraintBottom_toTopOf="@+id/drive_connect_button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/username_or_custom_domain"
                 app:layout_constraintVertical_bias=".1" />
-        <!--.ld comes from Moko-MVVM LiveData type.
-        See:https://github.com/icerockdev/moko-mvvm/tree/release/0.6.0#viewmodel-for-login-feature -->
 
         <Button
                 android:id="@+id/drive_connect_button"

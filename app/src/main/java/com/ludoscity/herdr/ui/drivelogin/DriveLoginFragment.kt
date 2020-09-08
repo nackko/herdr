@@ -107,6 +107,11 @@ class DriveLoginFragment : MvvmEventsFragment<FragmentDriveLoginBinding, DriveLo
                 viewModel.urlChanged(text.toString())
             }
         }
+
+        viewModel.finalUrl.addObserver {
+            binding.finalDomainText.text = it
+        }
+
         return binding.root
     }
 

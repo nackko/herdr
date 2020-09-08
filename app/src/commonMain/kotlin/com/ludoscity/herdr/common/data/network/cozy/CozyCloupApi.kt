@@ -29,7 +29,7 @@ import com.ludoscity.herdr.common.domain.usecase.login.RetrieveAccessAndRefreshT
 import io.ktor.client.HttpClient
 import io.ktor.client.call.HttpClientCall
 import io.ktor.client.features.ClientRequestException
-import io.ktor.client.features.json.JsonFeature
+import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.features.logging.LogLevel
 import io.ktor.client.features.logging.Logger
@@ -42,8 +42,6 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.content.TextContent
 import io.ktor.utils.io.core.toByteArray
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -60,11 +58,12 @@ class CozyCloupApi(private val log: Kermit) : KoinComponent, INetworkDataPipe {
     //TODO: should that be injected?
     private val httpClient = HttpClient {
         install(JsonFeature) {
-            serializer = KotlinxSerializer(
-                Json(
-                    JsonConfiguration.Stable.copy(ignoreUnknownKeys = true)
-                )
-            )
+
+            val truc = kotlinx.serialization.json.Json {
+                this.ignoreUnknownKeys = true
+            }
+
+            serializer = KotlinxSerializer(truc)
             // Cozy replies with this somewhat strange vendor api json content type
             //solution found via https://github.com/ktorio/ktor/issues/812
             accept(ContentType.Application.Json, ContentType("application", "vnd.api+json"))
@@ -194,7 +193,7 @@ class CozyCloupApi(private val log: Kermit) : KoinComponent, INetworkDataPipe {
             )
         } catch (e: ClientRequestException) {
             //log.d(e) { "caught exception" }
-            if (e.response.status == HttpStatusCode.Conflict) {
+            if (e.response?.status == HttpStatusCode.Conflict) {
                 log.w { "caught ClientRequestException for HttpStatusCode.Conflict(409). This is recoverable" }
                 Response.Error(e, HttpStatusCode.Conflict.value)
             } else {
@@ -234,7 +233,7 @@ class CozyCloupApi(private val log: Kermit) : KoinComponent, INetworkDataPipe {
             Response.Success(Unit)
         } catch (e: ClientRequestException) {
             //log.d(e) { "caught exception" }
-            if (e.response.status == HttpStatusCode.Conflict) {
+            if (e.response?.status == HttpStatusCode.Conflict) {
                 log.w { "caught ClientRequestException for HttpStatusCode.Conflict(409). This is recoverable" }
                 Response.Error(e, HttpStatusCode.Conflict.value)
             } else {

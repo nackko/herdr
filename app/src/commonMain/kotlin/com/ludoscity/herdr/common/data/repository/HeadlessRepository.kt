@@ -29,7 +29,6 @@ import com.ludoscity.herdr.common.data.network.cozy.AnalTrackingUploadRequestBod
 import com.ludoscity.herdr.common.data.network.cozy.GeoTrackingUploadRequestBody
 import io.ktor.utils.io.errors.IOException
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import org.koin.core.parameter.parametersOf
@@ -118,7 +117,7 @@ class HeadlessRepository : KoinComponent {
                     cloudDirectoryId,
                     "${it.timestamp}_GEOLOCATION.json",
                     listOf("herdr", "geolocation"),
-                    Json(JsonConfiguration.Stable).stringify(
+                    Json.encodeToString(
                         GeoTrackingUploadRequestBody.serializer(),
                         GeoTrackingUploadRequestBody(
                             it.timestamp_epoch,
@@ -189,7 +188,7 @@ class HeadlessRepository : KoinComponent {
                     cloudDirectoryId,
                     "${it.timestamp}_ANALYTICS.json",
                     listOf("herdr", "analytics"),
-                    Json(JsonConfiguration.Stable).stringify(
+                    Json.encodeToString(
                         AnalTrackingUploadRequestBody.serializer(),
                         AnalTrackingUploadRequestBody(
                             it.timestamp_epoch,

@@ -20,6 +20,7 @@ package com.ludoscity.herdr.common.di
 
 import co.touchlab.kermit.Kermit
 import co.touchlab.kermit.LogcatLogger
+import com.ludoscity.herdr.BuildConfig
 import com.ludoscity.herdr.common.data.SecureDataStore
 import com.ludoscity.herdr.common.data.database.HerdrDatabase
 import com.squareup.sqldelight.android.AndroidSqliteDriver
@@ -33,7 +34,7 @@ actual val platformModule: Module = module {
         AndroidSqliteDriver(
             HerdrDatabase.Schema,
             get(),
-            "herdr.db"
+            BuildConfig.DATABASE_NAME
         )
     }
 

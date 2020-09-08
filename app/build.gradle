@@ -38,7 +38,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            //buildConfigField "String", "DATABASE_NAME", "\"findmybikes-database\""
+            buildConfigField "String", "DATABASE_NAME", "\"herdr-database.db\""
         }
 
         debug {
@@ -47,7 +47,7 @@ android {
             versionNameSuffix '-DEBUG'
             //signingConfig signingConfigs.debug
             debuggable true
-            //buildConfigField "String", "DATABASE_NAME", "\"findmybikes-database-debug\""
+            buildConfigField "String", "DATABASE_NAME", "\"herdr-database-debug.db\""
         }
     }
 

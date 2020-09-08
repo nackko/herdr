@@ -32,7 +32,7 @@ buildscript {
         coroutineVersion = "1.3.9-native-mt"
         deviceNamesVersion = "1.1.7"
         fragmentVersion = "1.2.5"
-        gradleVersion = "3.6.2"
+        gradleVersion = '4.0.1'
         kermitVersion = "0.1.8"
         koinVersion = "3.0.1-alpha-2"
         kotlinVersion = "1.4.0"

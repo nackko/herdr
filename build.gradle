@@ -22,27 +22,29 @@ buildscript {
         jcenter()
     }
     ext {
+        // TODO. Anko is deprecated: https://github.com/Kotlin/anko/blob/master/GOODBYE.md
+        // migrate to KTX: https://developer.android.com/kotlin/ktx
         ankoVersion = "0.10.3"
         androidxLifecycleVersion = "2.2.0"
-        appCompatVersion = "1.1.0"
+        appCompatVersion = "1.2.0"
         appAuthVersion = "0.7.1"
-        constraintLayoutVersion = "1.1.3"
-        coroutineVersion = "1.3.5"
+        constraintLayoutVersion = "2.0.1"
+        coroutineVersion = "1.3.9-native-mt"
         deviceNamesVersion = "1.1.7"
-        fragmentVersion = "1.2.4"
-        gradleVersion = "3.6.2"
-        kermitVersion = "0.1.7"
-        koinVersion = "3.0.0-alpha-2"
-        kotlinVersion = "1.3.72"
+        fragmentVersion = "1.2.5"
+        gradleVersion = '4.0.1'
+        kermitVersion = "0.1.8"
+        koinVersion = "3.0.1-alpha-2"
+        kotlinVersion = "1.4.0"
         kpermissionsVersion = "1.0.0"
-        ktorVersion = "1.3.2"
-        materialDesignVersion = "1.2.0"
-        mokoMvvmVersion = "0.6.0"
-        navigationVersion = "2.2.2"
+        ktorVersion = "1.4.0"
+        materialDesignVersion = "1.2.1"
+        mokoMvvmVersion = "0.8.0"
+        navigationVersion = "2.3.0"
         playServicesVersion = "17.0.0"
         securityCryptoVersion = "1.0.0-rc02"
-        serializerVersion = "0.20.0"
-        sqlDelightVersion = "1.4.0"
+        serializerVersion = "1.0.0-RC"
+        sqlDelightVersion = "1.4.1"
         workVersion = "2.4.0"
     }
     dependencies {
@@ -53,7 +55,10 @@ buildscript {
 allprojects {
     repositories {
         maven { url = "https://dl.bintray.com/icerockdev/moko" }
-        maven { url = "https://dl.bintray.com/ekito/koin" }
+        //TODO: restore when Koin becomes available for Kotlin 1.4
+        //maven { url = "https://dl.bintray.com/ekito/koin" }
+        maven { url = "https://dl.bintray.com/touchlabpublic/kotlin" }
+        maven { url = "https://kotlin.bintray.com/kotlinx" }
     }
 }
 

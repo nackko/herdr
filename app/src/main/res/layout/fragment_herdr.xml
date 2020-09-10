@@ -218,11 +218,10 @@
                         app:layout_constraintStart_toStartOf="@+id/last_idle_text"
                         app:layout_constraintTop_toTopOf="@+id/walkImageView" />
 
-                <Switch
+                <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/rec_walk_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
                         android:layout_marginEnd="24dp"
                         android:scaleX="1.27"
                         android:scaleY="1.27"
@@ -275,11 +274,10 @@
                         app:layout_constraintStart_toStartOf="@+id/last_idle_text"
                         app:layout_constraintTop_toTopOf="@id/runImageView" />
 
-                <Switch
+                <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/rec_run_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="24dp"
                         android:scaleX="1.27"
                         android:scaleY="1.27"
@@ -332,11 +330,10 @@
                         app:layout_constraintStart_toStartOf="@+id/last_idle_text"
                         app:layout_constraintTop_toTopOf="@id/bikeImageView" />
 
-                <Switch
+                <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/rec_bike_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
                         android:layout_marginEnd="24dp"
                         android:scaleX="1.27"
                         android:scaleY="1.27"
@@ -391,11 +388,10 @@
                         app:layout_constraintStart_toStartOf="@+id/last_idle_text"
                         app:layout_constraintTop_toTopOf="@id/vehicleImageView" />
 
-                <Switch
+                <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/rec_vehicle_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
                         android:layout_marginEnd="24dp"
                         android:scaleX="1.27"
                         android:scaleY="1.27"

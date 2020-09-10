@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~     Copyright (c) 2020. f8full https://github.com/f8full
+  ~     Herdr is a privacy conscious multiplatform mobile data collector
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Lesser General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Lesser General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU Lesser General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+            android:id="@+id/rec_icon_blink"
+            motion:constraintSetEnd="@+id/blink_end"
+            motion:constraintSetStart="@id/blink_start"
+            motion:duration="2000">
+        <KeyFrameSet>
+
+            <KeyTimeCycle
+                    android:alpha="1"
+                    motion:framePosition="0"
+                    motion:motionInterpolator="cubic(1,0,0,1)"
+                    motion:motionTarget="@+id/walk_rec_icon"
+                    motion:waveOffset="0.0"
+                    motion:wavePeriod="0.75" />
+            <KeyTimeCycle
+                    android:alpha="1"
+                    motion:framePosition="0"
+                    motion:motionInterpolator="cubic(1,0,0,1)"
+                    motion:motionTarget="@+id/run_rec_icon"
+                    motion:waveOffset="0.0"
+                    motion:wavePeriod="0.75" />
+            <KeyTimeCycle
+                    android:alpha="1"
+                    motion:framePosition="0"
+                    motion:motionInterpolator="cubic(1,0,0,1)"
+                    motion:motionTarget="@+id/bike_rec_icon"
+                    motion:waveOffset="0.0"
+                    motion:wavePeriod="0.75" />
+            <KeyTimeCycle
+                    android:alpha="1"
+                    motion:framePosition="0"
+                    motion:motionInterpolator="cubic(1,0,0,1)"
+                    motion:motionTarget="@+id/vehicle_rec_icon"
+                    motion:waveOffset="0.0"
+                    motion:wavePeriod="0.75" />
+        </KeyFrameSet>
+    </Transition>
+
+    <ConstraintSet android:id="@+id/blink_start" >
+
+        <Constraint android:id="@+id/walk_rec_icon">
+            <PropertySet motion:visibilityMode="ignore" />
+        </Constraint>
+
+        <Constraint android:id="@+id/run_rec_icon">
+            <PropertySet motion:visibilityMode="ignore" />
+        </Constraint>
+
+        <Constraint android:id="@+id/bike_rec_icon">
+            <PropertySet motion:visibilityMode="ignore" />
+        </Constraint>
+
+        <Constraint android:id="@+id/vehicle_rec_icon">
+            <PropertySet motion:visibilityMode="ignore" />
+        </Constraint>
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/blink_end" >
+
+        <Constraint android:id="@+id/walk_rec_icon">
+            <PropertySet motion:visibilityMode="ignore" />
+        </Constraint>
+
+        <Constraint android:id="@+id/run_rec_icon">
+            <PropertySet motion:visibilityMode="ignore" />
+        </Constraint>
+
+        <Constraint android:id="@+id/bike_rec_icon">
+            <PropertySet motion:visibilityMode="ignore" />
+        </Constraint>
+
+        <Constraint android:id="@+id/vehicle_rec_icon">
+            <PropertySet motion:visibilityMode="ignore" />
+        </Constraint>
+    </ConstraintSet>
+
+</MotionScene>

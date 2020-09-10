@@ -55,17 +55,27 @@ class HerdrFragment : MvvmEventsFragment<FragmentHerdrBinding, HerdrFragmentView
 
         viewModel.addUserActivityObserver { newUserActivity ->
             // reset all tints
-            binding.stillImageView.setSvgColor(R.color.black)
-            binding.walkImageView.setSvgColor(R.color.black)
-            binding.runImageView.setSvgColor(R.color.black)
-            binding.bikeImageView.setSvgColor(R.color.black)
-            binding.vehicleImageView.setSvgColor(R.color.black)
 
-            // reset all switches
-            binding.recWalkSwitch.isEnabled = true
-            binding.recRunSwitch.isEnabled = true
-            binding.recBikeSwitch.isEnabled = true
-            binding.recVehicleSwitch.isEnabled = true
+            binding.apply {
+                // reset icon colors
+                stillImageView.setSvgColor(R.color.black)
+                walkImageView.setSvgColor(R.color.black)
+                runImageView.setSvgColor(R.color.black)
+                bikeImageView.setSvgColor(R.color.black)
+                vehicleImageView.setSvgColor(R.color.black)
+
+                // reset all switches
+                recWalkSwitch.isEnabled = true
+                recRunSwitch.isEnabled = true
+                recBikeSwitch.isEnabled = true
+                recVehicleSwitch.isEnabled = true
+
+                // reset REC icon visibility
+                walkRecIcon.visibility = View.INVISIBLE
+                runRecIcon.visibility = View.INVISIBLE
+                bikeRecIcon.visibility = View.INVISIBLE
+                vehicleRecIcon.visibility = View.INVISIBLE
+            }
 
             when(newUserActivity) {
                 UserActivityTrackingRepository.UserActivity.STILL ->
@@ -74,18 +84,38 @@ class HerdrFragment : MvvmEventsFragment<FragmentHerdrBinding, HerdrFragmentView
                 UserActivityTrackingRepository.UserActivity.WALK -> {
                     binding.walkImageView.setSvgColor(R.color.theme_accent)
                     binding.recWalkSwitch.isEnabled = false
+                    if (binding.recWalkSwitch.isChecked) {
+                        binding.walkRecIcon.visibility = View.VISIBLE
+                    } else {
+                        binding.walkRecIcon.visibility = View.INVISIBLE
+                    }
                 }
                 UserActivityTrackingRepository.UserActivity.RUN -> {
                     binding.runImageView.setSvgColor(R.color.theme_accent)
                     binding.recRunSwitch.isEnabled = false
+                    if (binding.recRunSwitch.isChecked) {
+                        binding.runRecIcon.visibility = View.VISIBLE
+                    } else {
+                        binding.runRecIcon.visibility = View.INVISIBLE
+                    }
                 }
                 UserActivityTrackingRepository.UserActivity.BIKE -> {
                     binding.bikeImageView.setSvgColor(R.color.theme_accent)
                     binding.recBikeSwitch.isEnabled = false
+                    if (binding.recBikeSwitch.isChecked) {
+                        binding.bikeRecIcon.visibility = View.VISIBLE
+                    } else {
+                        binding.bikeRecIcon.visibility = View.INVISIBLE
+                    }
                 }
                 UserActivityTrackingRepository.UserActivity.VEHICLE -> {
                     binding.vehicleImageView.setSvgColor(R.color.theme_accent)
                     binding.recVehicleSwitch.isEnabled = false
+                    if (binding.recVehicleSwitch.isChecked) {
+                        binding.vehicleRecIcon.visibility = View.VISIBLE
+                    } else {
+                        binding.vehicleRecIcon.visibility = View.INVISIBLE
+                    }
                 }
             }
         }

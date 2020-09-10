@@ -42,9 +42,11 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.constraintlayout.motion.widget.MotionLayout
+                    android:id="@+id/motionLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    app:layoutDescription="@xml/fragment_herdr_scene">
 
                 <ImageView
                         android:id="@+id/folder_outline_image"
@@ -186,7 +188,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:visibility="invisible"
                         app:layout_constraintEnd_toStartOf="@+id/last_walking_text"
                         app:layout_constraintHorizontal_bias=".8"
                         app:layout_constraintStart_toEndOf="@+id/walkImageView"
@@ -201,8 +202,8 @@
                         android:text="5 min ago"
                         android:textSize="18sp"
                         app:layout_constraintEnd_toStartOf="@+id/rec_walk_switch"
-                        app:layout_constraintHorizontal_bias=".4"
-                        app:layout_constraintStart_toEndOf="@+id/walkImageView"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/last_idle_text"
                         app:layout_constraintTop_toTopOf="@+id/walkImageView" />
 
                 <Switch
@@ -232,7 +233,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:visibility="invisible"
                         app:layout_constraintEnd_toStartOf="@id/last_runing_text"
                         app:layout_constraintHorizontal_bias=".8"
                         app:layout_constraintStart_toEndOf="@id/runImageView"
@@ -247,8 +247,8 @@
                         android:text="12 sec ago"
                         android:textSize="18sp"
                         app:layout_constraintEnd_toStartOf="@+id/rec_run_switch"
-                        app:layout_constraintHorizontal_bias=".4"
-                        app:layout_constraintStart_toEndOf="@id/runImageView"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/last_idle_text"
                         app:layout_constraintTop_toTopOf="@id/runImageView" />
 
                 <Switch
@@ -278,7 +278,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:visibility="invisible"
                         app:layout_constraintEnd_toStartOf="@+id/last_biking_text"
                         app:layout_constraintHorizontal_bias=".8"
                         app:layout_constraintStart_toEndOf="@id/bikeImageView"
@@ -293,8 +292,8 @@
                         android:text="4 hours ago"
                         android:textSize="18sp"
                         app:layout_constraintEnd_toStartOf="@+id/rec_bike_switch"
-                        app:layout_constraintHorizontal_bias=".4"
-                        app:layout_constraintStart_toEndOf="@id/bikeImageView"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/last_idle_text"
                         app:layout_constraintTop_toTopOf="@id/bikeImageView" />
 
                 <Switch
@@ -326,7 +325,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:visibility="invisible"
                         app:layout_constraintEnd_toStartOf="@+id/last_vehicle_text"
                         app:layout_constraintHorizontal_bias=".8"
                         app:layout_constraintStart_toEndOf="@id/vehicleImageView"
@@ -341,8 +339,8 @@
                         android:text="2 days ago"
                         android:textSize="18sp"
                         app:layout_constraintEnd_toStartOf="@+id/rec_vehicle_switch"
-                        app:layout_constraintHorizontal_bias=".4"
-                        app:layout_constraintStart_toEndOf="@id/vehicleImageView"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/last_idle_text"
                         app:layout_constraintTop_toTopOf="@id/vehicleImageView" />
 
                 <Switch
@@ -356,7 +354,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@id/vehicleImageView" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.motion.widget.MotionLayout>
         </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

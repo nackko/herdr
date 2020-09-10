@@ -194,6 +194,18 @@
                         app:layout_constraintTop_toTopOf="@+id/walkImageView"
                         app:srcCompat="@drawable/ic_location_rec_24dp" />
 
+                <ImageView
+                        android:id="@+id/walk_rec_icon_disabled"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        app:tint="@color/rec_icon_disabled"
+                        app:layout_constraintEnd_toStartOf="@+id/last_walking_text"
+                        app:layout_constraintHorizontal_bias=".8"
+                        app:layout_constraintStart_toEndOf="@+id/walkImageView"
+                        app:layout_constraintTop_toTopOf="@+id/walkImageView"
+                        app:srcCompat="@drawable/ic_location_rec_24dp" />
+
                 <TextView
                         android:id="@+id/last_walking_text"
                         android:layout_width="wrap_content"
@@ -233,6 +245,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
+                        app:layout_constraintEnd_toStartOf="@id/last_runing_text"
+                        app:layout_constraintHorizontal_bias=".8"
+                        app:layout_constraintStart_toEndOf="@id/runImageView"
+                        app:layout_constraintTop_toTopOf="@id/runImageView"
+                        app:srcCompat="@drawable/ic_location_rec_24dp" />
+
+                <ImageView
+                        android:id="@+id/run_rec_icon_disabled"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        app:tint="@color/rec_icon_disabled"
                         app:layout_constraintEnd_toStartOf="@id/last_runing_text"
                         app:layout_constraintHorizontal_bias=".8"
                         app:layout_constraintStart_toEndOf="@id/runImageView"
@@ -284,6 +308,18 @@
                         app:layout_constraintTop_toTopOf="@id/bikeImageView"
                         app:srcCompat="@drawable/ic_location_rec_24dp" />
 
+                <ImageView
+                        android:id="@+id/bike_rec_icon_disabled"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        app:tint="@color/rec_icon_disabled"
+                        app:layout_constraintEnd_toStartOf="@+id/last_biking_text"
+                        app:layout_constraintHorizontal_bias=".8"
+                        app:layout_constraintStart_toEndOf="@id/bikeImageView"
+                        app:layout_constraintTop_toTopOf="@id/bikeImageView"
+                        app:srcCompat="@drawable/ic_location_rec_24dp" />
+
                 <TextView
                         android:id="@+id/last_biking_text"
                         android:layout_width="wrap_content"
@@ -325,6 +361,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
+                        app:layout_constraintEnd_toStartOf="@+id/last_vehicle_text"
+                        app:layout_constraintHorizontal_bias=".8"
+                        app:layout_constraintStart_toEndOf="@id/vehicleImageView"
+                        app:layout_constraintTop_toTopOf="@id/vehicleImageView"
+                        app:srcCompat="@drawable/ic_location_rec_24dp" />
+
+                <ImageView
+                        android:id="@+id/vehicle_rec_icon_disabled"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        app:tint="@color/rec_icon_disabled"
                         app:layout_constraintEnd_toStartOf="@+id/last_vehicle_text"
                         app:layout_constraintHorizontal_bias=".8"
                         app:layout_constraintStart_toEndOf="@id/vehicleImageView"

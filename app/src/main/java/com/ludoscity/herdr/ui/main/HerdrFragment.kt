@@ -75,6 +75,10 @@ class HerdrFragment : MvvmEventsFragment<FragmentHerdrBinding, HerdrFragmentView
                 runRecIcon.visibility = View.INVISIBLE
                 bikeRecIcon.visibility = View.INVISIBLE
                 vehicleRecIcon.visibility = View.INVISIBLE
+                walkRecIconDisabled.visibility = View.INVISIBLE
+                runRecIconDisabled.visibility = View.INVISIBLE
+                bikeRecIconDisabled.visibility = View.INVISIBLE
+                vehicleRecIconDisabled.visibility = View.INVISIBLE
             }
 
             when(newUserActivity) {
@@ -87,7 +91,7 @@ class HerdrFragment : MvvmEventsFragment<FragmentHerdrBinding, HerdrFragmentView
                     if (binding.recWalkSwitch.isChecked) {
                         binding.walkRecIcon.visibility = View.VISIBLE
                     } else {
-                        binding.walkRecIcon.visibility = View.INVISIBLE
+                        binding.walkRecIconDisabled.visibility = View.VISIBLE
                     }
                 }
                 UserActivityTrackingRepository.UserActivity.RUN -> {
@@ -96,7 +100,7 @@ class HerdrFragment : MvvmEventsFragment<FragmentHerdrBinding, HerdrFragmentView
                     if (binding.recRunSwitch.isChecked) {
                         binding.runRecIcon.visibility = View.VISIBLE
                     } else {
-                        binding.runRecIcon.visibility = View.INVISIBLE
+                        binding.runRecIconDisabled.visibility = View.VISIBLE
                     }
                 }
                 UserActivityTrackingRepository.UserActivity.BIKE -> {
@@ -105,7 +109,7 @@ class HerdrFragment : MvvmEventsFragment<FragmentHerdrBinding, HerdrFragmentView
                     if (binding.recBikeSwitch.isChecked) {
                         binding.bikeRecIcon.visibility = View.VISIBLE
                     } else {
-                        binding.bikeRecIcon.visibility = View.INVISIBLE
+                        binding.bikeRecIconDisabled.visibility = View.VISIBLE
                     }
                 }
                 UserActivityTrackingRepository.UserActivity.VEHICLE -> {
@@ -114,7 +118,7 @@ class HerdrFragment : MvvmEventsFragment<FragmentHerdrBinding, HerdrFragmentView
                     if (binding.recVehicleSwitch.isChecked) {
                         binding.vehicleRecIcon.visibility = View.VISIBLE
                     } else {
-                        binding.vehicleRecIcon.visibility = View.INVISIBLE
+                        binding.vehicleRecIconDisabled.visibility = View.VISIBLE
                     }
                 }
             }

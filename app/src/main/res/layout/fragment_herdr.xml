@@ -175,9 +175,10 @@
                         android:id="@+id/walk_rec_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
                         android:layout_marginTop="12dp"
+                        android:layout_marginEnd="12dp"
                         app:layout_constraintEnd_toStartOf="@+id/last_walk_text"
-                        app:layout_constraintHorizontal_bias=".8"
                         app:layout_constraintStart_toEndOf="@+id/walkImageView"
                         app:layout_constraintTop_toTopOf="@+id/walkImageView"
                         app:srcCompat="@drawable/ic_location_rec_24dp" />
@@ -186,24 +187,24 @@
                         android:id="@+id/walk_rec_icon_disabled"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
                         android:layout_marginTop="12dp"
-                        app:tint="@color/rec_icon_disabled"
+                        android:layout_marginEnd="12dp"
                         app:layout_constraintEnd_toStartOf="@+id/last_walk_text"
-                        app:layout_constraintHorizontal_bias=".8"
                         app:layout_constraintStart_toEndOf="@+id/walkImageView"
                         app:layout_constraintTop_toTopOf="@+id/walkImageView"
-                        app:srcCompat="@drawable/ic_location_rec_24dp" />
+                        app:srcCompat="@drawable/ic_location_rec_24dp"
+                        app:tint="@color/rec_icon_disabled" />
 
                 <TextView
                         android:id="@+id/last_walk_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="3D 12::09:16 ago"
-                        android:textSize="30sp"
-                        app:layout_constraintEnd_toStartOf="@+id/rec_walk_switch"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@+id/last_idle_text"
+                        android:layout_marginStart="24dp"
+                        tools:text="3D 12::09:16 ago"
+                        android:textSize="20sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/walkImageView"
+                        app:layout_constraintStart_toStartOf="@+id/drive_url_text"
                         app:layout_constraintTop_toTopOf="@+id/walkImageView" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
@@ -231,36 +232,37 @@
                         android:id="@+id/run_rec_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
                         android:layout_marginTop="12dp"
-                        app:layout_constraintEnd_toStartOf="@id/last_run_text"
-                        app:layout_constraintHorizontal_bias=".8"
-                        app:layout_constraintStart_toEndOf="@id/runImageView"
-                        app:layout_constraintTop_toTopOf="@id/runImageView"
+                        android:layout_marginEnd="8dp"
+                        app:layout_constraintEnd_toStartOf="@+id/last_run_text"
+                        app:layout_constraintStart_toEndOf="@+id/runImageView"
+                        app:layout_constraintTop_toTopOf="@+id/runImageView"
                         app:srcCompat="@drawable/ic_location_rec_24dp" />
 
                 <ImageView
                         android:id="@+id/run_rec_icon_disabled"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
                         android:layout_marginTop="12dp"
-                        app:tint="@color/rec_icon_disabled"
-                        app:layout_constraintEnd_toStartOf="@id/last_run_text"
-                        app:layout_constraintHorizontal_bias=".8"
-                        app:layout_constraintStart_toEndOf="@id/runImageView"
-                        app:layout_constraintTop_toTopOf="@id/runImageView"
-                        app:srcCompat="@drawable/ic_location_rec_24dp" />
+                        android:layout_marginEnd="12dp"
+                        app:layout_constraintEnd_toStartOf="@+id/last_run_text"
+                        app:layout_constraintStart_toEndOf="@+id/runImageView"
+                        app:layout_constraintTop_toTopOf="@+id/runImageView"
+                        app:srcCompat="@drawable/ic_location_rec_24dp"
+                        app:tint="@color/rec_icon_disabled" />
 
                 <TextView
                         android:id="@+id/last_run_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="12 sec ago"
-                        android:textSize="30sp"
-                        app:layout_constraintEnd_toStartOf="@+id/rec_run_switch"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@+id/last_idle_text"
-                        app:layout_constraintTop_toTopOf="@id/runImageView" />
+                        android:layout_marginStart="24dp"
+                        tools:text="01::12:37 ago"
+                        android:textSize="20sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/runImageView"
+                        app:layout_constraintStart_toStartOf="@+id/drive_url_text"
+                        app:layout_constraintTop_toTopOf="@+id/runImageView" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/rec_run_switch"
@@ -287,36 +289,37 @@
                         android:id="@+id/bike_rec_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
                         android:layout_marginTop="12dp"
+                        android:layout_marginEnd="12dp"
                         app:layout_constraintEnd_toStartOf="@+id/last_bike_text"
-                        app:layout_constraintHorizontal_bias=".8"
-                        app:layout_constraintStart_toEndOf="@id/bikeImageView"
-                        app:layout_constraintTop_toTopOf="@id/bikeImageView"
+                        app:layout_constraintStart_toEndOf="@+id/bikeImageView"
+                        app:layout_constraintTop_toTopOf="@+id/bikeImageView"
                         app:srcCompat="@drawable/ic_location_rec_24dp" />
 
                 <ImageView
                         android:id="@+id/bike_rec_icon_disabled"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
                         android:layout_marginTop="12dp"
-                        app:tint="@color/rec_icon_disabled"
+                        android:layout_marginEnd="12dp"
                         app:layout_constraintEnd_toStartOf="@+id/last_bike_text"
-                        app:layout_constraintHorizontal_bias=".8"
-                        app:layout_constraintStart_toEndOf="@id/bikeImageView"
-                        app:layout_constraintTop_toTopOf="@id/bikeImageView"
-                        app:srcCompat="@drawable/ic_location_rec_24dp" />
+                        app:layout_constraintStart_toEndOf="@+id/bikeImageView"
+                        app:layout_constraintTop_toTopOf="@+id/bikeImageView"
+                        app:srcCompat="@drawable/ic_location_rec_24dp"
+                        app:tint="@color/rec_icon_disabled" />
 
                 <TextView
                         android:id="@+id/last_bike_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="4 hours ago"
-                        android:textSize="30sp"
-                        app:layout_constraintEnd_toStartOf="@+id/rec_bike_switch"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@+id/last_idle_text"
-                        app:layout_constraintTop_toTopOf="@id/bikeImageView" />
+                        android:layout_marginStart="24dp"
+                        tools:text="08:10 ago"
+                        android:textSize="20sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/bikeImageView"
+                        app:layout_constraintStart_toStartOf="@+id/drive_url_text"
+                        app:layout_constraintTop_toTopOf="@+id/bikeImageView" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/rec_bike_switch"
@@ -345,36 +348,37 @@
                         android:id="@+id/vehicle_rec_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
                         android:layout_marginTop="12dp"
+                        android:layout_marginEnd="12dp"
                         app:layout_constraintEnd_toStartOf="@+id/last_vehicle_text"
-                        app:layout_constraintHorizontal_bias=".8"
-                        app:layout_constraintStart_toEndOf="@id/vehicleImageView"
-                        app:layout_constraintTop_toTopOf="@id/vehicleImageView"
+                        app:layout_constraintStart_toEndOf="@+id/vehicleImageView"
+                        app:layout_constraintTop_toTopOf="@+id/vehicleImageView"
                         app:srcCompat="@drawable/ic_location_rec_24dp" />
 
                 <ImageView
                         android:id="@+id/vehicle_rec_icon_disabled"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
                         android:layout_marginTop="12dp"
-                        app:tint="@color/rec_icon_disabled"
+                        android:layout_marginEnd="12dp"
                         app:layout_constraintEnd_toStartOf="@+id/last_vehicle_text"
-                        app:layout_constraintHorizontal_bias=".8"
-                        app:layout_constraintStart_toEndOf="@id/vehicleImageView"
-                        app:layout_constraintTop_toTopOf="@id/vehicleImageView"
-                        app:srcCompat="@drawable/ic_location_rec_24dp" />
+                        app:layout_constraintStart_toEndOf="@+id/vehicleImageView"
+                        app:layout_constraintTop_toTopOf="@+id/vehicleImageView"
+                        app:srcCompat="@drawable/ic_location_rec_24dp"
+                        app:tint="@color/rec_icon_disabled" />
 
                 <TextView
                         android:id="@+id/last_vehicle_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="2 days ago"
-                        android:textSize="30sp"
-                        app:layout_constraintEnd_toStartOf="@+id/rec_vehicle_switch"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@+id/last_idle_text"
-                        app:layout_constraintTop_toTopOf="@id/vehicleImageView" />
+                        android:layout_marginStart="24dp"
+                        tools:text="21::19:47 ago"
+                        android:textSize="20sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/vehicleImageView"
+                        app:layout_constraintStart_toStartOf="@+id/drive_url_text"
+                        app:layout_constraintTop_toTopOf="@+id/vehicleImageView" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/rec_vehicle_switch"

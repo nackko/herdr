@@ -21,7 +21,14 @@ package com.ludoscity.herdr.common.data.network.cozy
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CozyFileDescAttributes(val name: String, val path: String)
+data class CozyFileDescAttributesMetadata(val createdOn: String)
+
+@Serializable
+data class CozyFileDescAttributes(
+    val name: String,
+    val path: String,
+    val cozyMetadata: CozyFileDescAttributesMetadata
+)
 
 @Serializable
 data class CozyFileDesc(val id: String, val attributes: CozyFileDescAttributes)

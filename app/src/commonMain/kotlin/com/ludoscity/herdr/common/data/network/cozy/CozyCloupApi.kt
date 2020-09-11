@@ -188,7 +188,8 @@ class CozyCloupApi(private val log: Kermit) : KoinComponent, INetworkDataPipe {
                 RawDataCloudFolderConfiguration(
                     jsonServerReply.data.id,
                     jsonServerReply.data.attributes.name,
-                    jsonServerReply.data.attributes.path
+                    jsonServerReply.data.attributes.path,
+                    jsonServerReply.data.attributes.cozyMetadata.createdOn
                 )
             )
         } catch (e: ClientRequestException) {
@@ -259,7 +260,8 @@ class CozyCloupApi(private val log: Kermit) : KoinComponent, INetworkDataPipe {
                 RawDataCloudFolderConfiguration(
                     jsonServerReply.data.id,
                     jsonServerReply.data.attributes.name,
-                    jsonServerReply.data.attributes.path
+                    jsonServerReply.data.attributes.path,
+                    jsonServerReply.data.attributes.cozyMetadata.createdOn
                 )
             )
         } catch (e: Exception) {

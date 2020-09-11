@@ -114,6 +114,14 @@ class HerdrFragmentViewModel(override val eventsDispatcher: EventsDispatcher<Her
     private val retrieveLastUserActivityTimestampUseCaseAsync: RetrieveLastUserActivityTimestampUseCaseAsync by inject()
     private val retrieveUserActivityUseCaseSync: RetrieveUserActivityUseCaseSync by inject()
 
+    private val _stackBaseUrlText =
+        MutableLiveData("https://...")
+    val stackBaseUrlText: LiveData<String> = _stackBaseUrlText.readOnly()
+
+    private val _cloudDirectoryName =
+        MutableLiveData("[[dirName]]")
+    val cloudDirectoryName: LiveData<String> = _cloudDirectoryName.readOnly()
+
     private val _walkText =
         MutableLiveData("--")
     val walkText: LiveData<String> = _walkText.readOnly()
@@ -260,6 +268,8 @@ class HerdrFragmentViewModel(override val eventsDispatcher: EventsDispatcher<Her
         when (response) {
             is Response.Success -> {
                 log.d { "Raw data cloud folder setup response in DriveLoginViewModel: ${response.data}" }
+                _cloudDirectoryName.postValue(response.data.name)
+                _stackBaseUrlText.postValue(response.data.rootPath)
             }
             is Response.Error -> {
                 log.e { "Remote directory setup FAILURE with ${response.exception}. This is bad. Consider auto logout" }

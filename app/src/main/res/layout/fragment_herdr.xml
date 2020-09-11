@@ -76,9 +76,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
                         android:fontFamily="@font/roboto"
-                        android:text="Cozy Drive 1"
-                        android:textSize="24sp"
+                        tools:text="[[dirName]]"
+                        android:textSize="30sp"
                         app:layout_constraintStart_toEndOf="@+id/folder_outline_image"
                         app:layout_constraintTop_toTopOf="@+id/folder_outline_image" />
 
@@ -88,19 +89,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/roboto"
-                        android:text="https://ross.mycozy.cloud"
+                        tools:text="[[https://username.mycozy.cloud]]"
                         app:layout_constraintStart_toEndOf="@+id/folder_outline_image"
                         app:layout_constraintTop_toBottomOf="@+id/folder_name_text" />
-
-                <TextView
-                        android:id="@+id/date_created_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:fontFamily="@font/roboto"
-                        android:text="02-May-2020"
-                        app:layout_constraintStart_toEndOf="@+id/folder_outline_image"
-                        app:layout_constraintTop_toBottomOf="@+id/drive_url_text" />
 
                 <ImageView
                         android:id="@+id/drive_edit_button"
@@ -115,7 +106,8 @@
                         android:paddingBottom="12dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_edit_24px" />
+                        app:srcCompat="@drawable/ic_edit_24px"
+                        app:tint="@color/theme_primary_dark" />
 
                 <View
                         android:id="@+id/divider"

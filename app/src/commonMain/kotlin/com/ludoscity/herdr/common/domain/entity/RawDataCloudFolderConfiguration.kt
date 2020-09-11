@@ -12,5 +12,6 @@ package com.ludoscity.herdr.common.domain.entity
 data class RawDataCloudFolderConfiguration(
         val id: String,
         val name: String,
-        val path: String
+        val path: String,
+        val rootPath: String
 )

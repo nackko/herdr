@@ -113,7 +113,7 @@ class HeadlessRepository : KoinComponent {
         )
 
         val cloudDirectoryId = secureDataStore.retrieveString(
-            LoginRepository.cloudDirectoryId
+            LoginRepository.cloudDirectoryIdStoreKey
         )
 
         return if (allToUpload.isEmpty()) {
@@ -184,7 +184,7 @@ class HeadlessRepository : KoinComponent {
         )
 
         val cloudDirectoryId = secureDataStore.retrieveString(
-            LoginRepository.cloudDirectoryId
+            LoginRepository.cloudDirectoryIdStoreKey
         )
 
         return if (allToUpload.isEmpty()) {

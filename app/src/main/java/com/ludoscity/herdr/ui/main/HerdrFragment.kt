@@ -127,6 +127,14 @@ class HerdrFragment : MvvmEventsFragment<FragmentHerdrBinding, HerdrFragmentView
         }
 
         viewModel.apply {
+            stackBaseUrlText.addObserver { url ->
+                binding.driveUrlText.text = url
+            }
+
+            cloudDirectoryName.addObserver { dirName ->
+                binding.folderNameText.text = dirName
+            }
+
             addWillGeoTrackWalkObserver { willTrack ->
                 binding.recWalkSwitch.isChecked = willTrack
             }

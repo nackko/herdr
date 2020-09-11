@@ -18,26 +18,12 @@
 
 package com.ludoscity.herdr.common
 
-actual object Platform {
-    actual val app_version: String = "iOS:"
-    actual val api_level: Long
-        get() = TODO("Not yet implemented")
-    actual val device_model: String
-        get() = TODO("Not yet implemented")
-    actual val language: String
-        get() = TODO("Not yet implemented")
-    actual val country: String
-        get() = TODO("Not yet implemented")
-    actual val now: Long
-        get() = TODO("Not yet implemented")
-    actual val nowString: String
-        get() = TODO("Not yet implemented")
+expect class Timer(
+    periodMilliSeconds: Long,
+    block: () -> Boolean
+) {
+    val periodMilliSeconds: Long
 
-    actual fun toISO8601UTC(timestampString: String): String {
-        TODO("Not yet implemented")
-    }
-
-    actual fun hashBase64MD5(toHash: ByteArray): String {
-        TODO("Not yet implemented")
-    }
+    fun start()
+    fun stop()
 }

@@ -16,28 +16,19 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.herdr.common
+package com.ludoscity.herdr.common.domain.usecase.useractivity
 
-actual object Platform {
-    actual val app_version: String = "iOS:"
-    actual val api_level: Long
-        get() = TODO("Not yet implemented")
-    actual val device_model: String
-        get() = TODO("Not yet implemented")
-    actual val language: String
-        get() = TODO("Not yet implemented")
-    actual val country: String
-        get() = TODO("Not yet implemented")
-    actual val now: Long
-        get() = TODO("Not yet implemented")
-    actual val nowString: String
-        get() = TODO("Not yet implemented")
+import com.ludoscity.herdr.common.base.Response
+import com.ludoscity.herdr.common.data.repository.UserActivityTrackingRepository
+import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseSync
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-    actual fun toISO8601UTC(timestampString: String): String {
-        TODO("Not yet implemented")
-    }
-
-    actual fun hashBase64MD5(toHash: ByteArray): String {
-        TODO("Not yet implemented")
+class RetrieveUserActivityUseCaseSync : KoinComponent,
+    BaseUseCaseSync<Nothing, UserActivityTrackingRepository.UserActivity?>() {
+    private val repo: UserActivityTrackingRepository by inject()
+    override fun run(): Response<UserActivityTrackingRepository.UserActivity?> {
+        return Response.Success(repo.userActivity.value)  // FIXME?
+        // maybe at repo level we shall have no LiveData and models regularly pull from repo?
     }
 }

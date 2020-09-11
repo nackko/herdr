@@ -21,7 +21,7 @@ package com.ludoscity.herdr.common.domain.usecase.useractivity
 import com.ludoscity.herdr.common.data.repository.UserActivityTrackingRepository
 import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseInput
 
-class UpdateUserActivityUseCaseInput(val newState: UserActivityTrackingRepository.UserActivity) :
+class UpdateUserActivityUseCaseInput(val newUserActivity: UserActivityTrackingRepository.UserActivity) :
     BaseUseCaseInput {
     override fun validate(): Boolean {
         return true

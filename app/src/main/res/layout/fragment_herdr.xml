@@ -134,18 +134,6 @@
                         app:layout_constraintTop_toBottomOf="@+id/divider"
                         app:srcCompat="@drawable/ic_activity_still_24px" />
 
-                <TextView
-                        android:id="@+id/last_idle_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:fontFamily="@font/roboto"
-                        android:text="10 min ago"
-                        android:textSize="16sp"
-                        app:layout_constraintEnd_toStartOf="@+id/rec_walk_switch"
-                        app:layout_constraintHorizontal_bias=".4"
-                        app:layout_constraintStart_toEndOf="@+id/still_image_view"
-                        app:layout_constraintTop_toTopOf="@+id/still_image_view" />
 
                 <ImageView
                         android:id="@+id/rec_icon"
@@ -187,19 +175,19 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:visibility="invisible"
-                        app:layout_constraintEnd_toStartOf="@+id/last_walking_text"
+                        app:layout_constraintEnd_toStartOf="@+id/last_walk_text"
                         app:layout_constraintHorizontal_bias=".8"
                         app:layout_constraintStart_toEndOf="@+id/walkImageView"
                         app:layout_constraintTop_toTopOf="@+id/walkImageView"
                         app:srcCompat="@drawable/ic_location_rec_24dp" />
 
                 <TextView
-                        android:id="@+id/last_walking_text"
+                        android:id="@+id/last_walk_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:text="5 min ago"
-                        android:textSize="18sp"
+                        android:text="3D 12::09:16 ago"
+                        android:textSize="30sp"
                         app:layout_constraintEnd_toStartOf="@+id/rec_walk_switch"
                         app:layout_constraintHorizontal_bias=".4"
                         app:layout_constraintStart_toEndOf="@+id/walkImageView"
@@ -233,19 +221,19 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:visibility="invisible"
-                        app:layout_constraintEnd_toStartOf="@id/last_runing_text"
+                        app:layout_constraintEnd_toStartOf="@id/last_run_text"
                         app:layout_constraintHorizontal_bias=".8"
                         app:layout_constraintStart_toEndOf="@id/runImageView"
                         app:layout_constraintTop_toTopOf="@id/runImageView"
                         app:srcCompat="@drawable/ic_location_rec_24dp" />
 
                 <TextView
-                        android:id="@+id/last_runing_text"
+                        android:id="@+id/last_run_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:text="12 sec ago"
-                        android:textSize="18sp"
+                        android:textSize="30sp"
                         app:layout_constraintEnd_toStartOf="@+id/rec_run_switch"
                         app:layout_constraintHorizontal_bias=".4"
                         app:layout_constraintStart_toEndOf="@id/runImageView"
@@ -279,19 +267,19 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:visibility="invisible"
-                        app:layout_constraintEnd_toStartOf="@+id/last_biking_text"
+                        app:layout_constraintEnd_toStartOf="@+id/last_bike_text"
                         app:layout_constraintHorizontal_bias=".8"
                         app:layout_constraintStart_toEndOf="@id/bikeImageView"
                         app:layout_constraintTop_toTopOf="@id/bikeImageView"
                         app:srcCompat="@drawable/ic_location_rec_24dp" />
 
                 <TextView
-                        android:id="@+id/last_biking_text"
+                        android:id="@+id/last_bike_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:text="4 hours ago"
-                        android:textSize="18sp"
+                        android:textSize="30sp"
                         app:layout_constraintEnd_toStartOf="@+id/rec_bike_switch"
                         app:layout_constraintHorizontal_bias=".4"
                         app:layout_constraintStart_toEndOf="@id/bikeImageView"
@@ -339,7 +327,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:text="2 days ago"
-                        android:textSize="18sp"
+                        android:textSize="30sp"
                         app:layout_constraintEnd_toStartOf="@+id/rec_vehicle_switch"
                         app:layout_constraintHorizontal_bias=".4"
                         app:layout_constraintStart_toEndOf="@id/vehicleImageView"

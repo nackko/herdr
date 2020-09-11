@@ -28,7 +28,6 @@ class UpdateUserActivityUseCaseSync : KoinComponent,
     BaseUseCaseSync<UpdateUserActivityUseCaseInput, Unit>() {
     private val repo: UserActivityTrackingRepository by inject()
     override fun run(): Response<Unit> {
-
-        return repo.onNewUserActivity(input!!.newState)
+        return repo.onNewUserActivity(input!!.newUserActivity)
     }
 }

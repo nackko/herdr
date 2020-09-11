@@ -16,28 +16,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.herdr.common
+package com.ludoscity.herdr.common.domain.usecase.useractivity
 
-actual object Platform {
-    actual val app_version: String = "iOS:"
-    actual val api_level: Long
-        get() = TODO("Not yet implemented")
-    actual val device_model: String
-        get() = TODO("Not yet implemented")
-    actual val language: String
-        get() = TODO("Not yet implemented")
-    actual val country: String
-        get() = TODO("Not yet implemented")
-    actual val now: Long
-        get() = TODO("Not yet implemented")
-    actual val nowString: String
-        get() = TODO("Not yet implemented")
+import com.ludoscity.herdr.common.data.repository.UserActivityTrackingRepository
+import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseInput
 
-    actual fun toISO8601UTC(timestampString: String): String {
-        TODO("Not yet implemented")
-    }
-
-    actual fun hashBase64MD5(toHash: ByteArray): String {
-        TODO("Not yet implemented")
+class RetrieveLastUserActivityTimestampUseCaseInput(val act: UserActivityTrackingRepository.UserActivity) :
+    BaseUseCaseInput {
+    override fun validate(): Boolean {
+        return true
     }
 }

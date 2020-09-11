@@ -33,7 +33,9 @@ import com.ludoscity.herdr.utils.setSvgColor
 import dev.icerock.moko.mvvm.MvvmEventsFragment
 import dev.icerock.moko.mvvm.createViewModelFactory
 import dev.icerock.moko.mvvm.dispatcher.eventsDispatcherOnMain
+import kotlin.time.ExperimentalTime
 
+@ExperimentalTime
 class HerdrFragment : MvvmEventsFragment<FragmentHerdrBinding, HerdrFragmentViewModel,
         HerdrFragmentViewModel.HerdrFragmentEventListener>(), HerdrFragmentViewModel.HerdrFragmentEventListener {
     override val layoutId: Int = R.layout.fragment_herdr
@@ -103,15 +105,31 @@ class HerdrFragment : MvvmEventsFragment<FragmentHerdrBinding, HerdrFragmentView
             addWillGeoTrackVehicleObserver { willTrack ->
                 binding.recVehicleSwitch.isChecked = willTrack
             }
+
+            walkText.addObserver {
+                binding.lastWalkText.text = it
+            }
+
+            runText.addObserver {
+                binding.lastRunText.text = it
+            }
+
+            bikeText.addObserver {
+                binding.lastBikeText.text = it
+            }
+
+            vehicleText.addObserver {
+                binding.lastVehicleText.text = it
+            }
         }
 
-         binding.apply {
-            recWalkSwitch.setOnCheckedChangeListener{ _, newState ->
+        binding.apply {
+            recWalkSwitch.setOnCheckedChangeListener { _, newState ->
                 viewModel.onUserActivityGeoTrackingSwitched(
                     UserActivityTrackingRepository.UserActivity.WALK, newState
                 )
             }
-            recRunSwitch.setOnCheckedChangeListener{ _, newState ->
+            recRunSwitch.setOnCheckedChangeListener { _, newState ->
                 viewModel.onUserActivityGeoTrackingSwitched(
                     UserActivityTrackingRepository.UserActivity.RUN, newState
                 )

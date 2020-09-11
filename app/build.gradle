@@ -103,6 +103,9 @@ kotlin {
                 implementation "org.jetbrains.kotlinx:kotlinx-serialization-core:$serializerVersion"
                 implementation "org.jetbrains.kotlinx:kotlinx-serialization-protobuf:$serializerVersion"
 
+                // DATE&TIME
+                implementation "org.jetbrains.kotlinx:kotlinx-datetime:$dateTimeVersion"
+
                 // KTOR
                 implementation "io.ktor:ktor-client-core:$ktorVersion"
                 implementation "io.ktor:ktor-client-logging:$ktorVersion"

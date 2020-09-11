@@ -18,26 +18,28 @@
 
 package com.ludoscity.herdr.common
 
-actual object Platform {
-    actual val app_version: String = "iOS:"
-    actual val api_level: Long
-        get() = TODO("Not yet implemented")
-    actual val device_model: String
-        get() = TODO("Not yet implemented")
-    actual val language: String
-        get() = TODO("Not yet implemented")
-    actual val country: String
-        get() = TODO("Not yet implemented")
-    actual val now: Long
-        get() = TODO("Not yet implemented")
-    actual val nowString: String
-        get() = TODO("Not yet implemented")
+import android.os.Handler
+import android.os.Looper
 
-    actual fun toISO8601UTC(timestampString: String): String {
-        TODO("Not yet implemented")
+actual class Timer actual constructor(
+    actual val periodMilliSeconds: Long,
+    block: () -> Boolean
+) {
+
+    private val handler = Handler(Looper.getMainLooper())
+    private val runnable = object : Runnable {
+        override fun run() {
+            if (block()) {
+                handler.postDelayed(this, periodMilliSeconds)
+            }
+        }
     }
 
-    actual fun hashBase64MD5(toHash: ByteArray): String {
-        TODO("Not yet implemented")
+    actual fun start() {
+        handler.postDelayed(runnable, periodMilliSeconds)
+    }
+
+    actual fun stop() {
+        handler.removeCallbacks(runnable)
     }
 }

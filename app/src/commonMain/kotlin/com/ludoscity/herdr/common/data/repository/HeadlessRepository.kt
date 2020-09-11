@@ -58,32 +58,51 @@ class HeadlessRepository : KoinComponent {
         when(usrActivity) {
             UserActivityTrackingRepository.UserActivity.STILL -> return Response.Error(IllegalArgumentException())
             UserActivityTrackingRepository.UserActivity.WALK -> return Response.Success(
-                secureDataStore.retrieveString(
+                secureDataStore.retrieveBoolean(
                     UserActivityTrackingRepository.willGeoTrackWalkStoreKey
-                )?.toBoolean()
-                    ?: false
+                ) ?: false
             )
             UserActivityTrackingRepository.UserActivity.RUN -> return Response.Success(
-                secureDataStore.retrieveString(
+                secureDataStore.retrieveBoolean(
                     UserActivityTrackingRepository.willGeoTrackRunStoreKey
-                )?.toBoolean()
-                    ?: false
+                ) ?: false
             )
             UserActivityTrackingRepository.UserActivity.BIKE -> return Response.Success(
-                secureDataStore.retrieveString(
+                secureDataStore.retrieveBoolean(
                     UserActivityTrackingRepository.willGeoTrackBikeStoreKey
-                )?.toBoolean()
-                    ?: false
+                ) ?: false
             )
             UserActivityTrackingRepository.UserActivity.VEHICLE -> return Response.Success(
-                secureDataStore.retrieveString(
+                secureDataStore.retrieveBoolean(
                     UserActivityTrackingRepository.willGeoTrackVehicleStoreKey
-                )?.toBoolean()
-                    ?: false
+                ) ?: false
             )
         }
     }
 
+    suspend fun retrieveLastUserActivityTimestamp(usrActivity: UserActivityTrackingRepository.UserActivity):
+            Response<Long> {
+
+        return when (usrActivity) {
+            UserActivityTrackingRepository.UserActivity.WALK -> Response.Success(
+                secureDataStore.retrieveLong(UserActivityTrackingRepository.lastWalkChangeTimestampStoreKey)
+                    ?: -1
+            )
+            UserActivityTrackingRepository.UserActivity.RUN -> Response.Success(
+                secureDataStore.retrieveLong(UserActivityTrackingRepository.lastRunChangeTimestampStoreKey)
+                    ?: -1
+            )
+            UserActivityTrackingRepository.UserActivity.BIKE -> Response.Success(
+                secureDataStore.retrieveLong(UserActivityTrackingRepository.lastBikeChangeTimestampStoreKey)
+                    ?: -1
+            )
+            UserActivityTrackingRepository.UserActivity.VEHICLE -> Response.Success(
+                secureDataStore.retrieveLong(UserActivityTrackingRepository.lastVehicleChangeTimestampStoreKey)
+                    ?: -1
+            )
+            UserActivityTrackingRepository.UserActivity.STILL -> Response.Success(-1L)
+        }
+    }
 
     suspend fun uploadAllGeoTrackingDatapointReadyForUpload(): Response<Unit> {
         val geoTrackingDao = GeoTrackingDatapointDao(herdrDb)

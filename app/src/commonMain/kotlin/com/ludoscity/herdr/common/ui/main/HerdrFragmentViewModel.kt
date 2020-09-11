@@ -19,6 +19,7 @@
 package com.ludoscity.herdr.common.ui.main
 
 import co.touchlab.kermit.Kermit
+import com.ludoscity.herdr.common.Timer
 import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.data.repository.UserActivityTrackingRepository
 import com.ludoscity.herdr.common.domain.entity.RawDataCloudFolderConfiguration
@@ -28,18 +29,25 @@ import com.ludoscity.herdr.common.domain.usecase.useractivity.*
 import com.ludoscity.herdr.common.utils.launchSilent
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcher
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcherOwner
+import dev.icerock.moko.mvvm.livedata.LiveData
+import dev.icerock.moko.mvvm.livedata.MutableLiveData
+import dev.icerock.moko.mvvm.livedata.readOnly
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import org.koin.core.parameter.parametersOf
 import kotlin.coroutines.CoroutineContext
+import kotlin.time.ExperimentalTime
 
+@ExperimentalTime
 class HerdrFragmentViewModel(override val eventsDispatcher: EventsDispatcher<HerdrFragmentEventListener>) :
-        KoinComponent,
-        ViewModel(),
-        EventsDispatcherOwner<HerdrFragmentViewModel.HerdrFragmentEventListener> {
+    KoinComponent,
+    ViewModel(),
+    EventsDispatcherOwner<HerdrFragmentViewModel.HerdrFragmentEventListener> {
 
     fun addLoggedInObserver(observer: (Boolean?) -> Unit): Response<Unit> {
         return observeLoggedInUseCaseSync.execute(ObserveLoggedInUseCaseInput(observer))
@@ -53,10 +61,10 @@ class HerdrFragmentViewModel(override val eventsDispatcher: EventsDispatcher<Her
 
     fun addWillGeoTrackWalkObserver(observer: (Boolean) -> Unit): Response<Unit> {
         return observeGeoTrackUserActivityUseCaseSync.execute(
-                ObserveGeoTrackUserActivityUseCaseInput(
-                        UserActivityTrackingRepository.UserActivity.WALK,
-                        observer
-                )
+            ObserveGeoTrackUserActivityUseCaseInput(
+                UserActivityTrackingRepository.UserActivity.WALK,
+                observer
+            )
         )
     }
 
@@ -103,22 +111,149 @@ class HerdrFragmentViewModel(override val eventsDispatcher: EventsDispatcher<Her
     private val observeUserActivityUseCaseSync: ObserveUserActivityUseCaseSync by inject()
     private val observeGeoTrackUserActivityUseCaseSync: ObserveGeoTrackUserActivityUseCaseSync by inject()
     private val updateWillGeoTrackUserActivityUseCaseAsync: UpdateWillGeoTrackUserActivityUseCaseAsync by inject()
+    private val retrieveLastUserActivityTimestampUseCaseAsync: RetrieveLastUserActivityTimestampUseCaseAsync by inject()
+    private val retrieveUserActivityUseCaseSync: RetrieveUserActivityUseCaseSync by inject()
+
+    private val _walkText =
+        MutableLiveData("--")
+    val walkText: LiveData<String> = _walkText.readOnly()
+    private val _runText =
+        MutableLiveData("--")
+    val runText: LiveData<String> = _runText.readOnly()
+    private val _bikeText =
+        MutableLiveData("--")
+    val bikeText: LiveData<String> = _bikeText.readOnly()
+    private val _vehicleText =
+        MutableLiveData("--")
+    val vehicleText: LiveData<String> = _vehicleText.readOnly()
 
     private val retrieveAccessAndRefreshTokenUseCase: RetrieveAccessAndRefreshTokenUseCaseAsync
             by inject()
 
+    private val displayStringBuilder = StringBuilder()
+
+    @ExperimentalTime
+    private val timer = Timer(periodMilliSeconds = 1000) {
+        recomputeDisplayStringAll(Clock.System.now().toEpochMilliseconds())
+        return@Timer true
+    }
+
     init {
         setupRemoteDirectory("herdr_raw", listOf("herdr"))
+        timer.start()
     }
 
     private fun setupRemoteDirectory(name: String, tags: List<String>) = launchSilent(
-            coroutineContext,
-            exceptionHandler, job
+        coroutineContext,
+        exceptionHandler, job
     ) {
         val useCaseInput = SetupDirectoryUseCaseInput(name, tags)
         val response = setupDirectoryUseCase.execute(useCaseInput)
 
         processSetupDirectoryResponse(response)
+    }
+
+    @ExperimentalTime
+    private fun recomputeDisplayStringAll(now: Long) = launchSilent(
+        coroutineContext,
+        exceptionHandler, job
+    ) {
+        val currentUserActivity =
+            (retrieveUserActivityUseCaseSync.execute() as Response.Success).data
+
+        val walkResponse = retrieveLastUserActivityTimestampUseCaseAsync.execute(
+            RetrieveLastUserActivityTimestampUseCaseInput(UserActivityTrackingRepository.UserActivity.WALK)
+        )
+        val runResponse = retrieveLastUserActivityTimestampUseCaseAsync.execute(
+            RetrieveLastUserActivityTimestampUseCaseInput(UserActivityTrackingRepository.UserActivity.RUN)
+        )
+        val bikeResponse = retrieveLastUserActivityTimestampUseCaseAsync.execute(
+            RetrieveLastUserActivityTimestampUseCaseInput(UserActivityTrackingRepository.UserActivity.BIKE)
+        )
+        val vehicleResponse = retrieveLastUserActivityTimestampUseCaseAsync.execute(
+            RetrieveLastUserActivityTimestampUseCaseInput(UserActivityTrackingRepository.UserActivity.VEHICLE)
+        )
+
+        if (walkResponse is Response.Success &&
+            runResponse is Response.Success &&
+            bikeResponse is Response.Success &&
+            vehicleResponse is Response.Success
+        ) {
+
+            _walkText.postValue(
+                computeString(
+                    walkResponse.data,
+                    now,
+                    currentUserActivity == UserActivityTrackingRepository.UserActivity.WALK
+                )
+            )
+            _runText.postValue(
+                computeString(
+                    runResponse.data,
+                    now,
+                    currentUserActivity == UserActivityTrackingRepository.UserActivity.RUN
+                )
+            )
+            _bikeText.postValue(
+                computeString(
+                    bikeResponse.data,
+                    now,
+                    currentUserActivity == UserActivityTrackingRepository.UserActivity.BIKE
+                )
+            )
+            _vehicleText.postValue(
+                computeString(
+                    vehicleResponse.data,
+                    now,
+                    currentUserActivity == UserActivityTrackingRepository.UserActivity.VEHICLE
+                )
+            )
+        }
+    }
+
+    @ExperimentalTime
+    private fun computeString(originTimestamp: Long, now: Long, ongoing: Boolean): String {
+
+        if (originTimestamp == -1L) {
+            return "--" //TODO: maybe default could be passed along as parameter and returned here
+            //that would allow platform code to use localization support from native SDKs
+            //OR --> find a multiplatform solution later
+        }
+
+        val pastInstant = Instant.fromEpochMilliseconds(originTimestamp)
+        val durationSinceThen = Instant.fromEpochMilliseconds(now) - pastInstant
+
+        durationSinceThen.toComponents { days, hours, minutes, seconds, _ ->
+            if (days != 0) {
+                displayStringBuilder.append("${days}D ")
+            }
+
+            if (hours > 0) {
+                displayStringBuilder.append("$hours::")
+            }
+
+            if (minutes < 10) {
+                displayStringBuilder.append("0")
+            }
+
+            displayStringBuilder.append("${minutes}:")
+
+            if (seconds < 10) {
+                displayStringBuilder.append("0")
+            }
+
+            displayStringBuilder.append("$seconds")
+        }
+
+        val toReturn = if (ongoing) {
+            "for $displayStringBuilder"
+        } else {
+            "$displayStringBuilder ago"
+        }
+
+        displayStringBuilder.clear()
+
+        return toReturn
     }
 
     private fun processSetupDirectoryResponse(response: Response<RawDataCloudFolderConfiguration>) {
@@ -136,17 +271,24 @@ class HerdrFragmentViewModel(override val eventsDispatcher: EventsDispatcher<Her
         eventsDispatcher.dispatchEvent { routeToDriveEdit() }
     }
 
-    fun onUserActivityGeoTrackingSwitched(userActivity: UserActivityTrackingRepository.UserActivity,
-                                  newState: Boolean) = launchSilent(
-            coroutineContext,
-            exceptionHandler, job
+    fun onUserActivityGeoTrackingSwitched(
+        userActivity: UserActivityTrackingRepository.UserActivity,
+        newState: Boolean
+    ) = launchSilent(
+        coroutineContext,
+        exceptionHandler, job
     ) {
         updateWillGeoTrackUserActivityUseCaseAsync.execute(
-                UpdateWillGeoTrackUserActivityUseCaseInput(
-                        userActivity,
-                        newState
-                )
+            UpdateWillGeoTrackUserActivityUseCaseInput(
+                userActivity,
+                newState
+            )
         )
+    }
+
+    override fun onCleared() {
+        timer.stop()
+        super.onCleared()
     }
 
     interface HerdrFragmentEventListener {

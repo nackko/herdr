@@ -16,28 +16,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.herdr.common
+package com.ludoscity.herdr.common.domain.usecase.useractivity
 
-actual object Platform {
-    actual val app_version: String = "iOS:"
-    actual val api_level: Long
-        get() = TODO("Not yet implemented")
-    actual val device_model: String
-        get() = TODO("Not yet implemented")
-    actual val language: String
-        get() = TODO("Not yet implemented")
-    actual val country: String
-        get() = TODO("Not yet implemented")
-    actual val now: Long
-        get() = TODO("Not yet implemented")
-    actual val nowString: String
-        get() = TODO("Not yet implemented")
+import com.ludoscity.herdr.common.base.Response
+import com.ludoscity.herdr.common.data.repository.HeadlessRepository
+import com.ludoscity.herdr.common.domain.usecase.base.BaseUseCaseAsync
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-    actual fun toISO8601UTC(timestampString: String): String {
-        TODO("Not yet implemented")
-    }
-
-    actual fun hashBase64MD5(toHash: ByteArray): String {
-        TODO("Not yet implemented")
+class RetrieveLastUserActivityTimestampUseCaseAsync : KoinComponent,
+    BaseUseCaseAsync<RetrieveLastUserActivityTimestampUseCaseInput, Long>() {
+    private val repo: HeadlessRepository by inject()
+    override suspend fun run(): Response<Long> {
+        return repo.retrieveLastUserActivityTimestamp(input!!.act)
     }
 }

@@ -26,7 +26,10 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
+    <!-- Required for 28 and below. -->
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
+    <!-- Required for 29+. -->
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
 
     <application
             android:allowBackup="true"
@@ -35,7 +38,7 @@
             android:name=".ui.main.HerdrApp"
             android:theme="@style/HerdrTheme">
         <activity
-            android:name="com.ludoscity.herdr.ui.main.HerdrActivity"
+                android:name="com.ludoscity.herdr.ui.main.HerdrActivity"
                 android:launchMode="singleTop"
                 android:screenOrientation="portrait"
                 tools:ignore="LockedOrientationActivity">
@@ -71,7 +74,8 @@
         <service
                 android:name=".data.transrecognition.TransitionRecognitionService"
                 android:enabled="true"
-                android:exported="false" />
+                android:exported="false"
+                android:foregroundServiceType="location" />
 
         <meta-data
                 android:name="preloaded_fonts"

@@ -158,10 +158,41 @@ class HerdrActivity : MvvmActivity<ActivityHerdrBinding, HerdrActivityViewModel>
                 //onShouldShowRationale { perms, nonce ->
                 //}
             }
-        } /*else {
-            Log.i(TAG, "Activity was resumed and already have location permission, carrying on...")
-        }*/
+        } else {
+            Log.i(
+                "TAG", "Activity was resumed and already have location permission," +
+                        "checking for physical activity permission"
+            )
+
+            if (needPhysicalActivityPermission()) {
+
+                val request = permissionsBuilder(Manifest.permission.ACTIVITY_RECOGNITION).build()
+
+                //log.i(TAG, "Sending physical activity permission request")
+                request.send()
+
+                request.listeners {
+                    onAccepted { "viewModel.setLocationPermissionGranted(true)" }
+                    onDenied { "viewModel.setLocationPermissionGranted(false)" }
+                    onPermanentlyDenied { "viewModel.setLocationPermissionGranted(false)" }
+                    //onShouldShowRationale { perms, nonce ->
+                    //}
+                }
+
+            }
+        }
 
         super.onResume()
+    }
+
+    private fun needPhysicalActivityPermission(): Boolean {
+        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            ContextCompat.checkSelfPermission(
+                application,
+                Manifest.permission.ACTIVITY_RECOGNITION
+            ) != PackageManager.PERMISSION_GRANTED
+        } else {
+            false
+        }
     }
 }

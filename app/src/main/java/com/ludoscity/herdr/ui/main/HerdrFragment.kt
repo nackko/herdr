@@ -22,6 +22,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.ludoscity.herdr.BR
@@ -137,15 +138,27 @@ class HerdrFragment : MvvmEventsFragment<FragmentHerdrBinding, HerdrFragmentView
 
             addWillGeoTrackWalkObserver { willTrack ->
                 binding.recWalkSwitch.isChecked = willTrack
+                if (willTrack) {
+                    adjustRecIconsVisibility(binding.walkRecIcon, binding.walkRecIconDisabled)
+                }
             }
             addWillGeoTrackRunObserver { willTrack ->
                 binding.recRunSwitch.isChecked = willTrack
+                if (willTrack) {
+                    adjustRecIconsVisibility(binding.runRecIcon, binding.runRecIconDisabled)
+                }
             }
             addWillGeoTrackBikeObserver { willTrack ->
                 binding.recBikeSwitch.isChecked = willTrack
+                if (willTrack) {
+                    adjustRecIconsVisibility(binding.bikeRecIcon, binding.bikeRecIconDisabled)
+                }
             }
             addWillGeoTrackVehicleObserver { willTrack ->
                 binding.recVehicleSwitch.isChecked = willTrack
+                if (willTrack) {
+                    adjustRecIconsVisibility(binding.vehicleRecIcon, binding.vehicleRecIconDisabled)
+                }
             }
 
             walkText.addObserver {
@@ -181,7 +194,7 @@ class HerdrFragment : MvvmEventsFragment<FragmentHerdrBinding, HerdrFragmentView
                     UserActivityTrackingRepository.UserActivity.BIKE, newState
                 )
             }
-            recVehicleSwitch.setOnCheckedChangeListener{ _, newState ->
+            recVehicleSwitch.setOnCheckedChangeListener { _, newState ->
                 viewModel.onUserActivityGeoTrackingSwitched(
                     UserActivityTrackingRepository.UserActivity.VEHICLE, newState
                 )
@@ -189,5 +202,12 @@ class HerdrFragment : MvvmEventsFragment<FragmentHerdrBinding, HerdrFragmentView
         }
 
         return binding.root
+    }
+
+    private fun adjustRecIconsVisibility(recIcon: ImageView, recIconDisabled: ImageView) {
+        if (recIconDisabled.visibility == View.VISIBLE) {
+            recIconDisabled.visibility = View.INVISIBLE
+            recIcon.visibility = View.VISIBLE
+        }
     }
 }

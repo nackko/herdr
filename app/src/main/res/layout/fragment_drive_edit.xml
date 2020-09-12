@@ -74,9 +74,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
                         android:fontFamily="@font/roboto"
-                        android:text="Cozy Drive 1"
-                        android:textSize="24sp"
+                        tools:text="[[dirName]]"
+                        android:textSize="30sp"
                         app:layout_constraintStart_toEndOf="@+id/folder_outline_image"
                         app:layout_constraintTop_toTopOf="@+id/folder_outline_image" />
 
@@ -86,20 +87,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/roboto"
-                        android:text="https://ross.mycozy.cloud"
+                        tools:text="[[https://username.mycozy.cloud]]"
                         app:layout_constraintStart_toEndOf="@+id/folder_outline_image"
                         app:layout_constraintTop_toBottomOf="@+id/folder_name_text" />
-
-                <TextView
-                        android:id="@+id/date_created_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:fontFamily="@font/roboto"
-                        android:text="02-May-2020"
-                        app:layout_constraintStart_toEndOf="@+id/folder_outline_image"
-                        app:layout_constraintTop_toBottomOf="@+id/drive_url_text" />
-
                 <View
                         android:id="@+id/divider"
                         android:layout_width="match_parent"
@@ -108,7 +98,7 @@
                         android:background="?android:attr/listDivider"
                         app:layout_constraintTop_toBottomOf="@+id/folder_outline_image" />
 
-                <Button
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/log_out_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -116,10 +106,26 @@
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="16dp"
                         android:onClick="@{() -> driveEditViewModel.onLogoutButtonPressed()}"
-                        android:text="Log Out"
+                        app:srcCompat="@drawable/ic_logout_24dp"
+                        style="@style/Widget.App.FloatingActionButton.Red"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/view_drive_button"
+                        style="@style/Widget.App.FloatingActionButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:onClick="@{() -> driveEditViewModel.onViewButtonPressed()}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/divider"
+                        app:srcCompat="@drawable/ic_view_24"
+                        tools:layout_editor_absoluteY="112dp" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>

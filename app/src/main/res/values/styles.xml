@@ -26,4 +26,33 @@
              which is used to tint widgets -->
         <item name="colorAccent">@color/theme_accent</item>
     </style>
+
+    <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">10dp</item>
+    </style>
+
+    <style name="Widget.App.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.FloatingActionButton</item>
+        <item name="shapeAppearanceOverlay">
+            @style/ShapeAppearance.App.SmallComponent
+        </item>
+    </style>
+
+    <style name="Widget.App.FloatingActionButton.Red" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.FloatingActionButton.Red</item>
+        <item name="shapeAppearanceOverlay">
+            @style/ShapeAppearance.App.SmallComponent
+        </item>
+    </style>
+
+    <style name="ThemeOverlay.App.FloatingActionButton" parent="">
+        <item name="colorSecondary">@color/theme_accent</item>
+        <item name="colorOnSecondary">@color/theme_primary_dark</item>
+        <item name="colorOnSurface">@color/theme_primary_dark</item>
+    </style>
+
+    <style name="ThemeOverlay.App.FloatingActionButton.Red" parent="">
+        <item name="colorSecondary">@color/red</item>
+    </style>
 </resources>

@@ -23,5 +23,6 @@
     <color name="theme_accent">#FFDD00</color>
 
     <color name="black">#000000</color>
+    <color name="red">#FF5252</color>
     <color name="rec_icon_disabled">#555555</color>
 </resources>

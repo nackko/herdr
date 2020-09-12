@@ -23,6 +23,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.ludoscity.herdr.BR
@@ -47,12 +48,19 @@ class HerdrFragment : MvvmEventsFragment<FragmentHerdrBinding, HerdrFragmentView
         return createViewModelFactory { HerdrFragmentViewModel(eventsDispatcherOnMain()) }
     }
 
-    override fun routeToDriveEdit() {
-        this.findNavController().navigate(R.id.action_herdrFragment_to_driveEditFragment)
+    override fun routeToDriveEdit(cloudFolderId: String) {
+        val bundle = bundleOf(
+            "folderId" to cloudFolderId,
+            "folderName" to binding.folderNameText.text,
+            "stackUrl" to binding.driveUrlText.text
+        )
+        this.findNavController().navigate(R.id.action_herdrFragment_to_driveEditFragment, bundle)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         super.onCreateView(inflater, container, savedInstanceState)
 

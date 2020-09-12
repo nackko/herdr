@@ -47,12 +47,16 @@ class DriveEditFragmentViewModel(override val eventsDispatcher: EventsDispatcher
     private val exceptionHandler = CoroutineExceptionHandler { _, _ -> }
 
     fun onLogoutButtonPressed() = launchSilent(
-            coroutineContext,
-            exceptionHandler, job
+        coroutineContext,
+        exceptionHandler, job
     ) {
         //_authClientRegistrationResult.postValue(InProgressAuthClientRegistration())
         val response = unregisterAuthClientUseCase.execute()
         processUnregisterResponse(response)
+    }
+
+    fun onViewButtonPressed() {
+        eventsDispatcher.dispatchEvent { routeToSeeCloudFolder() }
     }
 
     private fun processUnregisterResponse(response: Response<Unit>) {
@@ -70,5 +74,6 @@ class DriveEditFragmentViewModel(override val eventsDispatcher: EventsDispatcher
 
     interface DriveEditFragmentEventListener {
         fun routeToStart()
+        fun routeToSeeCloudFolder()
     }
 }

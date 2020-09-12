@@ -18,12 +18,18 @@
 
 package com.ludoscity.herdr.ui.driveedit
 
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.ludoscity.herdr.BR
 import com.ludoscity.herdr.R
 import com.ludoscity.herdr.common.ui.driveedit.DriveEditFragmentViewModel
 import com.ludoscity.herdr.databinding.FragmentDriveEditBinding
+import com.ludoscity.herdr.ui.CustomTabsNavigator
 import dev.icerock.moko.mvvm.MvvmEventsFragment
 import dev.icerock.moko.mvvm.createViewModelFactory
 import dev.icerock.moko.mvvm.dispatcher.eventsDispatcherOnMain
@@ -32,7 +38,8 @@ class DriveEditFragment : MvvmEventsFragment<FragmentDriveEditBinding, DriveEdit
         DriveEditFragmentViewModel.DriveEditFragmentEventListener>(), DriveEditFragmentViewModel.DriveEditFragmentEventListener {
     override val layoutId: Int = R.layout.fragment_drive_edit
     override val viewModelVariableId: Int = BR.driveEditViewModel
-    override val viewModelClass: Class<DriveEditFragmentViewModel> = DriveEditFragmentViewModel::class.java
+    override val viewModelClass: Class<DriveEditFragmentViewModel> =
+        DriveEditFragmentViewModel::class.java
 
     override fun viewModelFactory(): ViewModelProvider.Factory {
         return createViewModelFactory {
@@ -42,7 +49,45 @@ class DriveEditFragment : MvvmEventsFragment<FragmentDriveEditBinding, DriveEdit
         }
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        super.onCreateView(inflater, container, savedInstanceState)
+        binding.folderNameText.text = arguments?.getString("folderName")
+        binding.driveUrlText.text = arguments?.getString("stackUrl")
+
+        return binding.root
+    }
+
     override fun routeToStart() {
         this.findNavController().navigate(R.id.action_driveEditFragment_to_startFragment)
+    }
+
+    override fun routeToSeeCloudFolder() {
+        val bundle = bundleOf(
+            CustomTabsNavigator.URL_BUNDLE_KEY to computeCloudFolderUrl()
+        )
+
+        this.findNavController().navigate(
+            R.id.action_driveEditFragment_to_view_cloud_folder,
+            bundle
+        )
+    }
+
+    private fun computeCloudFolderUrl(): String {
+        val baseUrl = binding.driveUrlText.text.toString()
+
+        val prefix = baseUrl.substringBefore(".")
+        val drivePrefix = "$prefix-drive"
+
+        return "${
+            baseUrl.replace(
+                prefix,
+                drivePrefix
+            )
+        }/#/folder/${arguments?.getString("folderId")}"
+
     }
 }

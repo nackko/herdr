@@ -85,11 +85,30 @@
     <fragment
             android:id="@+id/driveEditFragment"
             android:name="com.ludoscity.herdr.ui.driveedit.DriveEditFragment"
-            android:label="DriveEditFragment" >
+            android:label="DriveEditFragment">
         <action
                 android:id="@+id/action_driveEditFragment_to_startFragment"
                 app:destination="@id/startFragment"
                 app:popUpTo="@id/herdrFragment"
                 app:popUpToInclusive="true" />
+        <argument
+                android:name="folderName"
+                app:argType="string" />
+        <argument
+                android:name="stackUrl"
+                app:argType="string" />
+        <argument
+                android:name="folderId"
+                app:argType="string" />
+        <action
+                android:id="@+id/action_driveEditFragment_to_view_cloud_folder"
+                app:destination="@id/view_cloud_folder" />
     </fragment>
+    <customtab
+            android:id="@+id/view_cloud_folder"
+            android:name="com.ludoscity.herdr.ui.CustomTabsNavigator"
+            android:label="ViewCloudFolder"
+            app:secondaryToolbarColor="@color/theme_accent"
+            app:toolbarColor="@color/theme_primary"
+            tools:layout="@layout/tools_graph_placeholder_layout" />
 </navigation>

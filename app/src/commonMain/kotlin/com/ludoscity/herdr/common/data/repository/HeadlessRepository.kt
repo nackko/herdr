@@ -27,6 +27,7 @@ import com.ludoscity.herdr.common.data.database.dao.GeoTrackingDatapointDao
 import com.ludoscity.herdr.common.data.network.INetworkDataPipe
 import com.ludoscity.herdr.common.data.network.cozy.AnalTrackingUploadRequestBody
 import com.ludoscity.herdr.common.data.network.cozy.GeoTrackingUploadRequestBody
+import com.ludoscity.herdr.common.data.repository.LoginRepository.Companion.userCredentialAccessTokenStoreKey
 import io.ktor.utils.io.errors.IOException
 import kotlinx.serialization.json.Json
 import org.koin.core.KoinComponent
@@ -262,5 +263,10 @@ class HeadlessRepository : KoinComponent {
         log.i { "Analytics table was purged with success of rows already uploaded" }
         log.i { "${analTrackingDao.selectReadyForUploadAll().size} Analytics records are ready for upload" }
         return Response.Success(Unit)
+    }
+
+    suspend fun checkLoginStatus()
+            : Response<Boolean> {
+        return Response.Success(secureDataStore.retrieveString(userCredentialAccessTokenStoreKey) != null)
     }
 }

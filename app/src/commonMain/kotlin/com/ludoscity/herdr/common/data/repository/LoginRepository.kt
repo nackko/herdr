@@ -36,6 +36,7 @@ class LoginRepository : KoinComponent {
     companion object {
         const val authClientRegistrationBaseUrlStoreKey = "base_url"
         const val cloudDirectoryIdStoreKey = "dir_id"
+        const val userCredentialAccessTokenStoreKey = "access_token"
     }
 
     fun addLoggedInObserver(observer: (Boolean?) -> Unit): Response<Unit> {
@@ -67,7 +68,6 @@ class LoginRepository : KoinComponent {
     private val authClientRegistrationClientIdStoreKey = "client_id"
     private val authClientRegistrationClientSecretStoreKey = "client_secret"
 
-    private val userCredentialAccessTokenStoreKey = "access_token"
     private val userCredentialRefreshTokenStoreKey = "refresh_token"
 
     private val cloudDirectoryName = "dir_name"

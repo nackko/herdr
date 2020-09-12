@@ -97,8 +97,7 @@ class TransitionRecognitionService : Service(), KoinComponent {
         //val servicePendingIntent = PendingIntent.getService(this, 0, intent,
         //        PendingIntent.FLAG_UPDATE_CURRENT)
         val activityPendingIntent = PendingIntent.getActivity(
-            this, 0,
-            Intent(this, HerdrActivity::class.java), 0
+            this, 0, intentFor<HerdrActivity>(), 0
         )
 
         notifBuilder = NotificationCompat.Builder(this, CHANNEL_ID)

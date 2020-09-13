@@ -76,10 +76,10 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
                         android:fontFamily="@font/roboto"
-                        tools:text="[[dirName]]"
                         android:textSize="30sp"
                         app:layout_constraintStart_toEndOf="@+id/folder_outline_image"
-                        app:layout_constraintTop_toTopOf="@+id/folder_outline_image" />
+                        app:layout_constraintTop_toTopOf="@+id/folder_outline_image"
+                        tools:text="[[dirName]]" />
 
                 <TextView
                         android:id="@+id/drive_url_text"
@@ -87,9 +87,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/roboto"
-                        tools:text="[[https://username.mycozy.cloud]]"
                         app:layout_constraintStart_toEndOf="@+id/folder_outline_image"
-                        app:layout_constraintTop_toBottomOf="@+id/folder_name_text" />
+                        app:layout_constraintTop_toBottomOf="@+id/folder_name_text"
+                        tools:text="[[https://username.mycozy.cloud]]" />
+
                 <View
                         android:id="@+id/divider"
                         android:layout_width="match_parent"
@@ -98,34 +99,43 @@
                         android:background="?android:attr/listDivider"
                         app:layout_constraintTop_toBottomOf="@+id/folder_outline_image" />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/log_out_button"
+                <Button
+                        style="@style/Widget.MaterialComponents.Button.Icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
                         android:layout_marginEnd="16dp"
+                        android:layout_marginTop="16dp"
                         android:layout_marginBottom="16dp"
+                        android:includeFontPadding="false"
                         android:onClick="@{() -> driveEditViewModel.onLogoutButtonPressed()}"
-                        app:srcCompat="@drawable/ic_logout_24dp"
-                        style="@style/Widget.App.FloatingActionButton.Red"
+                        android:backgroundTint="@color/red"
+                        app:cornerRadius="24dp"
+                        app:iconPadding="0dp"
+                        android:padding="0dp"
+                        app:iconGravity="textStart"
+                        app:icon="@drawable/ic_logout_24dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/divider" />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/view_drive_button"
-                        style="@style/Widget.App.FloatingActionButton"
+                <Button
+                        style="@style/Widget.MaterialComponents.Button.Icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
                         android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
                         android:layout_marginBottom="16dp"
+                        android:includeFontPadding="false"
                         android:onClick="@{() -> driveEditViewModel.onViewButtonPressed()}"
+                        app:cornerRadius="24dp"
+                        app:iconPadding="0dp"
+                        android:padding="0dp"
+                        app:iconGravity="textStart"
+                        app:icon="@drawable/ic_view_24"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/divider"
-                        app:srcCompat="@drawable/ic_view_24"
-                        tools:layout_editor_absoluteY="112dp" />
+                        app:layout_constraintTop_toBottomOf="@+id/divider" />
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>

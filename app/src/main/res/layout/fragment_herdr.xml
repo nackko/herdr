@@ -93,21 +93,24 @@
                         app:layout_constraintStart_toEndOf="@+id/folder_outline_image"
                         app:layout_constraintTop_toBottomOf="@+id/folder_name_text" />
 
-                <ImageView
+                <Button
+                        style="@style/Widget.MaterialComponents.Button.Icon"
                         android:id="@+id/drive_edit_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
+                        android:backgroundTint="#FFFFFF"
+                        android:includeFontPadding="false"
                         android:onClick="@{() -> herdrFragmentViewModel.onDriveEditButtonPressed()}"
-                        android:paddingStart="12dp"
-                        android:paddingTop="12dp"
-                        android:paddingEnd="12dp"
-                        android:paddingBottom="12dp"
+                        android:padding="0dp"
+                        app:cornerRadius="24dp"
+                        app:icon="@drawable/ic_edit_24px"
+                        app:iconTint="@color/theme_primary_dark"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_edit_24px"
-                        app:tint="@color/theme_primary_dark" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 <View
                         android:id="@+id/divider"

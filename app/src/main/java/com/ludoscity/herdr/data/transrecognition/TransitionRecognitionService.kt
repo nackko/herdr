@@ -68,8 +68,6 @@ class TransitionRecognitionService : Service(), KoinComponent {
     private val observeUserActivityUseCaseSync:
             ObserveUserActivityUseCaseSync by inject()
 
-
-    //private lateinit var repo: FindMyBikesRepository
     private lateinit var transitionRecognitionReq: ActivityTransitionRequest
     private lateinit var pendingIntent: PendingIntent
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -202,7 +200,6 @@ class TransitionRecognitionService : Service(), KoinComponent {
         observeGeoTrackingUseCaseSync.execute(ObserveGeoTrackingUseCaseInput {
             if (it) {
                 Log.d(TAG, "Requesting location updates for geolocation trac(k)ing")
-                //Utils.setRequestingLocationUpdates(this, true)
                 try {
                     fusedLocationClient.requestLocationUpdates(
                         locationRequest,
@@ -247,7 +244,6 @@ class TransitionRecognitionService : Service(), KoinComponent {
         transitions +=
             ActivityTransition.Builder()
                 .setActivityType(DetectedActivity.STILL)
-                //.setActivityType(DetectedActivity.WALKING)
                 .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
                 .build()
 

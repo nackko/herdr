@@ -29,13 +29,24 @@ android {
         //noinspection OldTargetApi
         targetSdkVersion 29
         versionCode 1
-        versionName '1.0'
+        versionName 'herdr-1.0'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         manifestPlaceholders = [
                 'appAuthRedirectScheme': 'com.ludoscity.herdr'
         ]
     }
     buildTypes {
+        alpha {
+            versionNameSuffix '-alpha0'
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "DATABASE_NAME", "\"herdr-database.db\""
+        }
+        beta {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "DATABASE_NAME", "\"herdr-database.db\""
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -61,6 +72,11 @@ android {
         exclude 'META-INF/proguard/coroutines.pro'
         exclude 'META-INF/*.kotlin_module'
     }
+
+    applicationVariants.all { variant ->
+        variant.resValue "string", "app_version_name", variant.versionName
+    }
+
     //?? https://stackoverflow.com/a/60034786
     //Gradle issue appeared after adding Kodein usage in Android module
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {

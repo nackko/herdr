@@ -1,0 +1,78 @@
+<!--
+  ~     Copyright (c) 2020. f8full https://github.com/f8full
+  ~     Herdr is a privacy conscious multiplatform mobile data collector
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Lesser General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Lesser General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU Lesser General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:width="108dp"
+        android:height="108dp"
+        android:viewportWidth="108"
+        android:viewportHeight="108">
+  <group
+          android:scaleX="1.0190396"
+          android:scaleY="1.0190396"
+          android:translateX="23.810951"
+          android:translateY="23.76">
+    <path
+            android:pathData="M26.57,53.98h4.76v5.37h-4.76z"
+            android:strokeAlpha="0"
+            android:fillColor="#004ba0"
+            android:fillAlpha="0" />
+    <path
+            android:pathData="M0,32.56h5.31v4.58h-5.31z"
+            android:strokeAlpha="0"
+            android:fillColor="#004ba0"
+            android:fillAlpha="0" />
+    <path
+            android:pathData="M10.38,17.54L46.69,17.54A5.07,5.07 0,0 1,51.76 22.61L51.76,48.74A5.07,5.07 0,0 1,46.69 53.81L10.38,53.81A5.07,5.07 0,0 1,5.31 48.74L5.31,22.61A5.07,5.07 0,0 1,10.38 17.54z"
+            android:strokeWidth="0.25"
+            android:fillColor="#004ba0"
+            android:strokeColor="#000" />
+    <path
+            android:strokeWidth="1"
+            android:pathData="M32.94,35.54l0,-0.11a6.91,6.91 0,0 0,-0.42 -11.34l0,0a7.26,7.26 0,0 0,-4.06 -1.21A7.17,7.17 0,0 0,21.1 29.9a7,7 0,0 0,2.75 5.52l0,0.09v0l-2.72,13H35.66L33.08,36.27Z"
+            android:fillColor="#fff"
+            android:strokeColor="#000" />
+    <path
+            android:fillColor="#FF000000"
+            android:pathData="M37,7.5a14.77,14.77 0,0 0,-7.51 19.84c3.84,8.08 18,15.27 23.6,17.89a2.2,2.2 0,0 0,3 -1.37c1.59,-5.87 5.11,-21 1.27,-29.06A15.55,15.55 0,0 0,37 7.5ZM45.75,25.92a5.56,5.56 0,0 1,-7.28 -2.61,5.28 5.28,0 0,1 2.68,-7.09 5.57,5.57 0,0 1,7.29 2.61A5.28,5.28 0,0 1,45.73 25.92Z"
+            android:strokeAlpha="0.6"
+            android:fillAlpha="0.6" />
+    <path
+            android:pathData="M37,7.5a14.77,14.77 0,0 0,-7.51 19.84c3.84,8.08 18,15.27 23.6,17.89a2.2,2.2 0,0 0,3 -1.37c1.59,-5.87 5.11,-21 1.27,-29.06A15.55,15.55 0,0 0,37 7.5ZM45.75,25.92a5.56,5.56 0,0 1,-7.28 -2.61,5.28 5.28,0 0,1 2.68,-7.09 5.57,5.57 0,0 1,7.29 2.61A5.28,5.28 0,0 1,45.73 25.92Z"
+            android:strokeAlpha="0.6"
+            android:strokeWidth="0.25"
+            android:fillColor="#00000000"
+            android:strokeColor="#000"
+            android:fillAlpha="0.6" />
+    <path
+            android:pathData="M37,6.5a14.77,14.77 0,0 0,-7.51 19.84c3.84,8.08 18,15.27 23.6,17.89a2.2,2.2 0,0 0,3 -1.37c1.59,-5.87 5.11,-21 1.27,-29.06A15.55,15.55 0,0 0,37 6.5ZM45.75,24.92a5.56,5.56 0,0 1,-7.28 -2.61,5.28 5.28,0 0,1 2.68,-7.09 5.57,5.57 0,0 1,7.29 2.61A5.28,5.28 0,0 1,45.73 24.92Z"
+            android:fillColor="#fd0" />
+    <path
+            android:pathData="M37,6.5a14.77,14.77 0,0 0,-7.51 19.84c3.84,8.08 18,15.27 23.6,17.89a2.2,2.2 0,0 0,3 -1.37c1.59,-5.87 5.11,-21 1.27,-29.06A15.55,15.55 0,0 0,37 6.5ZM45.75,24.92a5.56,5.56 0,0 1,-7.28 -2.61,5.28 5.28,0 0,1 2.68,-7.09 5.57,5.57 0,0 1,7.29 2.61A5.28,5.28 0,0 1,45.73 24.92Z"
+            android:strokeWidth="0.25"
+            android:fillColor="#00000000"
+            android:strokeColor="#000" />
+    <path
+            android:fillColor="#FF000000"
+            android:pathData="M45.59,15.5v2.43H40.25V15.62A9.86,9.86 0,0 0,30.61 5.55H28.46a9.86,9.86 0,0 0,-9.64 10.07v2.31H13.48V15.5C13.48,6.94 20.13,0 28.32,0h2.43C38.94,0 45.59,6.94 45.59,15.5Z"
+            android:strokeAlpha="0.6"
+            android:fillAlpha="0.6" />
+    <path
+            android:pathData="M44.59,15.5v2.43H39.25V15.62A9.86,9.86 0,0 0,29.61 5.55H27.46a9.86,9.86 0,0 0,-9.64 10.07v2.31H12.48V15.5C12.48,6.94 19.13,0 27.32,0h2.43C37.94,0 44.59,6.94 44.59,15.5Z"
+            android:fillColor="#004ba0" />
+  </group>
+</vector>

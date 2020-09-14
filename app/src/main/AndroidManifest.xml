@@ -33,9 +33,11 @@
 
     <application
             android:allowBackup="true"
-            android:label="@string/app_name"
+            android:label="@string/app_version_name"
             android:supportsRtl="true"
             android:name=".ui.main.HerdrApp"
+            android:icon="@mipmap/ic_launcher"
+            android:roundIcon="@mipmap/ic_launcher_round"
             android:theme="@style/HerdrTheme">
         <activity
                 android:name="com.ludoscity.herdr.ui.main.HerdrActivity"

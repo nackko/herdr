@@ -36,17 +36,19 @@ android {
         ]
     }
     buildTypes {
-        alpha {
+        //breaks if variants are added here
+        /*alpha {
             versionNameSuffix '-alpha0'
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "String", "DATABASE_NAME", "\"herdr-database.db\""
         }
         beta {
+            versionNameSuffix '-beta0'
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "String", "DATABASE_NAME", "\"herdr-database.db\""
-        }
+        }*/
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

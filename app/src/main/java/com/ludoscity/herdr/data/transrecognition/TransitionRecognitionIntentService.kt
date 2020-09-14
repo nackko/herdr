@@ -24,11 +24,17 @@ import android.util.Log
 import com.google.android.gms.location.ActivityTransition
 import com.google.android.gms.location.ActivityTransitionResult
 import com.google.android.gms.location.DetectedActivity
+import com.ludoscity.herdr.common.base.Response
+import com.ludoscity.herdr.common.data.repository.UserActivityTrackingRepository
 
 import com.ludoscity.herdr.common.domain.usecase.analytics.SaveAnalyticsDatapointUseCaseAsync
 import com.ludoscity.herdr.common.domain.usecase.analytics.SaveAnalyticsDatapointUseCaseInput
 import com.ludoscity.herdr.common.domain.usecase.geotracking.UpdateGeoTrackingUseCaseInput
 import com.ludoscity.herdr.common.domain.usecase.geotracking.UpdateGeoTrackingUseCaseSync
+import com.ludoscity.herdr.common.domain.usecase.useractivity.RetrieveWillGeoTrackUserActivityUseCaseAsync
+import com.ludoscity.herdr.common.domain.usecase.useractivity.RetrieveWillGeoTrackUserActivityUseCaseInput
+import com.ludoscity.herdr.common.domain.usecase.useractivity.UpdateUserActivityUseCaseInput
+import com.ludoscity.herdr.common.domain.usecase.useractivity.UpdateUserActivityUseCaseSync
 import com.ludoscity.herdr.common.utils.launchSilent
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
@@ -61,6 +67,10 @@ class TransitionRecognitionIntentService :
             SaveAnalyticsDatapointUseCaseAsync by inject()
     private val updateGeoTrackingUseCaseSync:
             UpdateGeoTrackingUseCaseSync by inject()
+    private val updateUserActivityUseCaseSync:
+            UpdateUserActivityUseCaseSync by inject()
+    private val retrieveWillGeoTrackUserActivityUseCaseAsync:
+            RetrieveWillGeoTrackUserActivityUseCaseAsync by inject()
 
 
     override fun onHandleIntent(p0: Intent?) {
@@ -84,6 +94,9 @@ class TransitionRecognitionIntentService :
                                     updateGeoTrackingUseCaseSync.execute(
                                             UpdateGeoTrackingUseCaseInput(false)
                                     )
+                                    updateUserActivityUseCaseSync.execute(
+                                            UpdateUserActivityUseCaseInput(UserActivityTrackingRepository.UserActivity.STILL)
+                                    )
                                 }
                             } else {
                                 Log.d("TransitionsIntentServic", "ACTIVITY_TRANSITION_EXIT")
@@ -101,9 +114,12 @@ class TransitionRecognitionIntentService :
                                         null,
                                         "$TAG::onHandleIntent--WALKING-ACTIVITY_TRANSITION_ENTER"
                                 )
+
+                                updateGeoTracking(UserActivityTrackingRepository.UserActivity.WALK)
+
                                 runOnUiThread {
-                                    updateGeoTrackingUseCaseSync.execute(
-                                            UpdateGeoTrackingUseCaseInput(true)
+                                    updateUserActivityUseCaseSync.execute(
+                                            UpdateUserActivityUseCaseInput(UserActivityTrackingRepository.UserActivity.WALK)
                                     )
                                 }
                             } else {
@@ -122,9 +138,12 @@ class TransitionRecognitionIntentService :
                                         null,
                                         "$TAG::onHandleIntent--RUNNING-ACTIVITY_TRANSITION_ENTER"
                                 )
+
+                                updateGeoTracking(UserActivityTrackingRepository.UserActivity.RUN)
+
                                 runOnUiThread {
-                                    updateGeoTrackingUseCaseSync.execute(
-                                            UpdateGeoTrackingUseCaseInput(true)
+                                    updateUserActivityUseCaseSync.execute(
+                                            UpdateUserActivityUseCaseInput(UserActivityTrackingRepository.UserActivity.RUN)
                                     )
                                 }
                             } else {
@@ -143,10 +162,11 @@ class TransitionRecognitionIntentService :
                                         null,
                                         "$TAG::onHandleIntent--ON_BICYCLE-ACTIVITY_TRANSITION_ENTER"
                                 )
+
+                                updateGeoTracking(UserActivityTrackingRepository.UserActivity.BIKE)
                                 runOnUiThread {
-                                    updateGeoTrackingUseCaseSync.execute(
-                                            //UpdateGeoTrackingUseCaseInput(true)
-                                            UpdateGeoTrackingUseCaseInput(false)
+                                    updateUserActivityUseCaseSync.execute(
+                                            UpdateUserActivityUseCaseInput(UserActivityTrackingRepository.UserActivity.BIKE)
                                     )
                                 }
                             } else {
@@ -165,9 +185,11 @@ class TransitionRecognitionIntentService :
                                         null,
                                         "$TAG::onHandleIntent--IN_VEHICLE-ACTIVITY_TRANSITION_ENTER"
                                 )
+
+                                updateGeoTracking(UserActivityTrackingRepository.UserActivity.VEHICLE)
                                 runOnUiThread {
-                                    updateGeoTrackingUseCaseSync.execute(
-                                            UpdateGeoTrackingUseCaseInput(true)
+                                    updateUserActivityUseCaseSync.execute(
+                                            UpdateUserActivityUseCaseInput(UserActivityTrackingRepository.UserActivity.VEHICLE)
                                     )
                                 }
                             } else {
@@ -180,6 +202,23 @@ class TransitionRecognitionIntentService :
                         }
                     }
                 }
+            }
+        }
+    }
+
+    private fun updateGeoTracking(userActivity: UserActivityTrackingRepository.UserActivity)
+            = launchSilent(
+        coroutineContext,
+        exceptionHandler, job
+    ) {
+        val response = retrieveWillGeoTrackUserActivityUseCaseAsync.execute(
+        RetrieveWillGeoTrackUserActivityUseCaseInput(userActivity)
+    )
+        if (response is Response.Success) {
+            runOnUiThread {
+                updateGeoTrackingUseCaseSync.execute(
+                    UpdateGeoTrackingUseCaseInput(response.data)
+                )
             }
         }
     }

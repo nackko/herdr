@@ -11,12 +11,15 @@ import androidx.core.app.NotificationCompat
 import com.google.android.gms.location.*
 import com.ludoscity.herdr.R
 import com.ludoscity.herdr.common.data.GeoTrackingDatapoint
+import com.ludoscity.herdr.common.data.repository.UserActivityTrackingRepository
 import com.ludoscity.herdr.common.domain.usecase.analytics.SaveAnalyticsDatapointUseCaseAsync
 import com.ludoscity.herdr.common.domain.usecase.analytics.SaveAnalyticsDatapointUseCaseInput
 import com.ludoscity.herdr.common.domain.usecase.geotracking.ObserveGeoTrackingUseCaseInput
 import com.ludoscity.herdr.common.domain.usecase.geotracking.ObserveGeoTrackingUseCaseSync
 import com.ludoscity.herdr.common.domain.usecase.geotracking.SaveGeoTrackingDatapointUseCaseInput
 import com.ludoscity.herdr.common.domain.usecase.geotracking.UpdateUserLocGeoTrackingDatapointUseCaseSync
+import com.ludoscity.herdr.common.domain.usecase.useractivity.ObserveUserActivityUseCaseInput
+import com.ludoscity.herdr.common.domain.usecase.useractivity.ObserveUserActivityUseCaseSync
 import com.ludoscity.herdr.common.utils.launchSilent
 import com.ludoscity.herdr.ui.main.HerdrActivity
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -62,8 +65,9 @@ class TransitionRecognitionService : Service(), KoinComponent {
     private val observeGeoTrackingUseCaseSync:
             ObserveGeoTrackingUseCaseSync by inject()
 
+    private val observeUserActivityUseCaseSync:
+            ObserveUserActivityUseCaseSync by inject()
 
-    //private lateinit var repo: FindMyBikesRepository
     private lateinit var transitionRecognitionReq: ActivityTransitionRequest
     private lateinit var pendingIntent: PendingIntent
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -97,8 +101,7 @@ class TransitionRecognitionService : Service(), KoinComponent {
         //val servicePendingIntent = PendingIntent.getService(this, 0, intent,
         //        PendingIntent.FLAG_UPDATE_CURRENT)
         val activityPendingIntent = PendingIntent.getActivity(
-            this, 0,
-            Intent(this, HerdrActivity::class.java), 0
+            this, 0, intentFor<HerdrActivity>(), 0
         )
 
         notifBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
@@ -179,16 +182,30 @@ class TransitionRecognitionService : Service(), KoinComponent {
         initNotificationBuilder()
         initNotificationManager()
 
+        observeUserActivityUseCaseSync.execute(ObserveUserActivityUseCaseInput {
+            when (it) {
+                UserActivityTrackingRepository.UserActivity.STILL -> notifBuilder.setContentTitle("Activity: STILL")
+                UserActivityTrackingRepository.UserActivity.WALK -> notifBuilder.setContentTitle("Activity: WALK")
+                UserActivityTrackingRepository.UserActivity.RUN -> notifBuilder.setContentTitle("Activity: RUN")
+                UserActivityTrackingRepository.UserActivity.BIKE -> notifBuilder.setContentTitle("Activity: BIKE")
+                UserActivityTrackingRepository.UserActivity.VEHICLE -> notifBuilder.setContentTitle(
+                    "Activity: IN_VEHICLE"
+                )
+                null -> notifBuilder.setContentTitle("Activity: UNKNOWN")
+            }
+
+            notifManager.notify(FOREGROUND_SERVICE_NOTIFICATION_ID, notifBuilder.build())
+        })
+
         observeGeoTrackingUseCaseSync.execute(ObserveGeoTrackingUseCaseInput {
             if (it) {
                 Log.d(TAG, "Requesting location updates for geolocation trac(k)ing")
-                //Utils.setRequestingLocationUpdates(this, true)
                 try {
                     fusedLocationClient.requestLocationUpdates(
                         locationRequest,
                         locationCallback, Looper.myLooper()
                     )
-                    notifBuilder.setContentTitle("Tracing your movements")
+                    notifBuilder.setContentText("Trac(k)ing: ON")
                     notifManager.notify(FOREGROUND_SERVICE_NOTIFICATION_ID, notifBuilder.build())
 
                     saveAnalytics(
@@ -206,7 +223,7 @@ class TransitionRecognitionService : Service(), KoinComponent {
                     //TODO: in our case : it meas the user wants to stop the tracing mode ??
                     //Utils.setRequestingLocationUpdates(this, false)
                     //stopSelf()
-                    notifBuilder.setContentTitle("Waiting for next movements")
+                    notifBuilder.setContentText("Trac(k)ing: OFF")
                     notifManager.notify(FOREGROUND_SERVICE_NOTIFICATION_ID, notifBuilder.build())
 
                     saveAnalytics(
@@ -227,7 +244,6 @@ class TransitionRecognitionService : Service(), KoinComponent {
         transitions +=
             ActivityTransition.Builder()
                 .setActivityType(DetectedActivity.STILL)
-                //.setActivityType(DetectedActivity.WALKING)
                 .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
                 .build()
 

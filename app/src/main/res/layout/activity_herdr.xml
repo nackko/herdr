@@ -29,7 +29,7 @@
 
         <variable
             name="herdrViewModel"
-            type="com.ludoscity.herdr.common.ui.main.HerdrViewModel" />
+            type="com.ludoscity.herdr.common.ui.main.HerdrActivityViewModel" />
     </data>
 
 

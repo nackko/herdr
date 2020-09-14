@@ -32,4 +32,12 @@ actual object Platform {
         get() = TODO("Not yet implemented")
     actual val nowString: String
         get() = TODO("Not yet implemented")
+
+    actual fun toISO8601UTC(timestampString: String): String {
+        TODO("Not yet implemented")
+    }
+
+    actual fun hashBase64MD5(toHash: ByteArray): String {
+        TODO("Not yet implemented")
+    }
 }

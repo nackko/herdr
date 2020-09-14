@@ -47,39 +47,28 @@ class DriveLoginViewModel(override val eventsDispatcher: EventsDispatcher<DriveL
     private val log: Kermit by inject { parametersOf("DriveLoginViewModel") }
 
     private val _authClientRegistrationResult =
-        MutableLiveData<AuthClientRegistrationState>(
-            InProgressAuthClientRegistration()
+        MutableLiveData<AuthClientRegistrationState?>(
+            null
         )
 
     //TODO: remove this as it exposes somewhat private data
-    val authClientRegistrationResult: LiveData<AuthClientRegistrationState>
+    val authClientRegistrationResult: LiveData<AuthClientRegistrationState?>
         get() = _authClientRegistrationResult
 
     private val registerAuthClientUseCase: RegisterAuthClientUseCaseAsync by inject()
-    private val unregisterAuthClientUseCase: UnregisterAuthClientUseCaseAsync by inject()
-    private val setupDirectoryUseCase: SetupDirectoryUseCaseAsync by inject()
 
     private val _userCredentials =
-        MutableLiveData<UserCredentialsState>(
-            InProgressUserCredentials()
+        MutableLiveData<UserCredentialsState?>(
+            null
         )
-    val userCredentialsResult: LiveData<UserCredentialsState>
+    val userCredentialsResult: LiveData<UserCredentialsState?>
         get() = _userCredentials
-
-    private val _requestAuthFlow =
-        MutableLiveData(false)
-    val requestAuthFlowEvent: LiveData<Boolean>
-        get() = _requestAuthFlow
 
     //Seems to be the only way it works with xml syntax
     //See: https://github.com/icerockdev/moko-mvvm/tree/release/0.6.0#viewmodel-for-login-feature
     private val _finalUrl =
         MutableLiveData("https://username.mycozy.cloud")
     val finalUrl: LiveData<String> = _finalUrl.readOnly()
-
-    fun authFlowRequestProcessed() {
-        _requestAuthFlow.value = false
-    }
 
     private val retrieveAccessAndRefreshTokenUseCase: RetrieveAccessAndRefreshTokenUseCaseAsync
             by inject()
@@ -89,11 +78,6 @@ class DriveLoginViewModel(override val eventsDispatcher: EventsDispatcher<DriveL
     private var job: Job = Job()
     private val exceptionHandler = CoroutineExceptionHandler { _, _ -> }
 
-
-    init {
-        initAuthClientFromCache()
-        initAuthAccessAndRefreshTokenFromCache()
-    }
 
     private fun getCozyUrl(userInput: String): String {
         return when {
@@ -111,26 +95,6 @@ class DriveLoginViewModel(override val eventsDispatcher: EventsDispatcher<DriveL
         _finalUrl.value = getCozyUrl(newInput)
     }
 
-    private fun initAuthClientFromCache() = launchSilent(
-        coroutineContext,
-        exceptionHandler, job
-    ) {
-        _authClientRegistrationResult.postValue(InProgressAuthClientRegistration())
-        val useCaseInput = RegisterAuthClientUseCaseInput(true)
-        val response = registerAuthClientUseCase.execute(useCaseInput)
-        processRegistrationResponse(response, false)
-    }
-
-    private fun initAuthAccessAndRefreshTokenFromCache() = launchSilent(
-        coroutineContext,
-        exceptionHandler, job
-    ) {
-        _userCredentials.postValue(InProgressUserCredentials())
-        val useCaseInput = RetrieveAccessAndRefreshTokenUseCaseInput(true)
-        val response = retrieveAccessAndRefreshTokenUseCase.execute(useCaseInput)
-        processRetrieveAccessAndRefreshTokenResponse(response)
-    }
-
     fun registerAuthClient() = launchSilent(
         coroutineContext,
         exceptionHandler, job
@@ -140,45 +104,6 @@ class DriveLoginViewModel(override val eventsDispatcher: EventsDispatcher<DriveL
         val useCaseInput = RegisterAuthClientUseCaseInput(_finalUrl.value)
         val response = registerAuthClientUseCase.execute(useCaseInput)
         processRegistrationResponse(response, true)
-    }
-
-    fun unregisterAuthClient() = launchSilent(
-        coroutineContext,
-        exceptionHandler, job
-    ) {
-        _authClientRegistrationResult.postValue(InProgressAuthClientRegistration())
-        val response = unregisterAuthClientUseCase.execute()
-        processUnregisterResponse(response)
-    }
-
-    private fun processUnregisterResponse(response: Response<Unit>) {
-        log.d { "About to process client unregister response" }
-        when (response) {
-            is Response.Success -> {
-                log.d { "Posting ErrorAuthClientRegistration" }
-                _authClientRegistrationResult.postValue(
-                    ErrorAuthClientRegistration(
-                        Response.Error(
-                            IOException("Auth client registration cleared")
-                        )
-                    )
-                )
-                log.d { "Posting ErrorUserCredentials" }
-                _userCredentials.postValue(
-                    ErrorUserCredentials(
-                        Response.Error(
-                            IOException("User credentials cleared")
-                        )
-                    )
-                )
-            }
-            else -> {
-                log.d { "Something is wrong. Posting again" }
-                //Something happened down there. Here at model level, simply repost
-                //it does eat the original probably network Error in response
-                _authClientRegistrationResult.postValue(authClientRegistrationResult.value)
-            }
-        }
     }
 
     private fun processRegistrationResponse(
@@ -195,7 +120,7 @@ class DriveLoginViewModel(override val eventsDispatcher: EventsDispatcher<DriveL
 
                 if (requestAuthorizationFlow) {
                     _userCredentials.postValue(InProgressUserCredentials())
-                    _requestAuthFlow.postValue(true)
+                    eventsDispatcher.dispatchEvent { routeToAuthFlow() }
                 }
             }
             is Response.Error ->
@@ -223,33 +148,10 @@ class DriveLoginViewModel(override val eventsDispatcher: EventsDispatcher<DriveL
         when (response) {
             is Response.Success -> {
                 _userCredentials.postValue(SuccessUserCredentials(response))
-                // TODO: temporary. In the future this will probably happen in a non login related model,
-                // on a click of a button or something
-                setupRemoteDirectory("herdr_raw", listOf("herdr"))
+                eventsDispatcher.dispatchEvent { routeToHerdr() }
             }
             is Response.Error ->
                 _userCredentials.postValue(ErrorUserCredentials(response))
-        }
-    }
-
-    private fun setupRemoteDirectory(name: String, tags: List<String>) = launchSilent(
-        coroutineContext,
-        exceptionHandler, job
-    ) {
-        val useCaseInput = SetupDirectoryUseCaseInput(name, tags)
-        val response = setupDirectoryUseCase.execute(useCaseInput)
-
-        processSetupDirectoryResponse(response)
-    }
-
-    private fun processSetupDirectoryResponse(response: Response<RawDataCloudFolderConfiguration>) {
-        when (response) {
-            is Response.Success -> {
-                log.d { "Raw data cloud folder setup response in DriveLoginViewModel: ${response.data}" }
-            }
-            is Response.Error -> {
-                log.e { "Remote directory setup FAILURE with ${response.exception}. This is bad. Consider auto logout" }
-            }
         }
     }
 
@@ -264,17 +166,10 @@ class DriveLoginViewModel(override val eventsDispatcher: EventsDispatcher<DriveL
         //processRetrieveAccessAndRefreshTokenResponse(response)
     }
 
-    fun setErrorUserCredentials(e: Throwable) {
-        _userCredentials.postValue(ErrorUserCredentials(Response.Error(e)))
-    }
-
-    fun onCreateAccountButtonPressed() {
-        eventsDispatcher.dispatchEvent { routeToCreateAccount() }
-        //testConnection()
-    }
-
     interface DriveLoginFragmentEventListener {
         fun routeToCreateAccount()
+        fun routeToHerdr()
+        fun routeToAuthFlow()
     }
 
     companion object {

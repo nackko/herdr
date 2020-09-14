@@ -35,7 +35,8 @@ class LoginRepository : KoinComponent {
 
     companion object {
         const val authClientRegistrationBaseUrlStoreKey = "base_url"
-        const val cloudDirectoryId = "dir_id"
+        const val cloudDirectoryIdStoreKey = "dir_id"
+        const val userCredentialAccessTokenStoreKey = "access_token"
     }
 
     fun addLoggedInObserver(observer: (Boolean?) -> Unit): Response<Unit> {
@@ -67,7 +68,6 @@ class LoginRepository : KoinComponent {
     private val authClientRegistrationClientIdStoreKey = "client_id"
     private val authClientRegistrationClientSecretStoreKey = "client_secret"
 
-    private val userCredentialAccessTokenStoreKey = "access_token"
     private val userCredentialRefreshTokenStoreKey = "refresh_token"
 
     private val cloudDirectoryName = "dir_name"
@@ -119,6 +119,11 @@ class LoginRepository : KoinComponent {
     }
 
     suspend fun clearAuthClientRegistration(): Response<Unit> {
+
+        if (authClientRegistration == null) { //cache was never loaded
+            getAuthClientRegistration("null", true)
+        }
+
         authClientRegistration?.let {
             val networkReply = networkDataPipe.unregisterAuthClient(it)
 
@@ -205,7 +210,7 @@ class LoginRepository : KoinComponent {
             _cloudDirectoryConfiguration.postValue(createResult.data)
             log.d { "Remote directory setup success. Id saved in loginRepository and secureDataStore" }
             secureDataStore.apply {
-                storeString(cloudDirectoryId, createResult.data.id)
+                storeString(cloudDirectoryIdStoreKey, createResult.data.id)
                 storeString(cloudDirectoryName, createResult.data.name)
                 storeString(cloudDirectoryPath, createResult.data.path)
             }
@@ -222,7 +227,7 @@ class LoginRepository : KoinComponent {
             if (getMetadataResult is Response.Success) {
                 _cloudDirectoryConfiguration.postValue(getMetadataResult.data)
                 secureDataStore.apply {
-                    storeString(cloudDirectoryId, getMetadataResult.data.id)
+                    storeString(cloudDirectoryIdStoreKey, getMetadataResult.data.id)
                     storeString(cloudDirectoryName, getMetadataResult.data.name)
                     storeString(cloudDirectoryPath, getMetadataResult.data.path)
                 }

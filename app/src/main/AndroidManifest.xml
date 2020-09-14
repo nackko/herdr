@@ -18,13 +18,18 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.ludoscity.herdr">
+        xmlns:tools="http://schemas.android.com/tools"
+        package="com.ludoscity.herdr">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
+    <!-- Required for 28 and below. -->
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
+    <!-- Required for 29+. -->
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
 
     <application
             android:allowBackup="true"
@@ -33,8 +38,10 @@
             android:name=".ui.main.HerdrApp"
             android:theme="@style/HerdrTheme">
         <activity
-            android:name="com.ludoscity.herdr.ui.main.HerdrActivity"
-                android:launchMode="singleTop">
+                android:name="com.ludoscity.herdr.ui.main.HerdrActivity"
+                android:launchMode="singleTop"
+                android:screenOrientation="portrait"
+                tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -42,24 +49,37 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="com.ludoscity.herdr.oauth2redirect"
-                    android:scheme="herdr" />
+                        android:host="com.ludoscity.herdr.oauth2redirect"
+                        android:scheme="herdr" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service
-            android:name=".data.transrecognition.TransitionRecognitionIntentService"
-            android:enabled="true"
-            android:exported="false" />
+
+        <receiver android:name=".BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
 
         <service
-            android:name=".data.transrecognition.TransitionRecognitionService"
-            android:enabled="true"
-            android:exported="false" />
+                android:name=".data.transrecognition.TransitionRecognitionIntentService"
+                android:enabled="true"
+                android:exported="false" />
+
+        <service
+                android:name=".data.transrecognition.TransitionRecognitionService"
+                android:enabled="true"
+                android:exported="false"
+                android:foregroundServiceType="location" />
+
+        <meta-data
+                android:name="preloaded_fonts"
+                android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

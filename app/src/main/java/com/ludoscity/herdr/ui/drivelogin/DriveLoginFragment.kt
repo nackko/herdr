@@ -21,14 +21,15 @@ package com.ludoscity.herdr.ui.drivelogin
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
 import com.ludoscity.herdr.R
 import com.ludoscity.herdr.common.base.Response
 import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
@@ -36,7 +37,6 @@ import com.ludoscity.herdr.common.domain.entity.UserCredentials
 import com.ludoscity.herdr.common.ui.drivelogin.*
 import com.ludoscity.herdr.databinding.FragmentDriveLoginBinding
 import com.ludoscity.herdr.ui.CustomTabsNavigator
-import com.ludoscity.herdr.utils.afterTextChanged
 import dev.icerock.moko.mvvm.MvvmEventsFragment
 import dev.icerock.moko.mvvm.createViewModelFactory
 import dev.icerock.moko.mvvm.dispatcher.eventsDispatcherOnMain
@@ -70,6 +70,18 @@ class DriveLoginFragment : MvvmEventsFragment<FragmentDriveLoginBinding, DriveLo
         )
     }
 
+    override fun routeToHerdr() {
+        this.findNavController().navigate(R.id.action_driveLoginFragment_to_herdrFragment)
+    }
+
+    override fun routeToAuthFlow() {
+        val authInfo = ((viewModel.authClientRegistrationResult.value as SuccessAuthClientRegistration)
+                .response as Response.Success)
+                .data
+
+        launchAuthorizationFlow(authInfo)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
@@ -80,21 +92,9 @@ class DriveLoginFragment : MvvmEventsFragment<FragmentDriveLoginBinding, DriveLo
 
         viewModel.userCredentialsResult.addObserver { getUserCredentialsState(it) }
 
-        viewModel.requestAuthFlowEvent.addObserver {
-
-            if (it) {
-                val authInfo = ((viewModel.authClientRegistrationResult.value as SuccessAuthClientRegistration)
-                        .response as Response.Success)
-                        .data
-
-                launchAuthorizationFlow(authInfo)
-                viewModel.authFlowRequestProcessed()
-            }
-        }
-
         binding.usernameOrCustomDomain.apply {
             //define what happens when user press <enter< opn virtual keyboard
-            setOnEditorActionListener { _, actionId, _ ->
+           this.editText?.setOnEditorActionListener { _, actionId, _ ->
                 when (actionId) {
                     EditorInfo.IME_ACTION_DONE ->
                         viewModel.registerAuthClient()
@@ -103,26 +103,30 @@ class DriveLoginFragment : MvvmEventsFragment<FragmentDriveLoginBinding, DriveLo
             }
 
             //define what happens when TextView content is edited
-            afterTextChanged {
+            this.editText?.doOnTextChanged { text, _, _, _ ->
                 viewModel.urlChanged(text.toString())
             }
-
-
         }
+
+        viewModel.finalUrl.addObserver {
+            binding.finalDomainText.text = it
+        }
+
         return binding.root
     }
 
-    private fun getUserCredentialsState(state: UserCredentialsState) {
+    private fun getUserCredentialsState(state: UserCredentialsState?) {
+
+        if(state == null) {
+            return
+        }
+
         when (state) {
             is SuccessUserCredentials -> {
-                val response = state.response as Response.Success
-                binding.activityHerdrButtonLogout.visibility = View.VISIBLE
                 binding.connectProgressBar.visibility = View.INVISIBLE
-                onUserCredentialsSuccess(userCredentials = response.data)
             }
             is InProgressUserCredentials -> {
                 binding.connectProgressBar.visibility = View.VISIBLE
-                binding.activityHerdrCredentialsTv.text = "In progress..."
             }
             is ErrorUserCredentials -> {
                 binding.connectProgressBar.visibility = View.INVISIBLE
@@ -130,49 +134,36 @@ class DriveLoginFragment : MvvmEventsFragment<FragmentDriveLoginBinding, DriveLo
                 val response = state.response as Response.Error
                 showError(
                         "message: ${response.message}|e.message:${response.exception.message ?: ""}",
-                        binding.activityHerdrCredentialsTv
+                        binding.finalDomainText
                 )
             }
         }
     }
 
-    private fun getClientRegistrationState(state: AuthClientRegistrationState) {
-        when (state) {
+    private fun getClientRegistrationState(state: AuthClientRegistrationState?) {
+
+        if(state == null) {
+            binding.driveConnectButton.visibility = View.VISIBLE
+            binding.connectProgressBar.visibility = View.INVISIBLE
+        } else when (state) {
             is SuccessAuthClientRegistration -> {
                 binding.driveConnectButton.visibility = View.INVISIBLE
-                binding.connectProgressBar.visibility = View.VISIBLE
-                val response = state.response as Response.Success
-                onClientRegistrationSuccess(registrationInfo = response.data)
+                binding.connectProgressBar.visibility = View.INVISIBLE
             }
             is InProgressAuthClientRegistration -> {
-                binding.activityHerdrRegistrationTv.text = "In progress..."
                 binding.driveConnectButton.visibility = View.INVISIBLE
                 binding.connectProgressBar.visibility = View.VISIBLE
-                binding.activityHerdrButtonLogout.visibility = View.INVISIBLE
             }
             is ErrorAuthClientRegistration -> {
                 binding.driveConnectButton.visibility = View.VISIBLE
                 binding.connectProgressBar.visibility = View.INVISIBLE
-                binding.activityHerdrButtonLogout.visibility = View.INVISIBLE
                 val response = state.response as Response.Error
                 showError(
                         "message: ${response.message}|e.message:${response.exception.message ?: ""}",
-                        binding.activityHerdrCredentialsTv
+                        binding.finalDomainText
                 )
             }
         }
-    }
-
-    private fun onClientRegistrationSuccess(registrationInfo: AuthClientRegistration) {
-
-        //debug
-        binding.activityHerdrCredentialsTv.text = "Registration = $registrationInfo"
-    }
-
-    private fun onUserCredentialsSuccess(userCredentials: UserCredentials) {
-
-        //debug -- We are fully logged in
-        binding.activityHerdrCredentialsTv.text = "Credentials = $userCredentials"
     }
 
     private fun launchAuthorizationFlow(registrationInfo: AuthClientRegistration) {
@@ -197,7 +188,6 @@ class DriveLoginFragment : MvvmEventsFragment<FragmentDriveLoginBinding, DriveLo
 
     private fun showError(message: String?, tv: TextView) {
         tv.text = message
-        //Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -211,11 +201,9 @@ class DriveLoginFragment : MvvmEventsFragment<FragmentDriveLoginBinding, DriveLo
                 if (resp != null) {
                     viewModel.exchangeCodeForAccessAndRefreshToken(resp.authorizationCode!!)
                 } else {
-                    ex?.let { authException ->
-                        viewModel.setErrorUserCredentials(authException.cause
-                                ?: IOException("Login error"))
-                        viewModel.unregisterAuthClient()
-                    }
+                    Log.e(DriveLoginFragment::class.java.name, "Auth process is not going well")
+                    binding.driveConnectButton.visibility = View.VISIBLE
+                    binding.connectProgressBar.visibility = View.INVISIBLE
                 }
             }
         }

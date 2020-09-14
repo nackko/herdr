@@ -27,9 +27,9 @@ import com.ludoscity.herdr.common.data.database.dao.GeoTrackingDatapointDao
 import com.ludoscity.herdr.common.data.network.INetworkDataPipe
 import com.ludoscity.herdr.common.data.network.cozy.AnalTrackingUploadRequestBody
 import com.ludoscity.herdr.common.data.network.cozy.GeoTrackingUploadRequestBody
+import com.ludoscity.herdr.common.data.repository.LoginRepository.Companion.userCredentialAccessTokenStoreKey
 import io.ktor.utils.io.errors.IOException
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import org.koin.core.parameter.parametersOf
@@ -53,6 +53,57 @@ class HeadlessRepository : KoinComponent {
     private val networkDataPipe: INetworkDataPipe by inject()
     private val secureDataStore: SecureDataStore by inject()
 
+    suspend fun retrieveWillGeoTrackUserActivity(usrActivity: UserActivityTrackingRepository.UserActivity):
+            Response<Boolean> {
+
+        when(usrActivity) {
+            UserActivityTrackingRepository.UserActivity.STILL -> return Response.Error(IllegalArgumentException())
+            UserActivityTrackingRepository.UserActivity.WALK -> return Response.Success(
+                secureDataStore.retrieveBoolean(
+                    UserActivityTrackingRepository.willGeoTrackWalkStoreKey
+                ) ?: false
+            )
+            UserActivityTrackingRepository.UserActivity.RUN -> return Response.Success(
+                secureDataStore.retrieveBoolean(
+                    UserActivityTrackingRepository.willGeoTrackRunStoreKey
+                ) ?: false
+            )
+            UserActivityTrackingRepository.UserActivity.BIKE -> return Response.Success(
+                secureDataStore.retrieveBoolean(
+                    UserActivityTrackingRepository.willGeoTrackBikeStoreKey
+                ) ?: false
+            )
+            UserActivityTrackingRepository.UserActivity.VEHICLE -> return Response.Success(
+                secureDataStore.retrieveBoolean(
+                    UserActivityTrackingRepository.willGeoTrackVehicleStoreKey
+                ) ?: false
+            )
+        }
+    }
+
+    suspend fun retrieveLastUserActivityTimestamp(usrActivity: UserActivityTrackingRepository.UserActivity):
+            Response<Long> {
+
+        return when (usrActivity) {
+            UserActivityTrackingRepository.UserActivity.WALK -> Response.Success(
+                secureDataStore.retrieveLong(UserActivityTrackingRepository.lastWalkChangeTimestampStoreKey)
+                    ?: -1
+            )
+            UserActivityTrackingRepository.UserActivity.RUN -> Response.Success(
+                secureDataStore.retrieveLong(UserActivityTrackingRepository.lastRunChangeTimestampStoreKey)
+                    ?: -1
+            )
+            UserActivityTrackingRepository.UserActivity.BIKE -> Response.Success(
+                secureDataStore.retrieveLong(UserActivityTrackingRepository.lastBikeChangeTimestampStoreKey)
+                    ?: -1
+            )
+            UserActivityTrackingRepository.UserActivity.VEHICLE -> Response.Success(
+                secureDataStore.retrieveLong(UserActivityTrackingRepository.lastVehicleChangeTimestampStoreKey)
+                    ?: -1
+            )
+            UserActivityTrackingRepository.UserActivity.STILL -> Response.Success(-1L)
+        }
+    }
 
     suspend fun uploadAllGeoTrackingDatapointReadyForUpload(): Response<Unit> {
         val geoTrackingDao = GeoTrackingDatapointDao(herdrDb)
@@ -63,7 +114,7 @@ class HeadlessRepository : KoinComponent {
         )
 
         val cloudDirectoryId = secureDataStore.retrieveString(
-            LoginRepository.cloudDirectoryId
+            LoginRepository.cloudDirectoryIdStoreKey
         )
 
         return if (allToUpload.isEmpty()) {
@@ -86,7 +137,7 @@ class HeadlessRepository : KoinComponent {
                     cloudDirectoryId,
                     "${it.timestamp}_GEOLOCATION.json",
                     listOf("herdr", "geolocation"),
-                    Json(JsonConfiguration.Stable).stringify(
+                    Json.encodeToString(
                         GeoTrackingUploadRequestBody.serializer(),
                         GeoTrackingUploadRequestBody(
                             it.timestamp_epoch,
@@ -134,7 +185,7 @@ class HeadlessRepository : KoinComponent {
         )
 
         val cloudDirectoryId = secureDataStore.retrieveString(
-            LoginRepository.cloudDirectoryId
+            LoginRepository.cloudDirectoryIdStoreKey
         )
 
         return if (allToUpload.isEmpty()) {
@@ -157,7 +208,7 @@ class HeadlessRepository : KoinComponent {
                     cloudDirectoryId,
                     "${it.timestamp}_ANALYTICS.json",
                     listOf("herdr", "analytics"),
-                    Json(JsonConfiguration.Stable).stringify(
+                    Json.encodeToString(
                         AnalTrackingUploadRequestBody.serializer(),
                         AnalTrackingUploadRequestBody(
                             it.timestamp_epoch,
@@ -212,5 +263,10 @@ class HeadlessRepository : KoinComponent {
         log.i { "Analytics table was purged with success of rows already uploaded" }
         log.i { "${analTrackingDao.selectReadyForUploadAll().size} Analytics records are ready for upload" }
         return Response.Success(Unit)
+    }
+
+    suspend fun checkLoginStatus()
+            : Response<Boolean> {
+        return Response.Success(secureDataStore.retrieveString(userCredentialAccessTokenStoreKey) != null)
     }
 }

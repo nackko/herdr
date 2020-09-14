@@ -4,13 +4,11 @@ import com.ludoscity.herdr.common.ApplicationDispatcher
 import com.ludoscity.herdr.common.data.database.HerdrDatabase
 import com.ludoscity.herdr.common.data.network.INetworkDataPipe
 import com.ludoscity.herdr.common.data.network.cozy.CozyCloupApi
-import com.ludoscity.herdr.common.data.repository.AnalTrackingRepository
-import com.ludoscity.herdr.common.data.repository.GeoTrackingRepository
-import com.ludoscity.herdr.common.data.repository.HeadlessRepository
-import com.ludoscity.herdr.common.data.repository.LoginRepository
+import com.ludoscity.herdr.common.data.repository.*
 import com.ludoscity.herdr.common.domain.usecase.analytics.*
 import com.ludoscity.herdr.common.domain.usecase.geotracking.*
 import com.ludoscity.herdr.common.domain.usecase.login.*
+import com.ludoscity.herdr.common.domain.usecase.useractivity.*
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.core.parameter.parametersOf
@@ -31,6 +29,7 @@ private val coreModule = module {
 
     //repo
     single { LoginRepository() }
+    single { UserActivityTrackingRepository() }
     single { GeoTrackingRepository() }
     single { AnalTrackingRepository() }
     single { HeadlessRepository() }
@@ -53,6 +52,14 @@ private val coreModule = module {
     single { UpdatePermissionGrantedUseCaseSync() }
     single { GetPermissionGrantedUseCaseSync() }
     single { UpdateGeoTrackingUseCaseSync() }
+    single { UpdateUserActivityUseCaseSync() }
+    single { ObserveUserActivityUseCaseSync() }
+    single { ObserveGeoTrackUserActivityUseCaseSync() }
+    single { UpdateWillGeoTrackUserActivityUseCaseAsync() }
+    single { RetrieveWillGeoTrackUserActivityUseCaseAsync() }
+    single { RetrieveLastUserActivityTimestampUseCaseAsync() }
+    single { RetrieveUserActivityUseCaseSync() }
+    single { CheckLoginStatusUseCaseAsync() }
 }
 
 internal inline fun <reified T> Scope.getWith(vararg params: Any?): T {

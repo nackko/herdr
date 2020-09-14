@@ -46,4 +46,7 @@ class StartFragment : MvvmEventsFragment<FragmentStartBinding, StartViewModel,
         this.findNavController().navigate(R.id.action_startFragment_to_driveSetupFragment)
     }
 
+    override fun routeToHerdr() {
+        this.findNavController().navigate(R.id.action_startFragment_to_herdrFragment)
+    }
 }

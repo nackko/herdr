@@ -57,4 +57,26 @@ actual class SecureDataStore actual constructor() {
                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
             )
     }
+
+    @SuppressLint("ApplySharedPref")
+    actual suspend fun storeLong(key: String, data: Long) {
+        encryptedPreferences.edit()
+            .putLong(key, data)
+            .commit()
+    }
+
+    actual suspend fun retrieveLong(key: String): Long? {
+        return encryptedPreferences.getLong(key, -1)
+    }
+
+    @SuppressLint("ApplySharedPref")
+    actual suspend fun storeBoolean(key: String, data: Boolean) {
+        encryptedPreferences.edit()
+            .putBoolean(key, data)
+            .commit()
+    }
+
+    actual suspend fun retrieveBoolean(key: String): Boolean? {
+        return encryptedPreferences.getBoolean(key, false)
+    }
 }

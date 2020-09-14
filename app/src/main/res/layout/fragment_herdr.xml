@@ -1,0 +1,392 @@
+<!--
+  ~     Copyright (c) 2020. f8full https://github.com/f8full
+  ~     Herdr is a privacy conscious multiplatform mobile data collector
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Lesser General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Lesser General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU Lesser General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+                name="herdrFragmentViewModel"
+                type="com.ludoscity.herdr.common.ui.main.HerdrFragmentViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="com.ludoscity.herdr.ui.main.HerdrFragment">
+
+        <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.motion.widget.MotionLayout
+                    android:id="@+id/motionLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layoutDescription="@xml/fragment_herdr_scene">
+
+                <ImageView
+                        android:id="@+id/folder_outline_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_yellow_folder_76dp" />
+
+                <ImageView
+                        android:id="@+id/cozy_in_folder_image"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:paddingStart="8dp"
+                        android:paddingTop="8dp"
+                        android:paddingEnd="8dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/folder_outline_image"
+                        app:layout_constraintEnd_toEndOf="@+id/folder_outline_image"
+                        app:layout_constraintStart_toStartOf="@+id/folder_outline_image"
+                        app:layout_constraintTop_toTopOf="@+id/folder_outline_image"
+                        app:srcCompat="@drawable/ic_cozy_logo" />
+
+                <TextView
+                        android:id="@+id/folder_name_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/roboto"
+                        tools:text="[[dirName]]"
+                        android:textSize="30sp"
+                        app:layout_constraintStart_toEndOf="@+id/folder_outline_image"
+                        app:layout_constraintTop_toTopOf="@+id/folder_outline_image" />
+
+                <TextView
+                        android:id="@+id/drive_url_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:fontFamily="@font/roboto"
+                        tools:text="[[https://username.mycozy.cloud]]"
+                        app:layout_constraintStart_toEndOf="@+id/folder_outline_image"
+                        app:layout_constraintTop_toBottomOf="@+id/folder_name_text" />
+
+                <Button
+                        style="@style/Widget.MaterialComponents.Button.Icon"
+                        android:id="@+id/drive_edit_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:backgroundTint="#FFFFFF"
+                        android:includeFontPadding="false"
+                        android:onClick="@{() -> herdrFragmentViewModel.onDriveEditButtonPressed()}"
+                        android:padding="0dp"
+                        app:cornerRadius="24dp"
+                        app:icon="@drawable/ic_edit_24px"
+                        app:iconTint="@color/theme_primary_dark"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                        android:id="@+id/divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="8dp"
+                        android:background="?android:attr/listDivider"
+                        app:layout_constraintTop_toBottomOf="@+id/folder_outline_image" />
+
+                <ImageView
+                        android:id="@+id/still_image_view"
+                        android:layout_width="48dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="12dp"
+                        android:adjustViewBounds="true"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/divider"
+                        app:srcCompat="@drawable/ic_activity_still_24px" />
+
+
+                <ImageView
+                        android:id="@+id/rec_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:baselineAlignBottom="false"
+                        app:layout_constraintEnd_toStartOf="@+id/rec_text"
+                        app:layout_constraintTop_toTopOf="@+id/rec_text"
+                        app:srcCompat="@drawable/ic_location_rec_24dp" />
+
+                <TextView
+                        android:id="@+id/rec_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginBottom="4dp"
+                        android:fontFamily="@font/roboto"
+                        android:text="rec"
+                        android:textAllCaps="true"
+                        android:textColor="@color/theme_primary_dark"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toTopOf="@+id/walkImageView"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                <ImageView
+                        android:id="@+id/walkImageView"
+                        android:layout_width="48dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="32dp"
+                        android:adjustViewBounds="true"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/still_image_view"
+                        app:srcCompat="@drawable/ic_activity_walk_24px" />
+
+                <ImageView
+                        android:id="@+id/walk_rec_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="12dp"
+                        app:layout_constraintEnd_toStartOf="@+id/last_walk_text"
+                        app:layout_constraintStart_toEndOf="@+id/walkImageView"
+                        app:layout_constraintTop_toTopOf="@+id/walkImageView"
+                        app:srcCompat="@drawable/ic_location_rec_24dp" />
+
+                <ImageView
+                        android:id="@+id/walk_rec_icon_disabled"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="12dp"
+                        app:layout_constraintEnd_toStartOf="@+id/last_walk_text"
+                        app:layout_constraintStart_toEndOf="@+id/walkImageView"
+                        app:layout_constraintTop_toTopOf="@+id/walkImageView"
+                        app:srcCompat="@drawable/ic_location_rec_24dp"
+                        app:tint="@color/rec_icon_disabled" />
+
+                <TextView
+                        android:id="@+id/last_walk_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        tools:text="3D 12::09:16 ago"
+                        android:textSize="20sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/walkImageView"
+                        app:layout_constraintStart_toStartOf="@+id/drive_url_text"
+                        app:layout_constraintTop_toTopOf="@+id/walkImageView" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/rec_walk_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:scaleX="1.27"
+                        android:scaleY="1.27"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/walkImageView" />
+
+                <ImageView
+                        android:id="@+id/runImageView"
+                        android:layout_width="48dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="16dp"
+                        android:adjustViewBounds="true"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/walkImageView"
+                        app:srcCompat="@drawable/ic_activity_run_24px" />
+
+                <ImageView
+                        android:id="@+id/run_rec_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="8dp"
+                        app:layout_constraintEnd_toStartOf="@+id/last_run_text"
+                        app:layout_constraintStart_toEndOf="@+id/runImageView"
+                        app:layout_constraintTop_toTopOf="@+id/runImageView"
+                        app:srcCompat="@drawable/ic_location_rec_24dp" />
+
+                <ImageView
+                        android:id="@+id/run_rec_icon_disabled"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="12dp"
+                        app:layout_constraintEnd_toStartOf="@+id/last_run_text"
+                        app:layout_constraintStart_toEndOf="@+id/runImageView"
+                        app:layout_constraintTop_toTopOf="@+id/runImageView"
+                        app:srcCompat="@drawable/ic_location_rec_24dp"
+                        app:tint="@color/rec_icon_disabled" />
+
+                <TextView
+                        android:id="@+id/last_run_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        tools:text="01::12:37 ago"
+                        android:textSize="20sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/runImageView"
+                        app:layout_constraintStart_toStartOf="@+id/drive_url_text"
+                        app:layout_constraintTop_toTopOf="@+id/runImageView" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/rec_run_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:scaleX="1.27"
+                        android:scaleY="1.27"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/runImageView" />
+
+                <ImageView
+                        android:id="@+id/bikeImageView"
+                        android:layout_width="48dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="16dp"
+                        android:adjustViewBounds="true"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/runImageView"
+                        app:srcCompat="@drawable/ic_activity_bike_24px" />
+
+                <ImageView
+                        android:id="@+id/bike_rec_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="12dp"
+                        app:layout_constraintEnd_toStartOf="@+id/last_bike_text"
+                        app:layout_constraintStart_toEndOf="@+id/bikeImageView"
+                        app:layout_constraintTop_toTopOf="@+id/bikeImageView"
+                        app:srcCompat="@drawable/ic_location_rec_24dp" />
+
+                <ImageView
+                        android:id="@+id/bike_rec_icon_disabled"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="12dp"
+                        app:layout_constraintEnd_toStartOf="@+id/last_bike_text"
+                        app:layout_constraintStart_toEndOf="@+id/bikeImageView"
+                        app:layout_constraintTop_toTopOf="@+id/bikeImageView"
+                        app:srcCompat="@drawable/ic_location_rec_24dp"
+                        app:tint="@color/rec_icon_disabled" />
+
+                <TextView
+                        android:id="@+id/last_bike_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        tools:text="08:10 ago"
+                        android:textSize="20sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/bikeImageView"
+                        app:layout_constraintStart_toStartOf="@+id/drive_url_text"
+                        app:layout_constraintTop_toTopOf="@+id/bikeImageView" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/rec_bike_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:scaleX="1.27"
+                        android:scaleY="1.27"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/bikeImageView" />
+
+                <ImageView
+                        android:id="@+id/vehicleImageView"
+                        android:layout_width="48dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="12dp"
+                        android:adjustViewBounds="true"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/bikeImageView"
+                        app:srcCompat="@drawable/ic_activity_vehicle_24px" />
+
+                <ImageView
+                        android:id="@+id/vehicle_rec_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="12dp"
+                        app:layout_constraintEnd_toStartOf="@+id/last_vehicle_text"
+                        app:layout_constraintStart_toEndOf="@+id/vehicleImageView"
+                        app:layout_constraintTop_toTopOf="@+id/vehicleImageView"
+                        app:srcCompat="@drawable/ic_location_rec_24dp" />
+
+                <ImageView
+                        android:id="@+id/vehicle_rec_icon_disabled"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="12dp"
+                        app:layout_constraintEnd_toStartOf="@+id/last_vehicle_text"
+                        app:layout_constraintStart_toEndOf="@+id/vehicleImageView"
+                        app:layout_constraintTop_toTopOf="@+id/vehicleImageView"
+                        app:srcCompat="@drawable/ic_location_rec_24dp"
+                        app:tint="@color/rec_icon_disabled" />
+
+                <TextView
+                        android:id="@+id/last_vehicle_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        tools:text="21::19:47 ago"
+                        android:textSize="20sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/vehicleImageView"
+                        app:layout_constraintStart_toStartOf="@+id/drive_url_text"
+                        app:layout_constraintTop_toTopOf="@+id/vehicleImageView" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/rec_vehicle_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:scaleX="1.27"
+                        android:scaleY="1.27"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/vehicleImageView" />
+
+            </androidx.constraintlayout.motion.widget.MotionLayout>
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

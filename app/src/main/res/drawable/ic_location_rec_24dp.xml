@@ -1,0 +1,29 @@
+<!--
+  ~     Copyright (c) 2020. f8full https://github.com/f8full
+  ~     Herdr is a privacy conscious multiplatform mobile data collector
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Lesser General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Lesser General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU Lesser General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <path
+      android:pathData="M12,2A7,7 0,0 0,5 9c0,4.17 4.42,9.92 6.24,12.11a0.993,0.993 0,0 0,1.53 0C14.58,18.92 19,13.17 19,9A7,7 0,0 0,12 2ZM12,11.5A2.5,2.5 0,1 1,14.5 9,2.5 2.5,0 0,1 12,11.5Z"
+      android:strokeWidth="1"
+      android:fillColor="#ff0101"
+      android:strokeColor="#212121"/>
+</vector>

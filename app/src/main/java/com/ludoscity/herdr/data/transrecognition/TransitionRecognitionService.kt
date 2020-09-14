@@ -115,9 +115,7 @@ class TransitionRecognitionService : Service(), KoinComponent {
             .setContentTitle("Content Title")
             .setOngoing(true)
             .setPriority(NotificationCompat.PRIORITY_LOW)
-            //TODO: launcher icon
-            //.setSmallIcon(R.mipmap.ic_launcher)
-            .setSmallIcon(R.drawable.ic_cancel_black_24dp)
+            .setSmallIcon(R.drawable.ic_stat_herdr)
             .setTicker(text)
             .setOnlyAlertOnce(true)
             .setWhen(System.currentTimeMillis())
@@ -131,7 +129,7 @@ class TransitionRecognitionService : Service(), KoinComponent {
 
         // Android O requires a Notification Channel.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = getString(R.string.app_name)
+            val name = getString(R.string.app_version_name)
             // Create the channel for the notification
             val mChannel = NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_DEFAULT)
             // Set the Notification Channel for the Notification Manager.

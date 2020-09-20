@@ -280,9 +280,9 @@ class HerdrFragmentViewModel(override val eventsDispatcher: EventsDispatcher<Her
         }
     }
 
-    fun onDriveEditButtonPressed() {
+    fun onDriveSettingsButtonPressed() {
         eventsDispatcher.dispatchEvent {
-            routeToDriveEdit(cloudFolderId)
+            routeToDriveSettings(cloudFolderId)
         }
     }
 
@@ -307,6 +307,6 @@ class HerdrFragmentViewModel(override val eventsDispatcher: EventsDispatcher<Her
     }
 
     interface HerdrFragmentEventListener {
-        fun routeToDriveEdit(folderId: String)
+        fun routeToDriveSettings(folderId: String)
     }
 }

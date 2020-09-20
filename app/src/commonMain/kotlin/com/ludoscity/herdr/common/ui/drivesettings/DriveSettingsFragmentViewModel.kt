@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.herdr.common.ui.driveedit
+package com.ludoscity.herdr.common.ui.drivesettings
 
 import co.touchlab.kermit.Kermit
 import com.ludoscity.herdr.common.base.Response
@@ -32,10 +32,10 @@ import org.koin.core.inject
 import org.koin.core.parameter.parametersOf
 import kotlin.coroutines.CoroutineContext
 
-class DriveEditFragmentViewModel(override val eventsDispatcher: EventsDispatcher<DriveEditFragmentEventListener>) :
+class DriveSettingsFragmentViewModel(override val eventsDispatcher: EventsDispatcher<DriveSettingsFragmentEventListener>) :
     KoinComponent,
     ViewModel(),
-    EventsDispatcherOwner<DriveEditFragmentViewModel.DriveEditFragmentEventListener> {
+    EventsDispatcherOwner<DriveSettingsFragmentViewModel.DriveSettingsFragmentEventListener> {
 
     private val log: Kermit by inject { parametersOf("DriveEditFragmentViewModel") }
 
@@ -72,7 +72,7 @@ class DriveEditFragmentViewModel(override val eventsDispatcher: EventsDispatcher
         }
     }
 
-    interface DriveEditFragmentEventListener {
+    interface DriveSettingsFragmentEventListener {
         fun routeToStart()
         fun routeToSeeCloudFolder()
     }

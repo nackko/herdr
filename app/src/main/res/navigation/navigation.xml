@@ -84,7 +84,7 @@
 
     <fragment
             android:id="@+id/driveEditFragment"
-            android:name="com.ludoscity.herdr.ui.driveedit.DriveEditFragment"
+            android:name="com.ludoscity.herdr.ui.drivesettings.DriveSettingsFragment"
             android:label="DriveEditFragment">
         <action
                 android:id="@+id/action_driveEditFragment_to_startFragment"

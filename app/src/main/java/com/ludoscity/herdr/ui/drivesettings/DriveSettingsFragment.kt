@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.ludoscity.herdr.ui.driveedit
+package com.ludoscity.herdr.ui.drivesettings
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -27,23 +27,23 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.ludoscity.herdr.BR
 import com.ludoscity.herdr.R
-import com.ludoscity.herdr.common.ui.driveedit.DriveEditFragmentViewModel
-import com.ludoscity.herdr.databinding.FragmentDriveEditBinding
+import com.ludoscity.herdr.common.ui.drivesettings.DriveSettingsFragmentViewModel
+import com.ludoscity.herdr.databinding.FragmentDriveSettingsBinding
 import com.ludoscity.herdr.ui.CustomTabsNavigator
 import dev.icerock.moko.mvvm.MvvmEventsFragment
 import dev.icerock.moko.mvvm.createViewModelFactory
 import dev.icerock.moko.mvvm.dispatcher.eventsDispatcherOnMain
 
-class DriveEditFragment : MvvmEventsFragment<FragmentDriveEditBinding, DriveEditFragmentViewModel,
-        DriveEditFragmentViewModel.DriveEditFragmentEventListener>(), DriveEditFragmentViewModel.DriveEditFragmentEventListener {
-    override val layoutId: Int = R.layout.fragment_drive_edit
-    override val viewModelVariableId: Int = BR.driveEditViewModel
-    override val viewModelClass: Class<DriveEditFragmentViewModel> =
-        DriveEditFragmentViewModel::class.java
+class DriveSettingsFragment : MvvmEventsFragment<FragmentDriveSettingsBinding, DriveSettingsFragmentViewModel,
+        DriveSettingsFragmentViewModel.DriveSettingsFragmentEventListener>(), DriveSettingsFragmentViewModel.DriveSettingsFragmentEventListener {
+    override val layoutId: Int = R.layout.fragment_drive_settings
+    override val viewModelVariableId: Int = BR.driveSettingsViewModel
+    override val viewModelClass: Class<DriveSettingsFragmentViewModel> =
+        DriveSettingsFragmentViewModel::class.java
 
     override fun viewModelFactory(): ViewModelProvider.Factory {
         return createViewModelFactory {
-            DriveEditFragmentViewModel(
+            DriveSettingsFragmentViewModel(
                 eventsDispatcherOnMain()
             )
         }

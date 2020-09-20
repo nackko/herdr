@@ -48,7 +48,7 @@ class HerdrFragment : MvvmEventsFragment<FragmentHerdrBinding, HerdrFragmentView
         return createViewModelFactory { HerdrFragmentViewModel(eventsDispatcherOnMain()) }
     }
 
-    override fun routeToDriveEdit(cloudFolderId: String) {
+    override fun routeToDriveSettings(cloudFolderId: String) {
         val bundle = bundleOf(
             "folderId" to cloudFolderId,
             "folderName" to binding.folderNameText.text,
@@ -65,7 +65,6 @@ class HerdrFragment : MvvmEventsFragment<FragmentHerdrBinding, HerdrFragmentView
         super.onCreateView(inflater, container, savedInstanceState)
 
         viewModel.addUserActivityObserver { newUserActivity ->
-            // reset all tints
 
             binding.apply {
                 // reset icon colors
@@ -74,6 +73,12 @@ class HerdrFragment : MvvmEventsFragment<FragmentHerdrBinding, HerdrFragmentView
                 runImageView.setSvgColor(R.color.black)
                 bikeImageView.setSvgColor(R.color.black)
                 vehicleImageView.setSvgColor(R.color.black)
+
+                // show all times
+                lastWalkText.visibility = View.INVISIBLE
+                lastRunText.visibility = View.INVISIBLE
+                lastBikeText.visibility = View.INVISIBLE
+                lastVehicleText.visibility = View.INVISIBLE
 
                 // reset all switches
                 recWalkSwitch.isEnabled = true
@@ -90,46 +95,56 @@ class HerdrFragment : MvvmEventsFragment<FragmentHerdrBinding, HerdrFragmentView
                 runRecIconDisabled.visibility = View.INVISIBLE
                 bikeRecIconDisabled.visibility = View.INVISIBLE
                 vehicleRecIconDisabled.visibility = View.INVISIBLE
-            }
 
-            when(newUserActivity) {
-                UserActivityTrackingRepository.UserActivity.STILL ->
-                    binding.stillImageView.setSvgColor(R.color.theme_accent)
 
-                UserActivityTrackingRepository.UserActivity.WALK -> {
-                    binding.walkImageView.setSvgColor(R.color.theme_accent)
-                    binding.recWalkSwitch.isEnabled = false
-                    if (binding.recWalkSwitch.isChecked) {
-                        binding.walkRecIcon.visibility = View.VISIBLE
-                    } else {
-                        binding.walkRecIconDisabled.visibility = View.VISIBLE
+                when (newUserActivity) {
+                    UserActivityTrackingRepository.UserActivity.STILL -> {
+                        stillImageView.setSvgColor(R.color.theme_accent)
+                        lastWalkText.visibility = View.VISIBLE
+                        lastRunText.visibility = View.VISIBLE
+                        lastBikeText.visibility = View.VISIBLE
+                        lastVehicleText.visibility = View.VISIBLE
                     }
-                }
-                UserActivityTrackingRepository.UserActivity.RUN -> {
-                    binding.runImageView.setSvgColor(R.color.theme_accent)
-                    binding.recRunSwitch.isEnabled = false
-                    if (binding.recRunSwitch.isChecked) {
-                        binding.runRecIcon.visibility = View.VISIBLE
-                    } else {
-                        binding.runRecIconDisabled.visibility = View.VISIBLE
+
+                    UserActivityTrackingRepository.UserActivity.WALK -> {
+                        walkImageView.setSvgColor(R.color.theme_accent)
+                        recWalkSwitch.isEnabled = false
+                        lastWalkText.visibility = View.VISIBLE
+                        if (recWalkSwitch.isChecked) {
+                            walkRecIcon.visibility = View.VISIBLE
+                        } else {
+                            walkRecIconDisabled.visibility = View.VISIBLE
+                        }
                     }
-                }
-                UserActivityTrackingRepository.UserActivity.BIKE -> {
-                    binding.bikeImageView.setSvgColor(R.color.theme_accent)
-                    binding.recBikeSwitch.isEnabled = false
-                    if (binding.recBikeSwitch.isChecked) {
-                        binding.bikeRecIcon.visibility = View.VISIBLE
-                    } else {
-                        binding.bikeRecIconDisabled.visibility = View.VISIBLE
+                    UserActivityTrackingRepository.UserActivity.RUN -> {
+                        runImageView.setSvgColor(R.color.theme_accent)
+                        recRunSwitch.isEnabled = false
+                        lastRunText.visibility = View.VISIBLE
+                        if (recRunSwitch.isChecked) {
+                            runRecIcon.visibility = View.VISIBLE
+                        } else {
+                            runRecIconDisabled.visibility = View.VISIBLE
+                        }
                     }
-                }
-                UserActivityTrackingRepository.UserActivity.VEHICLE -> {
-                    binding.vehicleImageView.setSvgColor(R.color.theme_accent)
-                    binding.recVehicleSwitch.isEnabled = false
-                    if (binding.recVehicleSwitch.isChecked) {
-                        binding.vehicleRecIcon.visibility = View.VISIBLE
-                    } else {
-                        binding.vehicleRecIconDisabled.visibility = View.VISIBLE
+                    UserActivityTrackingRepository.UserActivity.BIKE -> {
+                        bikeImageView.setSvgColor(R.color.theme_accent)
+                        recBikeSwitch.isEnabled = false
+                        lastBikeText.visibility = View.VISIBLE
+                        if (recBikeSwitch.isChecked) {
+                            bikeRecIcon.visibility = View.VISIBLE
+                        } else {
+                            bikeRecIconDisabled.visibility = View.VISIBLE
+                        }
+                    }
+                    UserActivityTrackingRepository.UserActivity.VEHICLE -> {
+                        vehicleImageView.setSvgColor(R.color.theme_accent)
+                        recVehicleSwitch.isEnabled = false
+                        lastVehicleText.visibility = View.VISIBLE
+                        if (recVehicleSwitch.isChecked) {
+                            vehicleRecIcon.visibility = View.VISIBLE
+                        } else {
+                            vehicleRecIconDisabled.visibility = View.VISIBLE
+                        }
                     }
                 }
             }

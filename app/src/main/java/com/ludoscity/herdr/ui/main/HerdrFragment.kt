@@ -98,6 +98,12 @@ class HerdrFragment : MvvmEventsFragment<FragmentHerdrBinding, HerdrFragmentView
 
 
                 when (newUserActivity) {
+                    null -> {
+                        lastWalkText.visibility = View.VISIBLE
+                        lastRunText.visibility = View.VISIBLE
+                        lastBikeText.visibility = View.VISIBLE
+                        lastVehicleText.visibility = View.VISIBLE
+                    }
                     UserActivityTrackingRepository.UserActivity.STILL -> {
                         stillImageView.setSvgColor(R.color.theme_accent)
                         lastWalkText.visibility = View.VISIBLE

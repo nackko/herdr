@@ -24,7 +24,7 @@ repositories {
 
 plugins {
     kotlin("multiplatform")
-    kotlin("native.cocoapods")
+    //kotlin("native.cocoapods")
     kotlin("kapt")
     //kotlin("android")
     //kotlin("android.extensions")
@@ -145,7 +145,7 @@ kotlin {
 
     sourceSets["commonMain"].dependencies {
         api(kotlin("stdlib-common", Versions.kotlin))
-        api(Deps.kermit)
+        api(Deps.Kermit.commonApi)
         implementation(Deps.Coroutines.common)
         implementation(Deps.Serialization.commonCore)
         implementation(Deps.Serialization.commonProtobuf)
@@ -179,7 +179,7 @@ kotlin {
         implementation(Deps.materialDesign)
         implementation(Deps.googleMobileService_GooglePlayServicesLocation)
         implementation(Deps.work)
-        //implementation(Deps.anko)
+        implementation(Deps.anko)
         implementation(Deps.devicesName)
         implementation(Deps.kPermissions)
         //https://github.com/openid/AppAuth-Android

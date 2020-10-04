@@ -68,7 +68,7 @@ object Versions {
 object Deps {
 
     //TODO: FIXME -- anko is deprecated
-    val anko = "org.jetbrains.anko:${Versions.anko}"
+    val anko = "org.jetbrains.anko:anko-commons:${Versions.anko}"
     val androidGradlePlugin = "com.android.tools.build:gradle:${Versions.androidGradlePlugin}"
     val appCompatX = "androidx.appcompat:appcompat:${Versions.appCompat}"
     val appAuth = "net.openid:appauth:${Versions.appAuth}"
@@ -76,7 +76,6 @@ object Deps {
     val devicesName = "com.jaredrummler:android-device-names:${Versions.deviceNames}"
     val fragmentX = "androidx.fragment:fragment:${Versions.fragment}"
     val googleMobileService_GooglePlayServicesLocation = "com.google.android.gms:play-services-location:${Versions.playServices}"
-    val kermit = "co.touchlab:kermit:${Versions.kermit}"
     val kPermissions = "com.github.fondesa:kpermissions:${Versions.kPermissions}"
     val materialDesign = "com.google.android.material:material:${Versions.materialDesign}"
     val navigationFragmentX = "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"

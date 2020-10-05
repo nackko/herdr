@@ -16,8 +16,32 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-rootProject.name = 'herdr'
+buildscript {
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+    }
 
-include ':app'
+    dependencies {
+        classpath(kotlin("gradle-plugin", Versions.kotlin))
+        classpath(Deps.androidGradlePlugin)
+        classpath(Deps.SqlDelight.gradle)
+        //classpath(Deps.cocoapodsExt)
+    }
+}
 
-enableFeaturePreview("GRADLE_METADATA")
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+        maven(url = "https://dl.bintray.com/icerockdev/moko")
+        maven(url = "https://dl.bintray.com/ekito/koin")
+        maven(url = "https://kotlin.bintray.com/kotlinx")
+    }
+}
+
+tasks.register("clean", Delete::class) {
+    delete(rootProject.buildDir)
+}

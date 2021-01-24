@@ -149,7 +149,7 @@ kotlin {
         implementation(Deps.Coroutines.common)
         implementation(Deps.Serialization.commonCore)
         implementation(Deps.Serialization.commonProtobuf)
-        implementation(Deps.MokoMvvn.common)
+        implementation(Deps.MokoMvvm.common)
         implementation(Deps.Koin.common)
         implementation(Deps.DateTime.common)
 
@@ -185,7 +185,7 @@ kotlin {
         //https://github.com/openid/AppAuth-Android
         implementation(Deps.appAuth)
         implementation(Deps.Coroutines.android)
-        implementation(Deps.MokoMvvn.android)
+        implementation(Deps.MokoMvvm.android)
 
         implementation(Deps.Ktor.android)
         implementation(Deps.Ktor.androidCore)

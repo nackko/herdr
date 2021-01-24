@@ -116,7 +116,7 @@ object Deps {
     //    val common = "org.koin:koin-core:${Versions.koin}"
     //}
 
-    object MokoMvvn {
+    object MokoMvvm {
         val common = "dev.icerock.moko:mvvm:${Versions.mokoMvvm}"
         val android = "androidx.lifecycle:lifecycle-extensions:${Versions.androidxLifecycle}"
     }

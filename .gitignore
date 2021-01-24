@@ -82,3 +82,5 @@ fabric.properties
 /local.properties
 iosApp/.DS_Store
 /.idea/sqldelight/app/.sqldelight
+
+Pods

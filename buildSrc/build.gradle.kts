@@ -22,4 +22,13 @@ plugins {
 
 repositories {
     jcenter()
+    google()
+
+    maven { url = uri("https://dl.bintray.com/icerockdev/plugins") }
+}
+
+dependencies {
+    api("dev.icerock:mobile-multiplatform:0.9.0")
+    api("com.android.tools.build:gradle:4.1.1")
+    api("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.21")
 }

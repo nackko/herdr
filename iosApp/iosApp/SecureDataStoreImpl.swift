@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import app
+import MultiPlatformLibrary
 
 class SecureDataStoreImpl: SecureDataStore  {
     override func getString(key: String, callback: KotlinContinuation) {

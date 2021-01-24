@@ -17,13 +17,13 @@
  */
 import UIKit
 import AppAuth
-import app
+import MultiPlatformLibrary
 
 class ViewController: UIViewController {
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var label: UILabel!
     
-    private var loginViewModel: LoginViewModel!
+    private var loginViewModel: DriveLoginViewModel!
     
     
     override func viewDidLoad() {
@@ -38,7 +38,7 @@ class ViewController: UIViewController {
     }
     
     func initViewModel() {
-        loginViewModel = LoginViewModel(secureDataStore: SecureDataStoreImpl())
+        loginViewModel = DriveLoginViewModel(eventsDispatcher: EventsDispatcher())
         observeLoginViewModel()
     }
     
@@ -47,7 +47,7 @@ class ViewController: UIViewController {
         loginViewModel.authClientRegistrationResult.addObserver{ registrationState in
             if(registrationState is SuccessAuthClientRegistration) {
                 let successState = registrationState as! SuccessAuthClientRegistration
-                let response = (successState.response as! Response.Success)
+                let response = (successState.response as! ResponseSuccess)
                 self.onClientRegistrationSuccess(authClientRegistration: response.data as! AuthClientRegistration)
             }
         }
@@ -55,7 +55,7 @@ class ViewController: UIViewController {
         loginViewModel.userCredentialsResult.addObserver{ userCredentialsState in
             if(userCredentialsState is SuccessUserCredentials) {
                 let successState = userCredentialsState as! SuccessUserCredentials
-                let response = (successState.response as! Response.Success)
+                let response = (successState.response as! ResponseSuccess)
                 self.onUserCredentialsSuccess(userCredentials: response.data as! UserCredentials)
             }
         }
@@ -102,7 +102,7 @@ class ViewController: UIViewController {
     }
     
     @objc func didButtonClick(_ sender: UIButton) {
-        loginViewModel.registerAuthClient(stackBaseUrl: "https://f8full.mycozy.cloud")
+        loginViewModel.registerAuthClient()
     }
 
     deinit {

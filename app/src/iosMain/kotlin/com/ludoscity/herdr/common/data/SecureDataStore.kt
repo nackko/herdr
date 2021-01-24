@@ -51,4 +51,18 @@ actual open class SecureDataStore actual constructor() {
     open fun deleteKey(key: String, callback: Continuation<Unit>) {
         throw NotImplementedError("iOS project should implement this")
     }
+
+    actual suspend fun storeLong(key: String, data: Long) {
+    }
+
+    actual suspend fun retrieveLong(key: String): Long? {
+        TODO("Not yet implemented")
+    }
+
+    actual suspend fun storeBoolean(key: String, data: Boolean) {
+    }
+
+    actual suspend fun retrieveBoolean(key: String): Boolean? {
+        TODO("Not yet implemented")
+    }
 }

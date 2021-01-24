@@ -1,8 +1,10 @@
 package com.ludoscity.herdr.common.di
 
+import com.ludoscity.herdr.common.data.SecureDataStore
+import com.ludoscity.herdr.common.data.database.DbArgs
 import com.ludoscity.herdr.common.data.database.HerdrDatabase
+import com.ludoscity.herdr.common.data.database.getSqlDriver
 import com.squareup.sqldelight.db.SqlDriver
-import com.squareup.sqldelight.drivers.native.NativeSqliteDriver
 import kotlinx.cinterop.ObjCClass
 import kotlinx.cinterop.getOriginalKotlinClass
 import org.koin.core.parameter.parametersOf
@@ -14,8 +16,8 @@ actual val platformModule = module {
     //    val userDefaults = NSUserDefaults(suiteName = "KAMPSTARTER_SETTINGS")
     //    AppleSettings(userDefaults)
     //}
-    single<SqlDriver> { NativeSqliteDriver(HerdrDatabase.Schema, "herdr.db") }
-    single { SecureDataStoreImpl() }
+    single<SqlDriver> { getSqlDriver(DbArgs())!! }
+    single { SecureDataStore() }
 
     //val baseKermit = Kermit(NSLogLogger()).withTag("KampKit")
     //factory { (tag: String?) -> if (tag != null) baseKermit.withTag(tag) else baseKermit }

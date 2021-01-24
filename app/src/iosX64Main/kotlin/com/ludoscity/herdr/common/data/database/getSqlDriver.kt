@@ -1,5 +1,5 @@
 /*
- *     Copyright (c) 2020. f8full https://github.com/f8full
+ *     Copyright (c) 2021. f8full https://github.com/f8full
  *     Herdr is a privacy conscious multiplatform mobile data collector
  *
  *     This program is free software: you can redistribute it and/or modify
@@ -16,32 +16,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-buildscript {
-    repositories {
-        google()
-        jcenter()
-        mavenCentral()
+package com.ludoscity.herdr.common.data.database
 
-        maven { url = uri("https://dl.bintray.com/icerockdev/plugins") }
-    }
+import com.squareup.sqldelight.db.SqlDriver
+import com.squareup.sqldelight.drivers.native.NativeSqliteDriver
 
-    dependencies {
-        classpath(Deps.SqlDelight.gradle)
-        //classpath(Deps.cocoapodsExt)
-    }
-}
-
-allprojects {
-    repositories {
-        google()
-        jcenter()
-        mavenCentral()
-        maven(url = "https://dl.bintray.com/icerockdev/moko")
-        maven(url = "https://dl.bintray.com/ekito/koin")
-        maven(url = "https://kotlin.bintray.com/kotlinx")
-    }
-}
-
-tasks.register("clean", Delete::class) {
-    delete(rootProject.buildDir)
+actual fun getSqlDriver(dbArgs: DbArgs): SqlDriver? {
+    val driver: SqlDriver = NativeSqliteDriver(HerdrDatabase.Schema, "herdr.db")
+    return driver
 }

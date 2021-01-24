@@ -31,6 +31,7 @@ plugins {
     kotlin("plugin.serialization") version (Versions.kotlin)
     id("com.android.application")
     id("com.squareup.sqldelight")
+    id("dev.icerock.mobile.multiplatform") apply(false)
 }
 
 
@@ -120,13 +121,7 @@ android {
 
 kotlin {
     android()
-    //Revert to just ios() when gradle plugin can properly resolve it
-    val onPhone = System.getenv("SDK_NAME")?.startsWith("iphoneos") ?: false
-    if (onPhone) {
-        iosArm64("ios")
-    } else {
-        iosX64("ios")
-    }
+    ios()
 
     //targets.getByName<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>("ios").compilations["main"].kotlinOptions.freeCompilerArgs +=
     //    listOf("-Xobjc-generics", "-Xg0")
@@ -144,12 +139,17 @@ kotlin {
     }*/
 
     sourceSets["commonMain"].dependencies {
-        api(kotlin("stdlib-common", Versions.kotlin))
         api(Deps.Kermit.commonApi)
-        implementation(Deps.Coroutines.common)
+        implementation(Deps.Coroutines.common) {
+            version {
+                strictly(Versions.coroutines)
+            }
+        }
         implementation(Deps.Serialization.commonCore)
         implementation(Deps.Serialization.commonProtobuf)
-        implementation(Deps.MokoMvvm.common)
+        api(Deps.MokoMvvm.core.common)
+        api(Deps.MokoMvvm.liveData.common)
+        api(Deps.mokoResources.common)
         implementation(Deps.Koin.common)
         implementation(Deps.DateTime.common)
 
@@ -168,8 +168,6 @@ kotlin {
 
     }
     sourceSets["androidMain"].dependencies {
-        implementation(kotlin("stdlib", Versions.kotlin))
-        implementation(kotlin("stdlib-common", Versions.kotlin))
         implementation(Deps.appCompatX)
         implementation(Deps.fragmentX)
         implementation(Deps.constraintlayoutX)
@@ -185,7 +183,7 @@ kotlin {
         //https://github.com/openid/AppAuth-Android
         implementation(Deps.appAuth)
         implementation(Deps.Coroutines.android)
-        implementation(Deps.MokoMvvm.android)
+        api(Deps.MokoMvvm.dataBinding)
 
         implementation(Deps.Ktor.android)
         implementation(Deps.Ktor.androidCore)
@@ -205,20 +203,10 @@ kotlin {
     }
 
     sourceSets["iosMain"].dependencies {
-        implementation(Deps.Serialization.ios) //TODO: was commented in build.gradle file
-        implementation(Deps.Coroutines.native) {
-            version {
-                strictly(Versions.coroutines)
-            }
-        }
-        implementation(Deps.Ktor.ios)
-        implementation(Deps.Ktor.iosCore)
-        implementation(Deps.Ktor.iosLogging)
-        implementation(Deps.Ktor.iosJson)
-        implementation(Deps.Ktor.iosSerialization)
-
         implementation(Deps.SqlDelight.ios)
     }
+
+    sourceSets["iosArm64Main"].dependsOn(sourceSets["iosX64Main"])
 
     sourceSets["iosTest"].dependencies { }
 
@@ -235,3 +223,15 @@ sqldelight {
     }
 }
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> { kotlinOptions.jvmTarget = "1.8" }
+
+// apply plugin only after android configuration because required android gradle plugin variants setup
+afterEvaluate {
+    apply(plugin = "dev.icerock.mobile.multiplatform")
+    apply(plugin = "dev.icerock.mobile.multiplatform.ios-framework")
+
+    configure<dev.icerock.gradle.FrameworkConfig> {
+        export(Deps.MokoMvvm.core)
+        export(Deps.MokoMvvm.liveData)
+        export(Deps.mokoResources)
+    }
+}

@@ -20,6 +20,7 @@
 
 package com.ludoscity.herdr.ui
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.net.Uri
@@ -87,6 +88,7 @@ class CustomTabsNavigator(private val context: Context) :
 @Suppress("unused")
 //Used im XML --
 class MyNavHostFragment : NavHostFragment() {
+    @SuppressLint("RestrictedApi")
     override fun onCreateNavController(navController: NavController) {
         super.onCreateNavController(navController)
 

@@ -31,7 +31,7 @@ plugins {
     kotlin("plugin.serialization") version (Versions.kotlin)
     id("com.android.application")
     id("com.squareup.sqldelight")
-    id("dev.icerock.mobile.multiplatform") apply(false)
+    id("dev.icerock.mobile.multiplatform") apply (false)
 }
 
 
@@ -111,7 +111,7 @@ android {
     }
 
     applicationVariants.all {
-        this.resValue("string", "app_version_name", this.versionName?:"missing_app_version_name")
+        this.resValue("string", "app_version_name", this.versionName ?: "missing_app_version_name")
     }
 
     /*buildFeatures {
@@ -163,9 +163,8 @@ kotlin {
     }
 
     sourceSets["commonTest"].dependencies {
-        /*implementation kotlin('test-common')
-                implementation kotlin('test-annotations-common')*/
-
+        implementation(kotlin("test-common"))
+        implementation(kotlin("test-annotations-common"))
     }
     sourceSets["androidMain"].dependencies {
         implementation(Deps.appCompatX)
@@ -198,8 +197,8 @@ kotlin {
     }
 
     sourceSets["androidTest"].dependencies {
-        //implementation kotlin('test')
-        //implementation kotlin('test-junit')
+        implementation(kotlin("test"))
+        implementation(kotlin("test-junit"))
     }
 
     sourceSets["iosMain"].dependencies {

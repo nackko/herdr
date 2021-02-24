@@ -25,12 +25,8 @@ import com.ludoscity.herdr.common.data.SecureDataStore
 import com.ludoscity.herdr.common.data.database.HerdrDatabase
 import com.ludoscity.herdr.common.data.database.dao.AnalTrackingDatapointDao
 import com.ludoscity.herdr.common.data.network.INetworkDataPipe
-import com.ludoscity.herdr.common.data.network.cozy.AnalTrackingUploadRequestBody
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
-import io.ktor.utils.io.errors.IOException
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import org.koin.core.parameter.parametersOf

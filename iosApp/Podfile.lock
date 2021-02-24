@@ -1,0 +1,39 @@
+PODS:
+  - AppAuth (1.4.0):
+    - AppAuth/Core (= 1.4.0)
+    - AppAuth/ExternalUserAgent (= 1.4.0)
+  - AppAuth/Core (1.4.0)
+  - AppAuth/ExternalUserAgent (1.4.0)
+  - MultiPlatformLibrary (0.1.0)
+  - MultiPlatformLibraryMvvm/Core (0.9.1):
+    - MultiPlatformLibrary
+
+DEPENDENCIES:
+  - AppAuth (= 1.4.0)
+  - MultiPlatformLibrary (from `../app`)
+  - MultiPlatformLibraryMvvm/Core (from `https://github.com/icerockdev/moko-mvvm.git`, tag `release/0.9.1`)
+
+SPEC REPOS:
+  trunk:
+    - AppAuth
+
+EXTERNAL SOURCES:
+  MultiPlatformLibrary:
+    :path: "../app"
+  MultiPlatformLibraryMvvm:
+    :git: https://github.com/icerockdev/moko-mvvm.git
+    :tag: release/0.9.1
+
+CHECKOUT OPTIONS:
+  MultiPlatformLibraryMvvm:
+    :git: https://github.com/icerockdev/moko-mvvm.git
+    :tag: release/0.9.1
+
+SPEC CHECKSUMS:
+  AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
+  MultiPlatformLibrary: 0ac96fd2c92b2c8d92245cbb037af3839dd74a84
+  MultiPlatformLibraryMvvm: b5eb90eeae57e9f8d63dce913e7dfb7f84271aee
+
+PODFILE CHECKSUM: 581a3cd64c612464531fa0654fedfe5b5df8c796
+
+COCOAPODS: 1.10.0

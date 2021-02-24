@@ -45,18 +45,18 @@ object Versions {
     val appAuth = "0.7.1"
     //val cocoapodsext = "0.9" //??
     val constraintLayout = "2.0.1"
-    val coroutines = "1.3.9-native-mt"
+    val coroutines = "1.4.2-native-mt"
     val dateTime = "0.1.0"
     val deviceNames = "1.1.7"
     val fragment = "1.2.5"
-    val androidGradlePlugin = "4.0.1"
     val kermit = "0.1.8"
     val koin = "3.0.0-alpha-4"
-    val kotlin = "1.4.0"
+    val kotlin = "1.4.21"
     val kPermissions = "1.0.0"
     val ktor = "1.4.0"
     val materialDesign = "1.2.1"
-    val mokoMvvm = "0.8.0"
+    val mokoMvvm = "0.9.1"
+    val mokoResources = "0.14.0"
     val navigation = "2.3.0"
     val playServices = "17.0.0"
     val securityCrypto = "1.0.0-rc02"
@@ -69,7 +69,6 @@ object Deps {
 
     //TODO: FIXME -- anko is deprecated
     val anko = "org.jetbrains.anko:anko-commons:${Versions.anko}"
-    val androidGradlePlugin = "com.android.tools.build:gradle:${Versions.androidGradlePlugin}"
     val appCompatX = "androidx.appcompat:appcompat:${Versions.appCompat}"
     val appAuth = "net.openid:appauth:${Versions.appAuth}"
     val constraintlayoutX = "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
@@ -82,6 +81,8 @@ object Deps {
     val navigationUiX = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
     val securityCrypto = "androidx.security:security-crypto:${Versions.securityCrypto}"
     val work = "androidx.work:work-runtime-ktx:${Versions.work}"
+    val mokoResources = "dev.icerock.moko:resources:${Versions.mokoResources}"
+        .defaultMPL(ios = true)
 
     object Coroutines {
         //val gradle = "com.squareup.sqldelight:gradle-plugin:${Versions.sqlDelight}"
@@ -116,9 +117,12 @@ object Deps {
     //    val common = "org.koin:koin-core:${Versions.koin}"
     //}
 
-    object MokoMvvn {
-        val common = "dev.icerock.moko:mvvm:${Versions.mokoMvvm}"
-        val android = "androidx.lifecycle:lifecycle-extensions:${Versions.androidxLifecycle}"
+    object MokoMvvm {
+        val core = "dev.icerock.moko:mvvm-core:${Versions.mokoMvvm}"
+            .defaultMPL(ios = true)
+        val liveData = "dev.icerock.moko:mvvm-livedata:${Versions.mokoMvvm}"
+            .defaultMPL(ios = true)
+        val dataBinding = "dev.icerock.moko:mvvm-databinding:${Versions.mokoMvvm}"
     }
 
     object Serialization {

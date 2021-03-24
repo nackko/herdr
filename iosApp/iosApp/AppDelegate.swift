@@ -23,9 +23,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var currentAuthorizationFlow: OIDExternalUserAgentSession?
 
-    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         if let authorizationFlow = self.currentAuthorizationFlow, authorizationFlow.resumeExternalUserAgentFlow(with: url) {
             self.currentAuthorizationFlow = nil
+            
+            //FIXME
+            // touchlab kampkit does it that way but I couldn't figure it out
+            //startKoin()
+                        
+            // Manually launch storyboard so that ViewController doesn't initialize before Koin
+            //        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            //if #available(iOS 13.0, *) {
+            //    let viewController = storyboard.instantiateViewController(identifier: "ViewController")
+            //    self.window = UIWindow(frame: UIScreen.main.bounds)
+            //    self.window?.rootViewController = viewController
+            //    self.window?.makeKeyAndVisible()
+            //} else {
+                // Fallback on earlier versions
+            //}
+            
+            //see https://github.com/touchlab/KaMPKit/blob/34c0d65cd776aa69d3ab5f24ce4492ab0a41b8a9/ios/KaMPKitiOS/AppDelegate.swift#L23
+            
+            
             return true
         }
 

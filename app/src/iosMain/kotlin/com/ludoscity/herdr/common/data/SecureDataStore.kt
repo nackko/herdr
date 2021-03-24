@@ -64,7 +64,7 @@ actual open class SecureDataStore actual constructor() {
         }
     }
 
-    open fun putString(key: String, data: String, callback: Continuation<Unit>) {
+    open fun putString(key: String, data: String?, callback: Continuation<Unit>) {
         throw NotImplementedError("iOS project should implement this")
     }
 

@@ -26,8 +26,10 @@ import org.koin.dsl.module
 class HerdrApp : Application() {
     override fun onCreate() {
         super.onCreate()
-        initKoin {
-            modules(module { single<Context> { this@HerdrApp } })
-        }
+        initKoin (
+            module {
+                single<Context> { this@HerdrApp }
+            }
+        )
     }
 }

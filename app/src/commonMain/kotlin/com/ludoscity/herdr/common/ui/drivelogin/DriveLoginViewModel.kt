@@ -24,20 +24,16 @@ import com.ludoscity.herdr.common.domain.entity.AuthClientRegistration
 import com.ludoscity.herdr.common.domain.entity.RawDataCloudFolderConfiguration
 import com.ludoscity.herdr.common.domain.entity.UserCredentials
 import com.ludoscity.herdr.common.domain.usecase.login.*
-import com.ludoscity.herdr.common.utils.launchSilent
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcher
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcherOwner
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.mvvm.livedata.readOnly
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
-import io.ktor.utils.io.errors.IOException
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import org.koin.core.parameter.parametersOf
-import kotlin.coroutines.CoroutineContext
 
 class DriveLoginViewModel(override val eventsDispatcher: EventsDispatcher<DriveLoginFragmentEventListener>) :
     KoinComponent,
@@ -73,12 +69,6 @@ class DriveLoginViewModel(override val eventsDispatcher: EventsDispatcher<DriveL
     private val retrieveAccessAndRefreshTokenUseCase: RetrieveAccessAndRefreshTokenUseCaseAsync
             by inject()
 
-    // ASYNC - COROUTINES
-    private val coroutineContext: CoroutineContext by inject()
-    private var job: Job = Job()
-    private val exceptionHandler = CoroutineExceptionHandler { _, _ -> }
-
-
     private fun getCozyUrl(userInput: String): String {
         return when {
             (!userInput.contains(URL_PERIOD)) && (!userInput.contains(URL_HTTP)) ->
@@ -95,15 +85,15 @@ class DriveLoginViewModel(override val eventsDispatcher: EventsDispatcher<DriveL
         _finalUrl.value = getCozyUrl(newInput)
     }
 
-    fun registerAuthClient() = launchSilent(
-        coroutineContext,
-        exceptionHandler, job
-    ) {
-        log.d { "About to register auth client" }
-        _authClientRegistrationResult.postValue(InProgressAuthClientRegistration())
-        val useCaseInput = RegisterAuthClientUseCaseInput(_finalUrl.value)
-        val response = registerAuthClientUseCase.execute(useCaseInput)
-        processRegistrationResponse(response, true)
+    //@Throws(Exception::class) //helped for ios debugging
+    fun registerAuthClient() {
+        viewModelScope.launch {
+            log.d { "About to register auth client" }
+            _authClientRegistrationResult.postValue(InProgressAuthClientRegistration())
+            val useCaseInput = RegisterAuthClientUseCaseInput(_finalUrl.value)
+            val response = registerAuthClientUseCase.execute(useCaseInput)
+            processRegistrationResponse(response, true)
+        }
     }
 
     private fun processRegistrationResponse(
@@ -132,16 +122,15 @@ class DriveLoginViewModel(override val eventsDispatcher: EventsDispatcher<DriveL
         }
     }
 
-    fun exchangeCodeForAccessAndRefreshToken(authCode: String) = launchSilent(
-        coroutineContext,
-        exceptionHandler, job
-    ) {
-        _userCredentials.postValue(InProgressUserCredentials())
+    fun exchangeCodeForAccessAndRefreshToken(authCode: String) {
+        viewModelScope.launch {
+            _userCredentials.postValue(InProgressUserCredentials())
 
-        val useCaseInput = RetrieveAccessAndRefreshTokenUseCaseInput(authCode)
-        val response = retrieveAccessAndRefreshTokenUseCase.execute(useCaseInput)
+            val useCaseInput = RetrieveAccessAndRefreshTokenUseCaseInput(authCode)
+            val response = retrieveAccessAndRefreshTokenUseCase.execute(useCaseInput)
 
-        processRetrieveAccessAndRefreshTokenResponse(response)
+            processRetrieveAccessAndRefreshTokenResponse(response)
+        }
     }
 
     private fun processRetrieveAccessAndRefreshTokenResponse(response: Response<UserCredentials>) {
@@ -155,15 +144,14 @@ class DriveLoginViewModel(override val eventsDispatcher: EventsDispatcher<DriveL
         }
     }
 
-    private fun testConnection() = launchSilent(
-        coroutineContext,
-        exceptionHandler, job
-    ) {
+    private fun testConnection() {
+        viewModelScope.launch {
 
-        //val useCaseInput = RetrieveAccessAndRefreshTokenUseCaseInput(authCode)
-        //createDirectoryUseCase.execute()
+            //val useCaseInput = RetrieveAccessAndRefreshTokenUseCaseInput(authCode)
+            //createDirectoryUseCase.execute()
 
-        //processRetrieveAccessAndRefreshTokenResponse(response)
+            //processRetrieveAccessAndRefreshTokenResponse(response)
+        }
     }
 
     interface DriveLoginFragmentEventListener {

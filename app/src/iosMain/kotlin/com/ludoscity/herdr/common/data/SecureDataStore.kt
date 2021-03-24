@@ -34,6 +34,30 @@ actual open class SecureDataStore actual constructor() {
         }
     }
 
+    actual suspend fun storeLong(key: String, data: Long) {
+        return suspendCoroutine { continuation ->
+            putLong(key, data, continuation)
+        }
+    }
+
+    actual suspend fun retrieveLong(key: String): Long? {
+        return suspendCoroutine { continuation ->
+            getLong(key, continuation)
+        }
+    }
+
+    actual suspend fun storeBoolean(key: String, data: Boolean) {
+        return suspendCoroutine { continuation ->
+            putBoolean(key, data, continuation)
+        }
+    }
+
+    actual suspend fun retrieveBoolean(key: String): Boolean? {
+        return suspendCoroutine { continuation ->
+            getBoolean(key, continuation)
+        }
+    }
+
     actual suspend fun deleteKey(key: String) {
         return suspendCoroutine { continuation ->
             deleteKey(key, continuation)
@@ -48,21 +72,23 @@ actual open class SecureDataStore actual constructor() {
         throw NotImplementedError("iOS project should implement this")
     }
 
-    open fun deleteKey(key: String, callback: Continuation<Unit>) {
+    open fun putLong(key: String, data: Long?, callback: Continuation<Unit>) {
         throw NotImplementedError("iOS project should implement this")
     }
 
-    actual suspend fun storeLong(key: String, data: Long) {
+    open fun getLong(key: String, callback: Continuation<Long>) {
+        throw NotImplementedError("iOS project should implement this")
     }
 
-    actual suspend fun retrieveLong(key: String): Long? {
-        TODO("Not yet implemented")
+    open fun putBoolean(key: String, data: Boolean?, callback: Continuation<Unit>) {
+        throw NotImplementedError("iOS project should implement this")
     }
 
-    actual suspend fun storeBoolean(key: String, data: Boolean) {
+    open fun getBoolean(key: String, callback: Continuation<Boolean>) {
+        throw NotImplementedError("iOS project should implement this")
     }
 
-    actual suspend fun retrieveBoolean(key: String): Boolean? {
-        TODO("Not yet implemented")
+    open fun deleteKey(key: String, callback: Continuation<Unit>) {
+        throw NotImplementedError("iOS project should implement this")
     }
 }

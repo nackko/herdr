@@ -27,6 +27,8 @@ class ViewController: UIViewController {
     
     
     override func viewDidLoad() {
+        //FIXME -- this is supposed to happen in the AppDelegate
+        startKoin()
         super.viewDidLoad()
         //label.text = Proxy().proxyHello()
         configView()
@@ -102,6 +104,7 @@ class ViewController: UIViewController {
     }
     
     @objc func didButtonClick(_ sender: UIButton) {
+        loginViewModel.urlChanged(newInput: "https://f8full.mycozy.cloud")
         loginViewModel.registerAuthClient()
     }
 

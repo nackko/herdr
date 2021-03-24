@@ -203,6 +203,7 @@ kotlin {
 
     sourceSets["iosMain"].dependencies {
         implementation(Deps.SqlDelight.ios)
+        implementation(Deps.Ktor.ios)
     }
 
     sourceSets["iosArm64Main"].dependsOn(sourceSets["iosX64Main"])

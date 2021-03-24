@@ -48,9 +48,9 @@ class HerdrFragment : MvvmEventsFragment<FragmentHerdrBinding, HerdrFragmentView
         return createViewModelFactory { HerdrFragmentViewModel(eventsDispatcherOnMain()) }
     }
 
-    override fun routeToDriveSettings(cloudFolderId: String) {
+    override fun routeToDriveSettings(folderId: String) {
         val bundle = bundleOf(
-            "folderId" to cloudFolderId,
+            "folderId" to folderId,
             "folderName" to binding.folderNameText.text,
             "stackUrl" to binding.driveUrlText.text
         )
@@ -60,7 +60,7 @@ class HerdrFragment : MvvmEventsFragment<FragmentHerdrBinding, HerdrFragmentView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         super.onCreateView(inflater, container, savedInstanceState)
 
@@ -191,19 +191,35 @@ class HerdrFragment : MvvmEventsFragment<FragmentHerdrBinding, HerdrFragmentView
             }
 
             walkText.addObserver {
-                binding.lastWalkText.text = it
+                try {
+                    binding.lastWalkText.text = it
+                } catch (e: NullPointerException) {
+                    //log.d { "FIX ME - happens when opening settings" }
+                }
             }
 
             runText.addObserver {
-                binding.lastRunText.text = it
+                try {
+                    binding.lastRunText.text = it
+                } catch (e: NullPointerException) {
+                    //log.d { "FIX ME - happens when opening settings" }
+                }
             }
 
             bikeText.addObserver {
-                binding.lastBikeText.text = it
+                try {
+                    binding.lastBikeText.text = it
+                } catch (e: NullPointerException) {
+                    //log.d { "FIX ME - happens when opening settings" }
+                }
             }
 
             vehicleText.addObserver {
-                binding.lastVehicleText.text = it
+                try {
+                    binding.lastVehicleText.text = it
+                } catch (e: NullPointerException) {
+                    //log.d { "FIX ME - happens when opening settings" }
+                }
             }
         }
 

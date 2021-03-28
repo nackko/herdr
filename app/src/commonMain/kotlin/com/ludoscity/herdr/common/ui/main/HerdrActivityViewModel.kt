@@ -25,15 +25,12 @@ import com.ludoscity.herdr.common.domain.usecase.login.ObserveLoggedInUseCaseInp
 import com.ludoscity.herdr.common.domain.usecase.login.ObserveLoggedInUseCaseSync
 import com.ludoscity.herdr.common.domain.usecase.login.RetrieveAccessAndRefreshTokenUseCaseAsync
 import com.ludoscity.herdr.common.domain.usecase.login.RetrieveAccessAndRefreshTokenUseCaseInput
-import com.ludoscity.herdr.common.utils.launchSilent
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import org.koin.core.parameter.parametersOf
-import kotlin.coroutines.CoroutineContext
 
 class HerdrActivityViewModel : KoinComponent, ViewModel() {
 
@@ -71,22 +68,16 @@ class HerdrActivityViewModel : KoinComponent, ViewModel() {
     private val updatePermissionGrantedUseCaseSync: UpdatePermissionGrantedUseCaseSync by inject()
     private val getPermissionGrantedUseCaseSync: GetPermissionGrantedUseCaseSync by inject()
 
-    // ASYNC - COROUTINES
-    private val coroutineContext: CoroutineContext by inject()
-    private var job: Job = Job()
-    private val exceptionHandler = CoroutineExceptionHandler { _, _ -> }
-
     init {
         initAuthAccessAndRefreshTokenFromCache()
     }
 
     // So that initial logged in status happen -- shouldn't that be in init { } of repo?
     // TODO: clarify if/how *async* local storage could happen in LoginRepository init block
-    private fun initAuthAccessAndRefreshTokenFromCache() = launchSilent(
-        coroutineContext,
-        exceptionHandler, job
-    ) {
-        val useCaseInput = RetrieveAccessAndRefreshTokenUseCaseInput(true)
-        retrieveAccessAndRefreshTokenUseCase.execute(useCaseInput)
+    private fun initAuthAccessAndRefreshTokenFromCache() {
+        viewModelScope.launch {
+            val useCaseInput = RetrieveAccessAndRefreshTokenUseCaseInput(true)
+            retrieveAccessAndRefreshTokenUseCase.execute(useCaseInput)
+        }
     }
 }

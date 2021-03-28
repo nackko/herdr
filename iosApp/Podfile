@@ -23,6 +23,10 @@ end
 target 'iosApp' do
   pod 'AppAuth', '1.4.0'
   pod 'SecureDefaults', '1.0.0'
+  pod 'MaterialComponents/Buttons'
+  pod 'MaterialComponents/Cards'
+  # pod 'MaterialComponents/TextControls+OutlinedTextFields'
+  pod 'MaterialComponents/TextFields'
   pod 'MultiPlatformLibrary', :path => '../app'
   pod 'MultiPlatformLibraryMvvm/Core',
     :git => 'https://github.com/icerockdev/moko-mvvm.git', :tag => 'release/0.9.1'

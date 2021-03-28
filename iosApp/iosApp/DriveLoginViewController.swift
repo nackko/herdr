@@ -18,21 +18,37 @@
 import UIKit
 import AppAuth
 import MultiPlatformLibrary
+import MaterialComponents.MaterialTextFields
 
 class ViewController: UIViewController {
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var label: UILabel!
-    
+
+    var textController: MDCTextInputControllerOutlined!
+
     private var loginViewModel: DriveLoginViewModel!
     
     
     override func viewDidLoad() {
-        //FIXME -- this is supposed to happen in the AppDelegate
-        startKoin()
         super.viewDidLoad()
+        title = "DriveLogin"
         //label.text = Proxy().proxyHello()
         configView()
         initViewModel()
+        
+        
+        ////////////
+        let outlinedTextField = MDCTextField(frame: CGRect(x:0, y:200, width: self.view.frame.width - 50, height: 50))
+        outlinedTextField.placeholder = "Username Or Custom Domain"
+        //outlinedTextField.leadingAssistiveLabel.text = "This is helper text"
+        outlinedTextField.sizeToFit()
+        
+        
+        self.view.addSubview(outlinedTextField)
+        
+        self.textController = MDCTextInputControllerOutlined(textInput: outlinedTextField)
+        
+        self.textController.textInsets(UIEdgeInsets(top: 16, left:16, bottom:16, right:16))
     }
     
     func configView() {
@@ -41,40 +57,39 @@ class ViewController: UIViewController {
     
     func initViewModel() {
         loginViewModel = DriveLoginViewModel(eventsDispatcher: EventsDispatcher())
+        loginViewModel.eventsDispatcher.listener = self
         observeLoginViewModel()
     }
     
     // OBSERVER
     func observeLoginViewModel() {
         loginViewModel.authClientRegistrationResult.addObserver{ registrationState in
-            if(registrationState is SuccessAuthClientRegistration) {
-                let successState = registrationState as! SuccessAuthClientRegistration
-                let response = (successState.response as! ResponseSuccess)
-                self.onClientRegistrationSuccess(authClientRegistration: response.data as! AuthClientRegistration)
-            }
+            //TODO: reflect model state in UI
+            
+            //if(registrationState is SuccessAuthClientRegistration) {
+            //    let successState = registrationState as! SuccessAuthClientRegistration
+            //    let response = (successState.response as! ResponseSuccess)
+            //    self.onClientRegistrationSuccess(authClientRegistration: response.data!)
+            //}
         }
         
         loginViewModel.userCredentialsResult.addObserver{ userCredentialsState in
-            if(userCredentialsState is SuccessUserCredentials) {
-                let successState = userCredentialsState as! SuccessUserCredentials
-                let response = (successState.response as! ResponseSuccess)
-                self.onUserCredentialsSuccess(userCredentials: response.data as! UserCredentials)
-            }
+            //TODO: reflect model state in UI
+            
+            //if(userCredentialsState is SuccessUserCredentials) {
+            //    let successState = userCredentialsState as! SuccessUserCredentials
+            //    let response = (successState.response as! ResponseSuccess)
+            //    self.onUserCredentialsSuccess(userCredentials: response.data as! UserCredentials)
+            //}
         }
     }
     
-    func onUserCredentialsSuccess(userCredentials: UserCredentials) {
-        self.label.text = userCredentials.accessToken
-    }
-    
-    func onClientRegistrationSuccess(authClientRegistration: AuthClientRegistration) {
+    private func launchAuthorizationFlow(authClientRegistration: AuthClientRegistration) {
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             //self.logMessage("Error accessing AppDelegate")
             return
         }
-        
-        self.label.text = authClientRegistration.clientRegistrationToken
         
         let configuration = OIDServiceConfiguration(authorizationEndpoint: URL(string: authClientRegistration.stackBaseUrl + "/auth/authorize")!,
                                                     tokenEndpoint: URL(string: authClientRegistration.stackBaseUrl + "/auth/authorize")!)
@@ -91,12 +106,7 @@ class ViewController: UIViewController {
         appDelegate.currentAuthorizationFlow = OIDAuthorizationService.present(authorizationRequest, presenting: self) { (response, error) in
 
             if let response = response {
-                //let authState = OIDAuthState(authorizationResponse: response)
-                self.label.text = "CODE: " + (response.authorizationCode ?? "DEFAULT_CODE")
                 self.loginViewModel.exchangeCodeForAccessAndRefreshToken(authCode: response.authorizationCode ?? "")
-                //self.setAuthState(authState)
-                //self.logMessage("Authorization response with code: \(response.authorizationCode ?? "DEFAULT_CODE")")
-                // could just call [self tokenExchange:nil] directly, but will let the user initiate it.
             } else {
                 //self.logMessage("Authorization error: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
             }
@@ -104,11 +114,39 @@ class ViewController: UIViewController {
     }
     
     @objc func didButtonClick(_ sender: UIButton) {
-        loginViewModel.urlChanged(newInput: "https://f8full.mycozy.cloud")
+        loginViewModel.urlChanged(newInput: "https://cozy.ludos.city")
         loginViewModel.registerAuthClient()
     }
 
     deinit {
         loginViewModel.onCleared()
+    }
+}
+
+extension ViewController: DriveLoginViewModelDriveLoginFragmentEventListener {
+    func routeToAuthFlow() {
+        self.label.text = "registered"
+        
+        let clientRegistration = ((loginViewModel.authClientRegistrationResult.value as! SuccessAuthClientRegistration)
+            .response as! ResponseSuccess)
+            .data!
+
+        self.launchAuthorizationFlow(authClientRegistration: clientRegistration)
+    }
+    
+    func routeToCreateAccount() {
+        //FIXME: account creation can only happen during setup
+    }
+    
+    func routeToHerdr() {
+        
+        let userCredentials = ((loginViewModel.userCredentialsResult.value as! SuccessUserCredentials)
+            .response as! ResponseSuccess)
+            .data!
+        
+        self.label.text = userCredentials.accessToken
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        self.navigationController?.pushViewController(storyboard.instantiateViewController(withIdentifier: "herdr") as UIViewController, animated: false)
     }
 }

@@ -4,6 +4,73 @@ PODS:
     - AppAuth/ExternalUserAgent (= 1.4.0)
   - AppAuth/Core (1.4.0)
   - AppAuth/ExternalUserAgent (1.4.0)
+  - MaterialComponents/AnimationTiming (124.1.1)
+  - MaterialComponents/Availability (124.1.1)
+  - MaterialComponents/Buttons (124.1.1):
+    - MaterialComponents/Elevation
+    - MaterialComponents/Ink
+    - MaterialComponents/private/Math
+    - MaterialComponents/Ripple
+    - MaterialComponents/ShadowElevations
+    - MaterialComponents/ShadowLayer
+    - MaterialComponents/ShapeLibrary
+    - MaterialComponents/Shapes
+    - MaterialComponents/Typography
+    - MDFInternationalization
+    - MDFTextAccessibility
+  - MaterialComponents/Cards (124.1.1):
+    - MaterialComponents/Elevation
+    - MaterialComponents/Ink
+    - MaterialComponents/private/Icons/ic_check_circle
+    - MaterialComponents/private/Math
+    - MaterialComponents/Ripple
+    - MaterialComponents/ShadowLayer
+    - MaterialComponents/Shapes
+  - MaterialComponents/Elevation (124.1.1):
+    - MaterialComponents/Availability
+    - MaterialComponents/private/Color
+    - MaterialComponents/private/Math
+  - MaterialComponents/Ink (124.1.1):
+    - MaterialComponents/Availability
+    - MaterialComponents/private/Color
+    - MaterialComponents/private/Math
+  - MaterialComponents/Palettes (124.1.1)
+  - MaterialComponents/private/Application (124.1.1)
+  - MaterialComponents/private/Color (124.1.1):
+    - MaterialComponents/Availability
+  - MaterialComponents/private/Icons/Base (124.1.1)
+  - MaterialComponents/private/Icons/ic_check_circle (124.1.1):
+    - MaterialComponents/private/Icons/Base
+  - MaterialComponents/private/Math (124.1.1)
+  - MaterialComponents/Ripple (124.1.1):
+    - MaterialComponents/AnimationTiming
+    - MaterialComponents/Availability
+    - MaterialComponents/private/Color
+    - MaterialComponents/private/Math
+  - MaterialComponents/ShadowElevations (124.1.1)
+  - MaterialComponents/ShadowLayer (124.1.1):
+    - MaterialComponents/ShadowElevations
+  - MaterialComponents/ShapeLibrary (124.1.1):
+    - MaterialComponents/private/Math
+    - MaterialComponents/Shapes
+  - MaterialComponents/Shapes (124.1.1):
+    - MaterialComponents/private/Color
+    - MaterialComponents/private/Math
+    - MaterialComponents/ShadowLayer
+  - MaterialComponents/TextFields (124.1.1):
+    - MaterialComponents/AnimationTiming
+    - MaterialComponents/Buttons
+    - MaterialComponents/Elevation
+    - MaterialComponents/Palettes
+    - MaterialComponents/private/Math
+    - MaterialComponents/Typography
+    - MDFInternationalization
+  - MaterialComponents/Typography (124.1.1):
+    - MaterialComponents/private/Application
+    - MaterialComponents/private/Math
+    - MDFTextAccessibility
+  - MDFInternationalization (2.0.0)
+  - MDFTextAccessibility (2.0.1)
   - MultiPlatformLibrary (0.1.0)
   - MultiPlatformLibraryMvvm/Core (0.9.1):
     - MultiPlatformLibrary
@@ -11,6 +78,9 @@ PODS:
 
 DEPENDENCIES:
   - AppAuth (= 1.4.0)
+  - MaterialComponents/Buttons
+  - MaterialComponents/Cards
+  - MaterialComponents/TextFields
   - MultiPlatformLibrary (from `../app`)
   - MultiPlatformLibraryMvvm/Core (from `https://github.com/icerockdev/moko-mvvm.git`, tag `release/0.9.1`)
   - SecureDefaults (= 1.0.0)
@@ -18,6 +88,9 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - AppAuth
+    - MaterialComponents
+    - MDFInternationalization
+    - MDFTextAccessibility
     - SecureDefaults
 
 EXTERNAL SOURCES:
@@ -34,10 +107,13 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
+  MaterialComponents: b9f58f24bf74588a83b2dce05802a11aaed5257d
+  MDFInternationalization: 010097556d6b09d2c4ea38e0820ea6d37be6a314
+  MDFTextAccessibility: f4bb4cc2194286651b59a215fdeaa0e05dc90ba5
   MultiPlatformLibrary: 0ac96fd2c92b2c8d92245cbb037af3839dd74a84
   MultiPlatformLibraryMvvm: b5eb90eeae57e9f8d63dce913e7dfb7f84271aee
   SecureDefaults: 2945eb9521db3e6800bbd24e8b76af918ae4f239
 
-PODFILE CHECKSUM: 5c5a8ca42bec518578e56361b80c29bb5036d86a
+PODFILE CHECKSUM: 88b5e7a4e6b49501455f389cbca89ca09c927e24
 
 COCOAPODS: 1.10.1

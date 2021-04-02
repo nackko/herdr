@@ -18,6 +18,22 @@ PODS:
     - MaterialComponents/Typography
     - MDFInternationalization
     - MDFTextAccessibility
+  - "MaterialComponents/Buttons+ColorThemer (124.1.1)":
+    - MaterialComponents/Buttons
+    - MaterialComponents/schemes/Color
+  - "MaterialComponents/Buttons+ShapeThemer (124.1.1)":
+    - MaterialComponents/Buttons
+    - MaterialComponents/schemes/Shape
+  - "MaterialComponents/Buttons+Theming (124.1.1)":
+    - MaterialComponents/Buttons
+    - "MaterialComponents/Buttons+ColorThemer"
+    - "MaterialComponents/Buttons+ShapeThemer"
+    - "MaterialComponents/Buttons+TypographyThemer"
+    - MaterialComponents/schemes/Container
+    - MaterialComponents/ShadowElevations
+  - "MaterialComponents/Buttons+TypographyThemer (124.1.1)":
+    - MaterialComponents/Buttons
+    - MaterialComponents/schemes/Typography
   - MaterialComponents/Cards (124.1.1):
     - MaterialComponents/Elevation
     - MaterialComponents/Ink
@@ -26,6 +42,9 @@ PODS:
     - MaterialComponents/Ripple
     - MaterialComponents/ShadowLayer
     - MaterialComponents/Shapes
+  - "MaterialComponents/Cards+Theming (124.1.1)":
+    - MaterialComponents/Cards
+    - MaterialComponents/schemes/Container
   - MaterialComponents/Elevation (124.1.1):
     - MaterialComponents/Availability
     - MaterialComponents/private/Color
@@ -47,6 +66,22 @@ PODS:
     - MaterialComponents/Availability
     - MaterialComponents/private/Color
     - MaterialComponents/private/Math
+  - MaterialComponents/schemes/Color (124.1.1):
+    - MaterialComponents/Availability
+    - MaterialComponents/private/Color
+  - MaterialComponents/schemes/Container (124.1.1):
+    - MaterialComponents/schemes/Color
+    - MaterialComponents/schemes/Shape
+    - MaterialComponents/schemes/Typography
+  - MaterialComponents/schemes/Shape (124.1.1):
+    - MaterialComponents/ShapeLibrary
+    - MaterialComponents/Shapes
+  - MaterialComponents/schemes/Typography (124.1.1):
+    - "MaterialComponents/schemes/Typography+BasicFontScheme"
+    - "MaterialComponents/schemes/Typography+Scheming"
+    - MaterialComponents/Typography
+  - "MaterialComponents/schemes/Typography+BasicFontScheme (124.1.1)"
+  - "MaterialComponents/schemes/Typography+Scheming (124.1.1)"
   - MaterialComponents/ShadowElevations (124.1.1)
   - MaterialComponents/ShadowLayer (124.1.1):
     - MaterialComponents/ShadowElevations
@@ -79,7 +114,10 @@ PODS:
 DEPENDENCIES:
   - AppAuth (= 1.4.0)
   - MaterialComponents/Buttons
+  - "MaterialComponents/Buttons+Theming"
   - MaterialComponents/Cards
+  - "MaterialComponents/Cards+Theming"
+  - MaterialComponents/schemes/Shape
   - MaterialComponents/TextFields
   - MultiPlatformLibrary (from `../app`)
   - MultiPlatformLibraryMvvm/Core (from `https://github.com/icerockdev/moko-mvvm.git`, tag `release/0.9.1`)
@@ -114,6 +152,6 @@ SPEC CHECKSUMS:
   MultiPlatformLibraryMvvm: b5eb90eeae57e9f8d63dce913e7dfb7f84271aee
   SecureDefaults: 2945eb9521db3e6800bbd24e8b76af918ae4f239
 
-PODFILE CHECKSUM: 88b5e7a4e6b49501455f389cbca89ca09c927e24
+PODFILE CHECKSUM: c6e6d86933d50731ab1ed068ca5504e1583f01a9
 
 COCOAPODS: 1.10.1

@@ -20,39 +20,85 @@ import AppAuth
 import MultiPlatformLibrary
 import MaterialComponents.MaterialTextFields
 
-class ViewController: UIViewController {
-    @IBOutlet weak var loginButton: UIButton!
-    @IBOutlet weak var label: UILabel!
-
+class ViewController: UIViewController, UITextFieldDelegate {
+    @IBOutlet weak var loginButton: MDCButton!
+    @IBOutlet weak var finalUrl: UILabel!
+    @IBOutlet weak var usernameOrDomain: MDCTextField!
+    
     var textController: MDCTextInputControllerOutlined!
 
     private var loginViewModel: DriveLoginViewModel!
+    @objc var containerScheme: MDCContainerScheme
     
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        containerScheme = MDCContainerScheme()
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        initContainerScheme()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        containerScheme = MDCContainerScheme()
+        super.init(coder: aDecoder)
+        initContainerScheme()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "DriveLogin"
-        //label.text = Proxy().proxyHello()
         configView()
         initViewModel()
         
-        
-        ////////////
-        let outlinedTextField = MDCTextField(frame: CGRect(x:0, y:200, width: self.view.frame.width - 50, height: 50))
-        outlinedTextField.placeholder = "Username Or Custom Domain"
-        //outlinedTextField.leadingAssistiveLabel.text = "This is helper text"
-        outlinedTextField.sizeToFit()
-        
-        
-        self.view.addSubview(outlinedTextField)
-        
-        self.textController = MDCTextInputControllerOutlined(textInput: outlinedTextField)
-        
+        self.textController = MDCTextInputControllerOutlined(textInput: usernameOrDomain)
         self.textController.textInsets(UIEdgeInsets(top: 16, left:16, bottom:16, right:16))
+        
+        loginViewModel.finalUrl.addObserver { (newUrl: NSString?) in
+            self.finalUrl.text = newUrl as String?
+        }
+    }
+    
+    func initContainerScheme() {
+        
+        let colorScheme = MDCSemanticColorScheme()
+        
+        colorScheme.primaryColor = UIColor(red: 0.18, green: 0.57, blue: 0.96, alpha: 1.00)
+        colorScheme.onPrimaryColor = .white
+        
+        colorScheme.onSurfaceColor = .darkGray
+        
+        containerScheme.colorScheme = colorScheme
+        
+        let shapeScheme = MDCShapeScheme()
+        
+        let smallShapeCategory = MDCShapeCategory()
+        
+        let rounded24dpCorner = MDCCornerTreatment.corner(withRadius: 20, valueType: .absolute)
+        
+        smallShapeCategory?.topLeftCorner = rounded24dpCorner
+        smallShapeCategory?.bottomLeftCorner = rounded24dpCorner
+        smallShapeCategory?.topRightCorner = rounded24dpCorner
+        smallShapeCategory?.bottomRightCorner = rounded24dpCorner
+        
+        shapeScheme.smallComponentShape = smallShapeCategory!
+        
+        containerScheme.shapeScheme = shapeScheme
     }
     
     func configView() {
         loginButton.addTarget(self, action: #selector(didButtonClick), for: .touchUpInside)
+        loginButton.applyContainedTheme(withScheme: containerScheme)
+        
+        usernameOrDomain.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        usernameOrDomain.delegate = self
+        usernameOrDomain.placeholder = "Username Or Custom Domain"
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        usernameOrDomain.resignFirstResponder()
+        return true
+    }
+    
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        loginViewModel.urlChanged(newInput: textField.text!)
     }
     
     func initViewModel() {
@@ -114,7 +160,6 @@ class ViewController: UIViewController {
     }
     
     @objc func didButtonClick(_ sender: UIButton) {
-        loginViewModel.urlChanged(newInput: "https://cozy.ludos.city")
         loginViewModel.registerAuthClient()
     }
 
@@ -125,8 +170,6 @@ class ViewController: UIViewController {
 
 extension ViewController: DriveLoginViewModelDriveLoginFragmentEventListener {
     func routeToAuthFlow() {
-        self.label.text = "registered"
-        
         let clientRegistration = ((loginViewModel.authClientRegistrationResult.value as! SuccessAuthClientRegistration)
             .response as! ResponseSuccess)
             .data!
@@ -139,13 +182,6 @@ extension ViewController: DriveLoginViewModelDriveLoginFragmentEventListener {
     }
     
     func routeToHerdr() {
-        
-        let userCredentials = ((loginViewModel.userCredentialsResult.value as! SuccessUserCredentials)
-            .response as! ResponseSuccess)
-            .data!
-        
-        self.label.text = userCredentials.accessToken
-        
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         self.navigationController?.pushViewController(storyboard.instantiateViewController(withIdentifier: "herdr") as UIViewController, animated: false)
     }

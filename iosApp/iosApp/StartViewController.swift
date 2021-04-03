@@ -23,10 +23,24 @@ class StartViewController: UIViewController {
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         containerScheme = MDCContainerScheme()
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        initContainerScheme()
     }
     
     required init?(coder aDecoder: NSCoder) {
         containerScheme = MDCContainerScheme()
+        super.init(coder: aDecoder)
+        initContainerScheme()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "StartScreen"
+        
+        initViewModel()
+        configView()
+    }
+    
+    func initContainerScheme() {
         
         let colorScheme = MDCSemanticColorScheme()
         
@@ -50,15 +64,6 @@ class StartViewController: UIViewController {
         
         containerScheme.shapeScheme = shapeScheme
         
-        super.init(coder: aDecoder)
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        title = "StartScreen"
-        
-        initViewModel()
-        configView()
     }
     
     func initViewModel() {

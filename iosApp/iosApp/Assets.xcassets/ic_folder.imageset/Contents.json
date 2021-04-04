@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Logo_Cozy.svg.png",
+      "filename" : "ic_folder.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Logo_Cozy.svg-1.png",
+      "filename" : "ic_folder-1.svg",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Logo_Cozy.svg-2.png",
+      "filename" : "ic_folder-2.svg",
       "idiom" : "universal",
       "scale" : "3x"
     }

@@ -20,7 +20,7 @@ import AppAuth
 import MultiPlatformLibrary
 import MaterialComponents.MaterialTextFields
 
-class ViewController: UIViewController, UITextFieldDelegate {
+class DriveLoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var loginButton: MDCButton!
     @IBOutlet weak var finalUrl: UILabel!
     @IBOutlet weak var usernameOrDomain: MDCTextField!
@@ -168,7 +168,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
 }
 
-extension ViewController: DriveLoginViewModelDriveLoginFragmentEventListener {
+extension DriveLoginViewController: DriveLoginViewModelDriveLoginFragmentEventListener {
     func routeToAuthFlow() {
         let clientRegistration = ((loginViewModel.authClientRegistrationResult.value as! SuccessAuthClientRegistration)
             .response as! ResponseSuccess)
